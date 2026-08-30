@@ -167,6 +167,9 @@ Each template is **one HTML page**, not a series of slides:
 See `index.json` for each template's mood/tone/formality metadata, and `AGENTS.md` for the full
 matching-and-build workflow.
 
+## Skill Version
+v 0.0.083011
+
 ## License
 
 [MIT](./LICENSE) — free to use, modify, and distribute.
