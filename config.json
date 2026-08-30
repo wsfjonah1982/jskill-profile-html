@@ -2,7 +2,7 @@
   "maas_api_endpoint": "https://ark.ap-southeast.bytepluses.com/api/v3",
   "chat_model_id": "deepseek-v4-flash-260425",
   "chat_temperature": 0.7,
-  "image_model_id": "dola-seedream-5-0-pro-260628",
+  "image_model_id": "seedream-5-0-260128",
   "image_size": "2K",
   "image_request_timeout_seconds": 300,
   "chat_request_timeout_seconds": 120,
