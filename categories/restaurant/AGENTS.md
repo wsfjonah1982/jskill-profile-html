@@ -61,6 +61,6 @@ If the user wants it to actually deliver reservations somewhere, that's a separa
 
 ## 5. Before finishing
 
-Run the root AGENTS.md §4 responsive checklist, then its §7 output contract (open the file, send
-the absolute path, one line on which template you picked and why, plus the reservation-form
-caveat from §4 above).
+Run the root AGENTS.md §4 responsive checklist, then its §7 output contract (publish via
+`scripts/upload_site.py` and lead with the public URL, one line on which template you picked and
+why, plus the reservation-form caveat from §4 above).

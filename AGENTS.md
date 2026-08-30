@@ -153,16 +153,19 @@ Wait for the user to pick.
    switch templates, don't import a different visual language. (See §5.)
 5. Verify responsiveness (see §4) before calling it done.
 
-### Step 7 — Open the final page, send the path
+### Step 7 — Publish the final page, send the URL
 
-Open the finished page in the browser. Message the user:
+Open the finished page in the browser to sanity-check it, then publish it with
+`scripts/upload_site.py` (see §7 below — this is the default last step, not optional) and message
+the user:
 
-> "Done. Your page is at `/path/to/_output/<slug>/index.html` — opened it in your browser.
+> "Done. Your page is live at `https://<bucket>.<tos-endpoint>/site/manual/<slug>/index.html`.
 >
 > [One line about which template you picked and why, plus any caveats.]"
 
-This applies to **every artifact you produce** — previews and the final page. Always open it,
-always send the absolute path.
+This applies to **every artifact you produce**: open hero previews locally and send their file
+path (they're a mid-process comparison step, not the deliverable); the final page gets opened,
+published, and handed off by its public URL.
 
 ---
 
@@ -302,23 +305,30 @@ images/videos copied in from `_input/` — unless the user has told you to put i
 in which case follow that instead. Hero previews (Step 5) can live in a `previews/` folder next
 to wherever you're building, they don't need to go in `_output/`.
 
-After **every artifact** you produce — hero previews and the final page — do both:
+For hero previews (Step 5), do both:
 
 1. **Open the file** in whatever preview capability this environment has (a browser, an IDE
    preview pane, etc.). If nothing can render it, skip this and say so.
 2. **Send the user the absolute file path** in your message, on its own line.
 
-For the final page, also include:
+**For the final page, always publish it — this is the default last step, not an optional
+extra.** Once it passes §4's responsive/interaction checklist, run
+`scripts/upload_site.py --dir _output/<slug> --slug <slug>` to push it to BytePlus TOS object
+storage, public-read (same `config.json`/`credential.json` credentials every other script here
+uses). Then report to the user:
+- **The public URL** `scripts/upload_site.py` prints — this is the headline deliverable, not the
+  local file path. Lead with it.
 - A one-line note on which template you picked and why (the tone match).
 - Any caveats (e.g. "left the testimonial section as a placeholder since you didn't give me one
   yet", "added a pricing section from scratch using the template's card style since none of the
   templates ship with one", or "couldn't visually verify responsiveness — no browser tooling in
   this environment").
 
-If the user wants the page live/publicly viewable rather than just a local file,
-`scripts/upload_site.py` publishes `_output/<slug>/` to BytePlus TOS object storage, public-read,
-and prints the public URL — the same credentials this skill's `config.json`/`credential.json`
-already hold. This is a real, public, non-instant action: confirm with the user which folder and
-slug before running it, same as the image-generation confirmation above.
+This does push real files to a public bucket — say so plainly when you do it — but don't gate it
+behind a question each time the way a fresh paid image generation is (§3): publishing the
+finished page is standard behavior for this skill, every time, unless the user has explicitly
+said they just want the local file. If you redo a build under the same slug, `scripts/
+delete_site.py --slug <slug>` clears the old objects first so nothing stale is left alongside
+the new upload.
 
-Do not narrate every step you took. The user wants the artifact + the path + a one-line rationale.
+Do not narrate every step you took. The user wants the URL + a one-line rationale.

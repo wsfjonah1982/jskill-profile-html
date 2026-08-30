@@ -1,6 +1,6 @@
 ---
 name: profile-html
-description: Build a single, finished, responsive HTML page — a bio/portfolio/pitch page, an online store, a restaurant/cafe site, or a course/coaching page — from a curated template library. Use when the user wants a personal or company profile page, résumé/CV site, startup one-pager, e-commerce storefront, restaurant site, or course/coaching landing page built as HTML. Defaults to reading prepared content from this skill's _input/ folder (see _input/brief.template.md) before asking questions interactively.
+description: Build a single, finished, responsive HTML page — a bio/portfolio/pitch page, an online store, a restaurant/cafe site, or a course/coaching page — from a curated template library, and publish it to a public URL. Use when the user wants a personal or company profile page, résumé/CV site, startup one-pager, e-commerce storefront, restaurant site, or course/coaching landing page built as HTML and put online. Defaults to reading prepared content from this skill's _input/ folder (see _input/brief.template.md) before asking questions interactively, and to publishing the finished page via scripts/upload_site.py rather than only writing a local file.
 ---
 
 See [`AGENTS.md`](./AGENTS.md) — that file is the full operating manual and is written to be

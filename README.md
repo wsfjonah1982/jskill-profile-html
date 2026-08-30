@@ -7,6 +7,10 @@ self-contained HTML file that adapts from a phone screen to a desktop without a 
 version. Beyond the 8 bio/portfolio templates below, the library also has three site-category
 subskills under `categories/`: e-commerce stores, restaurants/cafes, and courses/coaching pages.
 
+**Publishing is the default, not an optional extra.** A finished page isn't just written to
+disk — the standard last step is uploading it to object storage and handing back a live public
+URL, via `scripts/upload_site.py`. See "Scripts & credentials" below.
+
 Agents using the library should read [`AGENTS.md`](./AGENTS.md). It's the operating manual: how
 to read `index.json`, match the user's brief to a template, clone it, and adapt the content.
 
@@ -33,15 +37,18 @@ incomplete) and the agent falls back to asking everything interactively.
 
 ## Scripts & credentials
 
-`scripts/` has four self-contained helpers an agent can call while building a page — each reads
-its settings from `config.json` and its secrets from `credential.json`:
+`scripts/` has self-contained helpers an agent calls while building and shipping a page — each
+reads its settings from `config.json` and its secrets from `credential.json`:
 
 | Script | Does |
 |---|---|
-| `generate_image.py` | Generates an image via Seedream from a prompt file (see `prompt_templates/image_prompt_*.md`) |
+| `generate_image.py` | Generates an image via Seedream from a prompt file — text-to-image, or image-to-image with `--img` reference photo(s) (see `prompt_templates/image_prompt_*.md`) |
+| `generate_character_sheet.py` | Generates a 3-view (front/side/back) identity-anchor turnaround sheet from a subject description, for a recurring person across multiple images |
+| `generate_profile_photo.py` | Generates a professional headshot for an existing subject, using their character sheet (or any photo of them) as the identity reference |
 | `write_content.py` | Drafts tagline/bio/section copy from `_input/brief.md` via a chat model, enforcing the no-fabricated-proof-points rule |
-| `upload_site.py` | Publishes a finished `_output/<slug>/` folder to BytePlus TOS object storage, public-read, and prints the URL |
-| `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers the other three import |
+| `upload_site.py` | **The default way a finished page ships.** Publishes `_output/<slug>/` to BytePlus TOS object storage, public-read, and prints the live URL — this is the standard last step for every build, not something only done on request |
+| `delete_site.py` | Removes a previously-published site from TOS by slug — use before re-publishing a redone build under the same slug, so nothing stale is left behind |
+| `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers the other scripts import |
 
 Copy `credential_tmp.json` to `credential.json` and fill in your own keys (`model_ark_key` for
 image generation and content writing; `tos_access_key_id` / `tos_secret_access_key` for
