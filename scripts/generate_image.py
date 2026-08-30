@@ -86,7 +86,8 @@ def main() -> int:
         base_url = config["maas_api_endpoint"]
 
         api_key = load_credential("model_ark_key", "ARK_API_KEY")
-        service = ArkImageService(base_url=base_url, api_key=api_key)
+        service = ArkImageService(base_url=base_url, api_key=api_key,
+                                    timeout=config.get("image_request_timeout_seconds", 300))
 
         if args.img:
             ref_paths = [Path(p) for p in args.img]

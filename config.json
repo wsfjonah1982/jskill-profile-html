@@ -4,6 +4,8 @@
   "chat_temperature": 0.7,
   "image_model_id": "dola-seedream-5-0-pro-260628",
   "image_size": "2K",
+  "image_request_timeout_seconds": 300,
+  "chat_request_timeout_seconds": 120,
   "watermark": false,
   "default_style": "Cinematic Realism",
   "tos_endpoint": "tos-ap-southeast-1.bytepluses.com",

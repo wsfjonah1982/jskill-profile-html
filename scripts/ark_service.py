@@ -48,12 +48,13 @@ def download_file(url: str, output_path) -> float:
 class ArkChatService:
     """Text chat-completions client (e.g. Deepseek models) for content writing."""
 
-    def __init__(self, base_url: str, api_key: str):
+    def __init__(self, base_url: str, api_key: str, timeout: int = 120):
         self._url = base_url.rstrip('/') + '/chat/completions'
         self._headers = {
             'Authorization': f'Bearer {api_key}',
             'Content-Type': 'application/json',
         }
+        self._timeout = timeout
 
     def complete(self, model_id: str, system_prompt: str, user_prompt: str,
                  temperature: float | None = None) -> str:
@@ -71,7 +72,7 @@ class ArkChatService:
         if temperature is not None:
             payload['temperature'] = temperature
 
-        resp = requests.post(self._url, headers=self._headers, json=payload, timeout=120)
+        resp = requests.post(self._url, headers=self._headers, json=payload, timeout=self._timeout)
         if resp.status_code != 200:
             raise RuntimeError(f"Ark API error {resp.status_code}: {resp.text}")
         data = resp.json()
@@ -87,12 +88,13 @@ class ArkChatService:
 class ArkImageService:
     """Seedream image generation client."""
 
-    def __init__(self, base_url: str, api_key: str):
+    def __init__(self, base_url: str, api_key: str, timeout: int = 300):
         self._url = base_url.rstrip('/') + '/images/generations'
         self._headers = {
             'Authorization': f'Bearer {api_key}',
             'Content-Type': 'application/json',
         }
+        self._timeout = timeout
 
     def generate_image(self, model_id: str, prompt: str, image: list[str] | str | None = None,
                         size: str | None = None, watermark: bool | None = None) -> list[dict]:
@@ -112,7 +114,7 @@ class ArkImageService:
         if watermark is not None:
             payload['watermark'] = watermark
 
-        resp = requests.post(self._url, headers=self._headers, json=payload, timeout=120)
+        resp = requests.post(self._url, headers=self._headers, json=payload, timeout=self._timeout)
         if resp.status_code != 200:
             raise RuntimeError(f"Ark API error {resp.status_code}: {resp.text}")
         data = resp.json()

@@ -114,7 +114,8 @@ def main() -> int:
         print(f"Output: {output_path}\n", file=sys.stderr)
 
         api_key = load_credential("model_ark_key", "ARK_API_KEY")
-        service = ArkImageService(base_url=base_url, api_key=api_key)
+        service = ArkImageService(base_url=base_url, api_key=api_key,
+                                    timeout=config.get("image_request_timeout_seconds", 300))
 
         image = None
         if image_paths:

@@ -83,7 +83,8 @@ def main() -> int:
             .replace("{{brief}}", brief_text)
         )
 
-        service = ArkChatService(base_url=base_url, api_key=api_key)
+        service = ArkChatService(base_url=base_url, api_key=api_key,
+                                   timeout=config.get("chat_request_timeout_seconds", 120))
         draft = service.complete(model_id=model_id, system_prompt=system_prompt,
                                   user_prompt=user_prompt, temperature=temperature)
 
