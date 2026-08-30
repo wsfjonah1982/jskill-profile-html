@@ -1,0 +1,1 @@
+Professional corporate headshot portrait from @image1, same person, same facial identity. {idea}. Dressed in a tailored formal business suit, confident and approachable professional expression, three-quarter angle, soft studio portrait lighting, clean neutral gray background, sharp focus, high resolution, corporate photography style.

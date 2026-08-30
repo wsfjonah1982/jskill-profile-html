@@ -1,11 +1,18 @@
 """Generate one or more images via Seedream (BytePlus Ark) for a profile-html page.
 
 Reads settings from this skill's own config.json/credential.json — self-contained,
-no dependency on any other skill. Each non-empty line in the prompt file becomes a
-separate generated image (same convention as agent_work/skill/video-workflow).
+no dependency on any other skill.
+
+Two modes, matching agent_work/skill/video-workflow's convention:
+  - Text-to-image (no --img): each non-empty line in the prompt file becomes a
+    separate generated image.
+  - Image-to-image (--img given): one or more reference images anchor the
+    generation; the whole prompt file is sent as a single prompt, producing one
+    output image.
 
 Usage:
     python scripts/generate_image.py --prompt prompt.txt --output _output/<slug>/assets/hero.jpg
+    python scripts/generate_image.py --img _input/images/ref.jpg --prompt prompt.txt --output out.jpg
 
 See prompt_templates/image_prompt_*.md for the prompt formulas to fill in before running this.
 """
@@ -16,7 +23,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from ark_service import ArkImageService, download_file
+from ark_service import ArkImageService, download_file, file_to_data_url
 from credentials import load_credential
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -56,8 +63,13 @@ def write_log(log_path: Path, data: dict) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--prompt", required=True, help="Path to prompt text file (one prompt per line)")
+    parser.add_argument("--prompt", required=True,
+                         help="Path to prompt text file (one prompt per line in text-to-image "
+                              "mode; the whole file as one prompt when --img is given)")
     parser.add_argument("--output", required=True, help="Output image file path (e.g. _output/<slug>/assets/hero.jpg)")
+    parser.add_argument("--img", nargs="+", default=None,
+                         help="One or more reference image paths to anchor the generation "
+                              "(image-to-image mode) — omit for plain text-to-image")
     args = parser.parse_args()
 
     prompt_path = Path(args.prompt)
@@ -74,8 +86,21 @@ def main() -> int:
         base_url = config["maas_api_endpoint"]
 
         api_key = load_credential("model_ark_key", "ARK_API_KEY")
-        prompts = read_prompts(prompt_path)
         service = ArkImageService(base_url=base_url, api_key=api_key)
+
+        if args.img:
+            ref_paths = [Path(p) for p in args.img]
+            for p in ref_paths:
+                if not p.is_file():
+                    raise FileNotFoundError(f"Reference image not found: {p}")
+            image_data_urls = [file_to_data_url(p) for p in ref_paths]
+            prompts = [prompt_path.read_text(encoding="utf-8").strip()]
+            if not prompts[0]:
+                raise ValueError(f"Prompt file is empty: {prompt_path}")
+            print(f"Reference image(s): {', '.join(str(p) for p in ref_paths)}", file=sys.stderr)
+        else:
+            image_data_urls = None
+            prompts = read_prompts(prompt_path)
 
         print(f"Prompt file: {prompt_path} ({len(prompts)} prompt(s))", file=sys.stderr)
         print(f"Model: {model_id}  Size: {size}", file=sys.stderr)
@@ -89,7 +114,8 @@ def main() -> int:
             print(f"[{i}/{len(prompts)}] Generating: {prompt[:80]}{'...' if len(prompt) > 80 else ''}", file=sys.stderr)
 
             try:
-                images = service.generate_image(model_id=model_id, prompt=prompt, size=size, watermark=watermark)
+                images = service.generate_image(model_id=model_id, prompt=prompt, image=image_data_urls,
+                                                  size=size, watermark=watermark)
                 url = images[0]["url"] if images else None
                 if not url:
                     raise RuntimeError(f"No image URL returned for prompt: {prompt!r}")

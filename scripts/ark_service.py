@@ -5,12 +5,34 @@ Trimmed from agent_work/skill/video-workflow/scripts/ark_service.py: this skill 
 ever writes copy and generates static images, so the video-generation client isn't
 included here.
 """
+import base64
 import sys
 import time
 import urllib.request
 from pathlib import Path
 
 import requests
+
+
+def guess_mime_from_path(path) -> str:
+    ext = str(path).rsplit(".", 1)[-1].lower() if "." in str(path) else ""
+    if ext in ("jpg", "jpeg"):
+        return "image/jpeg"
+    if ext == "png":
+        return "image/png"
+    if ext == "gif":
+        return "image/gif"
+    if ext == "webp":
+        return "image/webp"
+    return "application/octet-stream"
+
+
+def file_to_data_url(path) -> str:
+    path = Path(path)
+    data = path.read_bytes()
+    mime = guess_mime_from_path(path)
+    b64 = base64.b64encode(data).decode("ascii")
+    return f"data:{mime};base64,{b64}"
 
 
 def download_file(url: str, output_path) -> float:
@@ -72,9 +94,10 @@ class ArkImageService:
             'Content-Type': 'application/json',
         }
 
-    def generate_image(self, model_id: str, prompt: str,
+    def generate_image(self, model_id: str, prompt: str, image: list[str] | str | None = None,
                         size: str | None = None, watermark: bool | None = None) -> list[dict]:
-        print(f"Image generation: model={model_id} prompt_len={len(prompt)} "
+        img_count = len(image) if isinstance(image, list) else (1 if image else 0)
+        print(f"Image generation: model={model_id} prompt_len={len(prompt)} images={img_count} "
               f"size={size} watermark={watermark}", file=sys.stderr)
 
         payload = {
@@ -82,6 +105,8 @@ class ArkImageService:
             'prompt': prompt,
             'response_format': 'url',
         }
+        if image:
+            payload['image'] = image
         if size is not None:
             payload['size'] = size
         if watermark is not None:
