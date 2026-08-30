@@ -45,8 +45,8 @@ def load_config() -> dict:
 
 
 def load_tos_credentials() -> tuple[str, str]:
-    access_key = load_credential("tos_access_key_id", "TOS_ACCESS_KEY_ID")
-    secret_key = load_credential("tos_secret_access_key", "TOS_SECRET_ACCESS_KEY")
+    access_key = load_credential("tos_access_key_id")
+    secret_key = load_credential("tos_secret_access_key")
     return access_key, secret_key
 
 

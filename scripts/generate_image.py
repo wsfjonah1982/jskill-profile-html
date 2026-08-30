@@ -85,7 +85,7 @@ def main() -> int:
         watermark = config.get("watermark", False)
         base_url = config["maas_api_endpoint"]
 
-        api_key = load_credential("model_ark_key", "ARK_API_KEY")
+        api_key = load_credential("model_ark_key")
         service = ArkImageService(base_url=base_url, api_key=api_key,
                                     timeout=config.get("image_request_timeout_seconds", 300))
 

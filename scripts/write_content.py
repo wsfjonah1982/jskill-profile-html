@@ -70,7 +70,7 @@ def main() -> int:
         model_id = config["chat_model_id"]
         temperature = config.get("chat_temperature")
         base_url = config["maas_api_endpoint"]
-        api_key = load_credential("model_ark_key", "ARK_API_KEY")
+        api_key = load_credential("model_ark_key")
 
         system_prompt = (PROMPT_TEMPLATES_DIR / "content_writing_system.md").read_text(encoding="utf-8")
         user_template = (PROMPT_TEMPLATES_DIR / "content_writing_user.md").read_text(encoding="utf-8")

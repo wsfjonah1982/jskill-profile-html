@@ -113,7 +113,7 @@ def main() -> int:
         print(f"Model: {model_id}  Size: {size}", file=sys.stderr)
         print(f"Output: {output_path}\n", file=sys.stderr)
 
-        api_key = load_credential("model_ark_key", "ARK_API_KEY")
+        api_key = load_credential("model_ark_key")
         service = ArkImageService(base_url=base_url, api_key=api_key,
                                     timeout=config.get("image_request_timeout_seconds", 300))
 

@@ -53,8 +53,8 @@ reads its settings from `config.json` and its secrets from `credential.json`:
 Copy `credential_tmp.json` to `credential.json` and fill in your own keys (`model_ark_key` for
 image generation and content writing; `tos_access_key_id` / `tos_secret_access_key` for
 publishing — omit whichever you don't need). For each key, `credential.json` is checked first;
-if it's missing or blank there, the matching environment variable is used instead
-(`ARK_API_KEY`, `TOS_ACCESS_KEY_ID`, `TOS_SECRET_ACCESS_KEY`) — handy for CI or a shared machine
+if it's missing or blank there, an environment variable of the **same name** is used instead
+(`model_ark_key`, `tos_access_key_id`, `tos_secret_access_key`) — handy for CI or a shared machine
 where you'd rather not put a real key in a file at all.
 
 ## Get started

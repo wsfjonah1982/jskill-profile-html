@@ -56,8 +56,8 @@ def main() -> int:
         bucket = config["tos_bucket"]
         key_prefix = config.get("tos_key_prefix_template", "site/manual/{slug}").replace("{slug}", args.slug)
 
-        access_key = load_credential("tos_access_key_id", "TOS_ACCESS_KEY_ID")
-        secret_key = load_credential("tos_secret_access_key", "TOS_SECRET_ACCESS_KEY")
+        access_key = load_credential("tos_access_key_id")
+        secret_key = load_credential("tos_secret_access_key")
         client = tos.TosClientV2(access_key, secret_key, endpoint, region)
 
         keys = []
