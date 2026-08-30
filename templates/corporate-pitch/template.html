@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Company Name] — [One-line Tagline]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f8fa;
+    --surface:#ffffff;
+    --navy:#0f2a4a;
+    --ink:#1c2733;
+    --ink-soft:#5b6b7d;
+    --accent:#2f6fed;
+    --line:#e2e6ec;
+    --max:1160px;
+    --pad:clamp(20px,5vw,64px);
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Manrope',sans-serif;font-weight:800;line-height:1.15;margin:0 0 .4em;color:var(--navy);}
+  p{margin:0 0 1em;color:var(--ink-soft);}
+  a{color:inherit;}
+  img{max-width:100%;height:auto;display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
+  section{padding:clamp(48px,8vw,96px) 0;}
+  .eyebrow{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:12px;display:block;}
+
+  header.site{position:sticky;top:0;z-index:50;background:rgba(247,248,250,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px var(--pad);max-width:var(--max);margin:0 auto;}
+  .brand{font-family:'Manrope',sans-serif;font-weight:800;color:var(--navy);text-decoration:none;font-size:1.1rem;}
+  .nav-links{display:none;gap:28px;list-style:none;margin:0;padding:0;}
+  .nav-links a{text-decoration:none;font-size:.92rem;color:var(--ink-soft);font-weight:500;}
+  .nav-links a:hover{color:var(--navy);}
+  .nav-cta{display:none;background:var(--navy);color:#fff;text-decoration:none;padding:10px 20px;border-radius:8px;font-size:.88rem;font-weight:600;}
+  .menu-btn{background:var(--surface);border:1px solid var(--line);border-radius:8px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:18px;height:2px;background:var(--navy);position:relative;}
+  .menu-btn span::before{position:absolute;top:-6px;}
+  .menu-btn span::after{position:absolute;top:6px;}
+  #mobile-menu{display:none;flex-direction:column;padding:6px var(--pad) 18px;border-bottom:1px solid var(--line);}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{text-decoration:none;color:var(--navy);padding:12px 6px;font-weight:600;font-size:1rem;}
+  @media (min-width:900px){
+    .nav-links{display:flex;}
+    .nav-cta{display:inline-block;}
+    .menu-btn{display:none;}
+  }
+
+  .hero{padding-top:clamp(56px,10vw,120px);}
+  .hero-grid{display:grid;gap:36px;align-items:center;}
+  .hero h1{font-size:clamp(2rem,5vw,3.2rem);}
+  .hero .lede{font-size:clamp(1.05rem,2vw,1.2rem);max-width:56ch;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:24px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:14px 26px;border-radius:8px;text-decoration:none;font-weight:700;font-size:.92rem;}
+  .btn-primary{background:var(--navy);color:#fff;}
+  .btn-ghost{border:1px solid var(--line);color:var(--navy);background:var(--surface);}
+  .hero-panel{aspect-ratio:4/3;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);}
+  @media (min-width:900px){ .hero-grid{grid-template-columns:1.2fr .8fr;} }
+
+  .trusted-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .trusted-strip .wrap{padding-top:28px;padding-bottom:28px;}
+  .trusted-strip p.eyebrow{margin-bottom:16px;text-align:center;}
+  .logo-row{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .logo-chip{
+    border:1px dashed var(--line);border-radius:8px;padding:14px 10px;text-align:center;
+    color:var(--ink-soft);font-weight:600;font-size:.85rem;background:var(--surface);
+  }
+  @media (min-width:700px){ .logo-row{grid-template-columns:repeat(4,1fr);} }
+
+  .about-grid{display:grid;gap:32px;}
+  @media (min-width:900px){ .about-grid{grid-template-columns:1fr 1fr;} }
+
+  .section-head{max-width:62ch;margin-bottom:36px;}
+  .card-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;}
+  .card h3{font-size:1.05rem;color:var(--ink);}
+  .card p{font-size:.92rem;margin-bottom:0;}
+
+  .team-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+  .team-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;text-align:center;}
+  .team-photo{aspect-ratio:1/1;border-radius:50%;background:var(--bg);border:1px solid var(--line);margin:0 auto 14px;max-width:96px;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:.75rem;}
+  .team-card h3{font-size:.98rem;margin-bottom:.15em;}
+  .team-card span{font-size:.82rem;color:var(--ink-soft);}
+
+  .metrics{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));text-align:center;}
+  .metric b{display:block;font-family:'Manrope',sans-serif;font-size:clamp(1.8rem,4vw,2.4rem);color:var(--navy);}
+  .metric span{font-size:.85rem;color:var(--ink-soft);}
+
+  .cta-panel{background:var(--navy);color:#fff;border-radius:var(--radius);padding:clamp(32px,6vw,56px);text-align:center;}
+  .cta-panel h2{color:#fff;}
+  .cta-panel p{color:#c8d3e2;}
+  .cta-panel .btn-primary{background:var(--accent);}
+
+  .contact-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+  .contact-link{display:flex;align-items:center;justify-content:space-between;min-height:56px;padding:0 20px;background:var(--surface);border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--navy);font-weight:600;font-size:.92rem;}
+
+  footer.site{border-top:1px solid var(--line);padding:28px var(--pad);text-align:center;color:var(--ink-soft);font-size:.85rem;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="#top">[Company Name]</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Solutions</a></li>
+      <li><a href="#team">Leadership</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Talk to sales</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#about">About</a>
+    <a href="#services">Solutions</a>
+    <a href="#team">Leadership</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">[Industry / Category]</span>
+        <h1>[A clear statement of the outcome your company delivers]</h1>
+        <p class="lede">[Two sentences: what the company does, for which customers, and the
+          measurable result they get. Write it like a homepage headline, not a mission statement.]</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#contact">Talk to sales</a>
+          <a class="btn btn-ghost" href="#services">See solutions</a>
+        </div>
+      </div>
+      <div class="hero-panel">Product / hero image</div>
+    </div>
+  </section>
+
+  <section class="trusted-strip">
+    <div class="wrap">
+      <p class="eyebrow" style="text-align:center;">[Trusted by teams at]</p>
+      <div class="logo-row">
+        <div class="logo-chip">[Client One]</div>
+        <div class="logo-chip">[Client Two]</div>
+        <div class="logo-chip">[Client Three]</div>
+        <div class="logo-chip">[Client Four]</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div>
+        <span class="eyebrow">[Who we are]</span>
+        <h2>Our mission</h2>
+        <p>[2–3 sentences on why the company exists, the problem in the market, and the change
+          you're making.]</p>
+      </div>
+      <div>
+        <span class="eyebrow">[How we work]</span>
+        <h2>Our approach</h2>
+        <p>[2–3 sentences on methodology, values, or what makes working with you different from
+          the alternative.]</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">[What we offer]</span>
+        <h2>Products &amp; solutions</h2>
+      </div>
+      <div class="card-grid">
+        <div class="card"><h3>[Solution One]</h3><p>[What it is and the outcome it delivers.]</p></div>
+        <div class="card"><h3>[Solution Two]</h3><p>[What it is and the outcome it delivers.]</p></div>
+        <div class="card"><h3>[Solution Three]</h3><p>[What it is and the outcome it delivers.]</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">[Leadership]</span>
+        <h2>Meet the team</h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card"><div class="team-photo">Photo</div><h3>[Name]</h3><span>[Title]</span></div>
+        <div class="team-card"><div class="team-photo">Photo</div><h3>[Name]</h3><span>[Title]</span></div>
+        <div class="team-card"><div class="team-photo">Photo</div><h3>[Name]</h3><span>[Title]</span></div>
+        <div class="team-card"><div class="team-photo">Photo</div><h3>[Name]</h3><span>[Title]</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="metrics">
+        <div class="metric"><b>[500+]</b><span>[Customers served]</span></div>
+        <div class="metric"><b>[$50M]</b><span>[Revenue processed]</span></div>
+        <div class="metric"><b>[15]</b><span>[Countries]</span></div>
+        <div class="metric"><b>[99.99%]</b><span>[Uptime SLA]</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-panel">
+        <h2>[Ready to work together?]</h2>
+        <p>[One sentence CTA — book a call, request a demo, etc.]</p>
+        <a class="btn btn-primary" href="#contact">Talk to sales</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">[Get in touch]</span>
+        <h2>Contact us</h2>
+      </div>
+      <div class="contact-grid">
+        <a class="contact-link" href="mailto:[hello@example.com]">Email ↗</a>
+        <a class="contact-link" href="[https://linkedin.com/company/handle]">LinkedIn ↗</a>
+        <a class="contact-link" href="tel:[+1-555-0100]">Call us ↗</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  © [Year] [Company Name]. All rights reserved.
+</footer>
+
+<script>
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('mobile-menu');
+  btn.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>

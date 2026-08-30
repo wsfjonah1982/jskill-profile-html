@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Full Name] — [One-line Tagline]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff7ef;
+    --surface:#ffffff;
+    --ink:#3a2e2c;
+    --ink-soft:#7a6b66;
+    --pink:#ff8fa3;
+    --blue:#7fd8e8;
+    --yellow:#ffd166;
+    --mint:#8fe3c0;
+    --line:#f1e3d3;
+    --max:1120px;
+    --pad:clamp(20px,5vw,64px);
+    --radius:24px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fredoka',sans-serif;font-weight:600;line-height:1.2;margin:0 0 .4em;}
+  p{margin:0 0 1em;color:var(--ink-soft);}
+  a{color:inherit;}
+  img{max-width:100%;height:auto;display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
+  section{padding:clamp(48px,8vw,96px) 0;}
+
+  header.site{position:sticky;top:0;z-index:50;background:rgba(255,247,239,.92);backdrop-filter:blur(8px);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px var(--pad);max-width:var(--max);margin:0 auto;}
+  .brand{font-family:'Fredoka',sans-serif;font-weight:700;text-decoration:none;color:var(--ink);font-size:1.15rem;}
+  .nav-links{display:none;gap:26px;list-style:none;margin:0;padding:0;}
+  .nav-links a{text-decoration:none;font-weight:700;font-size:.92rem;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{display:none;background:var(--pink);color:#fff;text-decoration:none;padding:10px 22px;border-radius:999px;font-weight:700;font-size:.88rem;}
+  .menu-btn{background:var(--surface);border:2px solid var(--line);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:16px;height:2px;border-radius:2px;background:var(--ink);position:relative;}
+  .menu-btn span::before{position:absolute;top:-5px;}
+  .menu-btn span::after{position:absolute;top:5px;}
+  #mobile-menu{display:none;flex-direction:column;padding:6px var(--pad) 18px;}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{text-decoration:none;color:var(--ink);padding:12px 6px;font-weight:700;font-size:1.05rem;}
+  @media (min-width:840px){
+    .nav-links{display:flex;}
+    .nav-cta{display:inline-block;}
+    .menu-btn{display:none;}
+  }
+
+  .hero{padding-top:clamp(48px,9vw,110px);}
+  .hero-grid{display:grid;gap:32px;align-items:center;}
+  .badge{display:inline-block;background:var(--yellow);padding:8px 18px;border-radius:999px;font-weight:700;font-size:.85rem;margin-bottom:16px;}
+  .hero h1{font-size:clamp(2.1rem,6vw,3.6rem);}
+  .hero .lede{font-size:clamp(1.05rem,2vw,1.2rem);max-width:52ch;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:24px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:700;font-size:.95rem;}
+  .btn-solid{background:var(--pink);color:#fff;}
+  .btn-outline{border:2px solid var(--ink);color:var(--ink);}
+  .blob-frame{
+    position:relative;aspect-ratio:1/1;max-width:340px;display:flex;align-items:center;justify-content:center;
+    background:var(--mint);border-radius:63% 37% 54% 46% / 48% 45% 55% 52%;color:var(--ink);font-weight:700;
+  }
+  @media (min-width:860px){ .hero-grid{grid-template-columns:1.2fr .8fr;} }
+
+  .about-grid{display:grid;gap:32px;align-items:center;}
+  .about-card{background:var(--surface);border-radius:var(--radius);padding:30px;box-shadow:0 6px 0 var(--line);}
+  @media (min-width:860px){ .about-grid{grid-template-columns:1fr 1fr;} }
+
+  .section-head{max-width:60ch;margin-bottom:32px;}
+  .highlights-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+  .highlight{border-radius:var(--radius);padding:26px;background:var(--surface);box-shadow:0 6px 0 var(--line);}
+  .highlight:nth-child(1){background:#ffe9ee;}
+  .highlight:nth-child(2){background:#e8f8fb;}
+  .highlight:nth-child(3){background:#fff6df;}
+  .highlight h3{font-size:1.05rem;}
+  .highlight p{font-size:.92rem;margin:0;}
+
+  .gallery-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+  .gallery-item{aspect-ratio:1/1;border-radius:var(--radius);background:var(--surface);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-weight:700;font-size:.85rem;}
+
+  .testimonial{background:var(--surface);border-radius:var(--radius);padding:clamp(28px,5vw,48px);text-align:center;box-shadow:0 6px 0 var(--line);}
+  .testimonial blockquote{font-family:'Fredoka',sans-serif;font-size:clamp(1.1rem,2.4vw,1.4rem);margin:0 0 16px;}
+  .testimonial cite{font-style:normal;color:var(--ink-soft);font-size:.9rem;}
+
+  .contact-panel{background:var(--pink);border-radius:var(--radius);padding:clamp(32px,6vw,56px);text-align:center;color:#fff;}
+  .contact-panel h2{color:#fff;}
+  .contact-panel p{color:#fff0f3;}
+  .contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:16px;}
+  .contact-links a{border:2px solid #fff;border-radius:999px;padding:12px 22px;text-decoration:none;color:#fff;font-weight:700;font-size:.9rem;min-height:44px;display:inline-flex;align-items:center;}
+
+  footer.site{padding:28px var(--pad);text-align:center;color:var(--ink-soft);font-size:.85rem;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="#top">[Full Name] ✦</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#highlights">Highlights</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Say hi</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#about">About</a>
+    <a href="#highlights">Highlights</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="badge">[Hey, I'm here!]</span>
+        <h1>[A cheerful one-line intro to who you are and what you love making]</h1>
+        <p class="lede">[Two friendly sentences about what you do and who you do it for — write
+          it like you're introducing yourself at a party.]</p>
+        <div class="btn-row">
+          <a class="btn btn-solid" href="#contact">Let's chat 👋</a>
+          <a class="btn btn-outline" href="#gallery">See my stuff</a>
+        </div>
+      </div>
+      <div class="blob-frame">Photo</div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="about-card">
+        <h2>About me</h2>
+        <p>[2–3 warm sentences about your background, what lights you up, and what you're
+          working on now.]</p>
+      </div>
+      <div class="about-card">
+        <h2>Fun facts</h2>
+        <p>[A couple of personal, human details that make you memorable — hobbies, quirks, a
+          favorite tool.]</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="highlights">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What I'm known for</h2>
+        <p>[One friendly sentence framing the highlights below.]</p>
+      </div>
+      <div class="highlights-grid">
+        <div class="highlight"><h3>[Highlight One]</h3><p>[A sentence about this.]</p></div>
+        <div class="highlight"><h3>[Highlight Two]</h3><p>[A sentence about this.]</p></div>
+        <div class="highlight"><h3>[Highlight Three]</h3><p>[A sentence about this.]</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>A little gallery</h2>
+        <p>[One sentence introducing the photos/work below.]</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item">Image 1</div>
+        <div class="gallery-item">Image 2</div>
+        <div class="gallery-item">Image 3</div>
+        <div class="gallery-item">Image 4</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="testimonial">
+        <blockquote>"[A short, warm quote from someone who loves working/hanging out with you.]"</blockquote>
+        <cite>— [Name]</cite>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-panel">
+        <h2>Come say hi!</h2>
+        <p>[One friendly line inviting people to reach out.]</p>
+        <div class="contact-links">
+          <a href="mailto:[hello@example.com]">Email</a>
+          <a href="[https://instagram.com/handle]">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  Made with ❤ by [Full Name], [Year]
+</footer>
+
+<script>
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('mobile-menu');
+  btn.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>

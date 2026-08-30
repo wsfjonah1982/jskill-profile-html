@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Full Name] — [Title / Field]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --surface:#f7f6f3;
+    --ink:#1c1b19;
+    --ink-soft:#5b5750;
+    --accent:#7a2e2e;
+    --line:#e4e0d8;
+    --max:880px;
+    --pad:clamp(20px,5vw,48px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;line-height:1.65;}
+  h1,h2,h3{font-family:'Source Serif 4',Georgia,serif;font-weight:600;line-height:1.2;margin:0 0 .3em;color:var(--ink);}
+  p{margin:0 0 1em;color:var(--ink-soft);}
+  a{color:var(--accent);}
+  img{max-width:100%;height:auto;display:block;}
+  .mono{font-family:'IBM Plex Sans',sans-serif;}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
+  section{padding:clamp(36px,6vw,56px) 0;border-top:1px solid var(--line);}
+  .section-label{
+    font-family:'IBM Plex Sans',sans-serif;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin-bottom:20px;display:block;
+  }
+
+  header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px var(--pad);max-width:var(--max);margin:0 auto;}
+  .brand{font-weight:600;text-decoration:none;color:var(--ink);font-size:1rem;}
+  .nav-links{display:none;gap:24px;list-style:none;margin:0;padding:0;font-family:'IBM Plex Sans',sans-serif;}
+  .nav-links a{text-decoration:none;font-size:.85rem;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-cta{display:none;font-family:'IBM Plex Sans',sans-serif;border:1px solid var(--ink);color:var(--ink);text-decoration:none;padding:8px 16px;font-size:.8rem;font-weight:500;}
+  .menu-btn{background:none;border:1px solid var(--line);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:16px;height:1.5px;background:var(--ink);position:relative;}
+  .menu-btn span::before{position:absolute;top:-5px;}
+  .menu-btn span::after{position:absolute;top:5px;}
+  #mobile-menu{display:none;flex-direction:column;padding:4px var(--pad) 16px;font-family:'IBM Plex Sans',sans-serif;}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{text-decoration:none;color:var(--ink);padding:10px 4px;font-size:.95rem;}
+  @media (min-width:760px){
+    .nav-links{display:flex;}
+    .nav-cta{display:inline-block;}
+    .menu-btn{display:none;}
+  }
+
+  .cv-header{border-top:none;padding-top:clamp(40px,7vw,64px);}
+  .header-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-start;}
+  .cv-header h1{font-size:clamp(1.9rem,4.5vw,2.6rem);}
+  .cv-header .role{font-family:'IBM Plex Sans',sans-serif;color:var(--accent);font-weight:500;margin-bottom:10px;}
+  .contact-row{
+    display:flex;flex-wrap:wrap;gap:14px;font-family:'IBM Plex Sans',sans-serif;font-size:.85rem;
+    color:var(--ink-soft);margin-top:10px;
+  }
+  .contact-row a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid var(--line);}
+  .btn-download{
+    font-family:'IBM Plex Sans',sans-serif;border:1px solid var(--ink);color:var(--ink);text-decoration:none;
+    padding:12px 22px;font-size:.85rem;font-weight:500;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center;
+  }
+
+  .timeline{border-left:2px solid var(--line);padding-left:24px;display:flex;flex-direction:column;gap:28px;}
+  .timeline-item .meta{font-family:'IBM Plex Sans',sans-serif;font-size:.78rem;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+  .timeline-item h3{font-size:1.1rem;margin-bottom:.1em;}
+  .timeline-item .org{font-family:'IBM Plex Sans',sans-serif;font-size:.88rem;color:var(--ink-soft);margin-bottom:.4em;display:block;}
+  .timeline-item p{font-size:.95rem;margin:0;}
+
+  .pub-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;}
+  .pub-list li{padding-bottom:16px;border-bottom:1px solid var(--line);}
+  .pub-list li:last-child{border-bottom:none;padding-bottom:0;}
+  .pub-list .pub-meta{font-family:'IBM Plex Sans',sans-serif;font-size:.78rem;color:var(--ink-soft);}
+
+  .skills-grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+  .skills-group h3{font-size:.95rem;font-family:'IBM Plex Sans',sans-serif;font-weight:600;color:var(--ink);margin-bottom:10px;}
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{font-family:'IBM Plex Sans',sans-serif;font-size:.8rem;background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:6px;color:var(--ink-soft);}
+
+  .contact-panel{text-align:left;}
+  .contact-links{display:flex;flex-wrap:wrap;gap:20px;font-family:'IBM Plex Sans',sans-serif;margin-top:12px;}
+  .contact-links a{text-decoration:none;border-bottom:1px solid var(--accent);font-size:.9rem;}
+
+  footer.site{padding:24px var(--pad);text-align:center;color:var(--ink-soft);font-size:.8rem;font-family:'IBM Plex Sans',sans-serif;border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="#top">[Full Name]</a>
+    <ul class="nav-links">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Download CV</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#publications">Publications</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="cv-header">
+    <div class="wrap">
+      <div class="header-row">
+        <div>
+          <h1>[Full Name]</h1>
+          <p class="role">[Title / Field — e.g. Postdoctoral Researcher, Cognitive Science]</p>
+          <p style="max-width:60ch;">[Two sentences summarizing your research focus, expertise,
+            or professional specialty.]</p>
+          <div class="contact-row">
+            <a href="mailto:[email@example.com]">[email@example.com]</a>
+            <span>[University / Institution]</span>
+            <a href="[https://scholar.google.com/handle]">Google Scholar</a>
+          </div>
+        </div>
+        <a class="btn-download" href="[/cv.pdf]">Download CV ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <span class="section-label">[Experience]</span>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="meta">[2023 — Present]</span>
+          <h3>[Role Title]</h3>
+          <span class="org">[Institution / Company, City]</span>
+          <p>[One or two sentences on responsibilities and outcomes.]</p>
+        </div>
+        <div class="timeline-item">
+          <span class="meta">[2020 — 2023]</span>
+          <h3>[Role Title]</h3>
+          <span class="org">[Institution / Company, City]</span>
+          <p>[One or two sentences on responsibilities and outcomes.]</p>
+        </div>
+        <div class="timeline-item">
+          <span class="meta">[2017 — 2020]</span>
+          <h3>[Role Title]</h3>
+          <span class="org">[Institution / Company, City]</span>
+          <p>[One or two sentences on responsibilities and outcomes.]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <span class="section-label">[Education]</span>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="meta">[2013 — 2017]</span>
+          <h3>[Degree, Field]</h3>
+          <span class="org">[University Name]</span>
+          <p>[Thesis title or notable focus, if relevant.]</p>
+        </div>
+        <div class="timeline-item">
+          <span class="meta">[2009 — 2013]</span>
+          <h3>[Degree, Field]</h3>
+          <span class="org">[University Name]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="publications">
+    <div class="wrap">
+      <span class="section-label">[Publications &amp; Projects]</span>
+      <ul class="pub-list">
+        <li>
+          <h3 style="font-size:1.02rem;">[Title of paper or project]</h3>
+          <span class="pub-meta">[Authors. Journal / Conference / Venue, Year.]</span>
+        </li>
+        <li>
+          <h3 style="font-size:1.02rem;">[Title of paper or project]</h3>
+          <span class="pub-meta">[Authors. Journal / Conference / Venue, Year.]</span>
+        </li>
+        <li>
+          <h3 style="font-size:1.02rem;">[Title of paper or project]</h3>
+          <span class="pub-meta">[Authors. Journal / Conference / Venue, Year.]</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <span class="section-label">[Skills]</span>
+      <div class="skills-grid">
+        <div class="skills-group">
+          <h3>[Technical]</h3>
+          <div class="tag-row">
+            <span class="tag">[Skill]</span><span class="tag">[Skill]</span><span class="tag">[Skill]</span><span class="tag">[Skill]</span>
+          </div>
+        </div>
+        <div class="skills-group">
+          <h3>[Languages / Other]</h3>
+          <div class="tag-row">
+            <span class="tag">[Skill]</span><span class="tag">[Skill]</span><span class="tag">[Skill]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap contact-panel">
+      <span class="section-label">[Contact]</span>
+      <h2 style="font-size:1.5rem;">Get in touch</h2>
+      <p>[One line inviting collaboration, speaking requests, or inquiries.]</p>
+      <div class="contact-links">
+        <a href="mailto:[email@example.com]">[email@example.com]</a>
+        <a href="[https://linkedin.com/in/handle]">LinkedIn</a>
+        <a href="[https://scholar.google.com/handle]">Google Scholar</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  © [Year] [Full Name]
+</footer>
+
+<script>
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('mobile-menu');
+  btn.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Full Name] — [One-line Tagline]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0d0d;
+    --surface:#161616;
+    --ink:#f2ede4;
+    --ink-soft:#a39d92;
+    --gold:#c9a227;
+    --line:#2a2a2a;
+    --max:1200px;
+    --pad:clamp(20px,6vw,80px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Montserrat',sans-serif;font-weight:300;line-height:1.7;}
+  h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-style:italic;line-height:1.15;margin:0 0 .4em;color:var(--ink);}
+  p{margin:0 0 1em;color:var(--ink-soft);font-weight:300;}
+  a{color:inherit;}
+  img{max-width:100%;height:auto;display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
+  section{padding:clamp(56px,9vw,120px) 0;}
+  .label{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:16px;font-weight:500;}
+
+  header.site{position:sticky;top:0;z-index:50;background:rgba(13,13,13,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:22px var(--pad);max-width:var(--max);margin:0 auto;}
+  .brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;text-decoration:none;color:var(--ink);letter-spacing:.02em;}
+  .nav-links{display:none;gap:34px;list-style:none;margin:0;padding:0;}
+  .nav-links a{text-decoration:none;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--gold);}
+  .menu-btn{background:none;border:1px solid var(--line);width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:16px;height:1px;background:var(--ink);position:relative;}
+  .menu-btn span::before{position:absolute;top:-5px;}
+  .menu-btn span::after{position:absolute;top:5px;}
+  #mobile-menu{display:none;flex-direction:column;padding:6px var(--pad) 20px;border-bottom:1px solid var(--line);}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{text-decoration:none;color:var(--ink);padding:14px 6px;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;}
+  @media (min-width:900px){
+    .nav-links{display:flex;}
+    .menu-btn{display:none;}
+  }
+
+  .hero-fullbleed{
+    min-height:70vh;display:flex;align-items:flex-end;
+    background:linear-gradient(180deg, rgba(13,13,13,.1), rgba(13,13,13,.85)), var(--surface);
+    border-bottom:1px solid var(--line);padding-top:80px;
+  }
+  .hero-fullbleed .wrap{padding-bottom:clamp(40px,8vw,80px);width:100%;}
+  .hero-fullbleed h1{font-size:clamp(2.4rem,7vw,5rem);max-width:16ch;}
+  .hero-fullbleed p{max-width:48ch;font-size:1.05rem;}
+
+  .about-grid{display:grid;gap:40px;align-items:center;}
+  .portrait{aspect-ratio:3/4;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);max-width:340px;}
+  @media (min-width:900px){ .about-grid{grid-template-columns:.8fr 1.2fr;} }
+
+  .section-head{max-width:60ch;margin-bottom:40px;}
+  .gallery-grid{display:grid;gap:4px;grid-template-columns:repeat(2,1fr);}
+  .gallery-item{aspect-ratio:4/5;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:.85rem;}
+  @media (min-width:800px){ .gallery-grid{grid-template-columns:repeat(3,1fr);} }
+
+  .press-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .press-row{display:flex;flex-wrap:wrap;justify-content:center;gap:36px;padding:36px 0;}
+  .press-row span{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+
+  .contact-panel{text-align:center;max-width:600px;margin:0 auto;}
+  .contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;margin-top:20px;}
+  .contact-links a{text-decoration:none;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--gold);padding-bottom:4px;color:var(--ink);}
+
+  footer.site{padding:32px var(--pad);text-align:center;color:var(--ink-soft);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="#top">[Full Name]</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#about">About</a>
+    <a href="#work">Portfolio</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero-fullbleed">
+    <div class="wrap">
+      <span class="label">[Discipline — e.g. Photographer / Architect / Atelier]</span>
+      <h1>[A quiet, confident line that names what you make]</h1>
+      <p>[One elegant sentence on your practice and point of view.]</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="portrait">Portrait</div>
+      <div>
+        <span class="label">[About]</span>
+        <h2>[A considered introduction]</h2>
+        <p>[2–3 unhurried sentences on your background, training, and the throughline of your
+          work. Let the words breathe — don't over-explain.]</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">[Selected work]</span>
+        <h2>Portfolio</h2>
+      </div>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">Image 1</div>
+      <div class="gallery-item">Image 2</div>
+      <div class="gallery-item">Image 3</div>
+      <div class="gallery-item">Image 4</div>
+      <div class="gallery-item">Image 5</div>
+      <div class="gallery-item">Image 6</div>
+    </div>
+  </section>
+
+  <div class="press-strip">
+    <div class="wrap">
+      <div class="press-row">
+        <span>[Featured In — Publication One]</span>
+        <span>[Publication Two]</span>
+        <span>[Publication Three]</span>
+      </div>
+    </div>
+  </div>
+
+  <section id="contact">
+    <div class="wrap contact-panel">
+      <span class="label">[Inquiries]</span>
+      <h2>Let's create something</h2>
+      <p>[One elegant line inviting inquiries — for bookings, collaborations, or press.]</p>
+      <div class="contact-links">
+        <a href="mailto:[hello@example.com]">Email</a>
+        <a href="[https://instagram.com/handle]">Instagram</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  [Full Name] · © [Year]
+</footer>
+
+<script>
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('mobile-menu');
+  btn.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+</body>
+</html>

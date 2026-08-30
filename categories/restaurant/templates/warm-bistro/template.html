@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Restaurant Name] — [Cuisine / One-line Tagline]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6efe4;
+    --surface:#fffaf1;
+    --ink:#2b2420;
+    --ink-soft:#6b6156;
+    --sage:#7c8c6b;
+    --rust:#b5583a;
+    --line:#e3d9c6;
+    --max:1080px;
+    --pad:clamp(20px,6vw,72px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Karla',system-ui,sans-serif;line-height:1.65;
+  }
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.15;margin:0 0 .4em;}
+  em, .italic{font-style:italic;font-weight:500;}
+  p{margin:0 0 1em;color:var(--ink-soft);}
+  a{color:var(--rust);}
+  img{max-width:100%;height:auto;display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
+  section{padding:clamp(52px,9vw,110px) 0;}
+  .rule{width:56px;height:2px;background:var(--sage);margin:0 0 22px;}
+
+  header.site{position:sticky;top:0;z-index:50;background:rgba(246,239,228,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:18px var(--pad);max-width:var(--max);margin:0 auto;}
+  .brand{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:1.2rem;text-decoration:none;color:var(--ink);}
+  .nav-links{display:none;gap:30px;list-style:none;margin:0;padding:0;}
+  .nav-links a{text-decoration:none;font-size:.92rem;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--rust);}
+  .nav-cta{display:none;border:1px solid var(--ink);color:var(--ink);text-decoration:none;padding:9px 20px;border-radius:999px;font-size:.88rem;}
+  .menu-btn{background:none;border:1px solid var(--line);border-radius:8px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:16px;height:1.5px;background:var(--ink);position:relative;}
+  .menu-btn span::before{position:absolute;top:-6px;}
+  .menu-btn span::after{position:absolute;top:6px;}
+  #mobile-menu{display:none;flex-direction:column;padding:6px var(--pad) 18px;border-bottom:1px solid var(--line);}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{text-decoration:none;color:var(--ink);padding:12px 6px;font-size:1.02rem;}
+  @media (min-width:840px){
+    .nav-links{display:flex;}
+    .nav-cta{display:inline-block;}
+    .menu-btn{display:none;}
+  }
+
+  .hero{padding-top:clamp(60px,10vw,120px);text-align:center;}
+  .hero .wrap{max-width:760px;}
+  .eyebrow{font-family:'Fraunces',serif;font-style:italic;color:var(--sage);font-size:1.05rem;display:block;margin-bottom:12px;}
+  .hero h1{font-size:clamp(2.1rem,6vw,3.6rem);}
+  .hero .lede{font-size:clamp(1.05rem,2vw,1.2rem);max-width:52ch;margin:0 auto 28px;}
+  .btn-row{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:13px 26px;border-radius:999px;text-decoration:none;font-weight:600;font-size:.92rem;border:none;cursor:pointer;font-family:'Karla',sans-serif;}
+  .btn-solid{background:var(--rust);color:#fff;}
+  .btn-outline{border:1px solid var(--ink);color:var(--ink);background:none;}
+
+  .section-head{max-width:60ch;margin-bottom:36px;}
+
+  /* Menu tabs */
+  .tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px;}
+  .tab-btn{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:12px 22px;min-height:44px;font-family:'Karla',sans-serif;font-size:.88rem;font-weight:700;color:var(--ink-soft);cursor:pointer;}
+  .tab-btn[aria-selected="true"]{background:var(--rust);color:#fff;border-color:var(--rust);}
+  .menu-panel{display:none;}
+  .menu-panel.active{display:block;}
+  .menu-list{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+  .menu-item{border-bottom:1px solid var(--line);padding-bottom:16px;}
+  .menu-item-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;}
+  .menu-item-head h3{font-size:1.05rem;margin:0;font-style:normal;}
+  .menu-item-price{font-family:'Karla',sans-serif;font-weight:700;color:var(--rust);white-space:nowrap;}
+  .menu-item p{font-size:.9rem;margin:.35em 0 0;}
+
+  /* Hours + location */
+  .info-grid{display:grid;gap:36px;}
+  @media (min-width:860px){ .info-grid{grid-template-columns:1fr 1fr;} }
+  .hours-list{list-style:none;margin:0 0 20px;padding:0;}
+  .hours-list li{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:.95rem;}
+  .hours-list li span:first-child{color:var(--ink);font-weight:700;}
+  .info-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:clamp(24px,4vw,36px);}
+
+  /* Reservation form */
+  .reserve-panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:clamp(28px,5vw,48px);}
+  .form-grid{display:grid;gap:18px;grid-template-columns:1fr;}
+  @media (min-width:700px){ .form-grid{grid-template-columns:1fr 1fr;} }
+  .form-field{display:flex;flex-direction:column;gap:6px;}
+  .form-field.full{grid-column:1/-1;}
+  .form-field label{font-size:.85rem;font-weight:700;color:var(--ink);}
+  .form-field input{border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-height:44px;font-family:'Karla',sans-serif;font-size:.95rem;background:var(--bg);color:var(--ink);}
+  .form-error{color:var(--rust);font-size:.8rem;min-height:1.1em;margin-top:2px;}
+  .form-submit{margin-top:8px;}
+  .confirm-box{display:none;border:1px solid var(--sage);background:var(--bg);border-radius:8px;padding:22px;margin-top:24px;}
+  .confirm-box.show{display:block;}
+  .confirm-box h3{margin-bottom:.3em;}
+
+  footer.site{padding:32px var(--pad);text-align:center;color:var(--ink-soft);font-size:.85rem;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="#top">[Restaurant Name]</a>
+    <ul class="nav-links">
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#hours">Hours &amp; Location</a></li>
+      <li><a href="#reserve">Reservations</a></li>
+    </ul>
+    <a class="nav-cta" href="#reserve">Reserve a table</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#menu">Menu</a>
+    <a href="#hours">Hours &amp; Location</a>
+    <a href="#reserve">Reservations</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">[Cuisine — e.g. Modern Italian Trattoria]</span>
+      <h1>[A warm line about the food and the room it's served in]</h1>
+      <p class="lede">[Two sentences on the kind of evening this place offers — the ingredients,
+        the pace, the feeling of the room.]</p>
+      <div class="btn-row">
+        <a class="btn btn-solid" href="#reserve">Reserve a table</a>
+        <a class="btn btn-outline" href="#menu">View the menu</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">[The menu]</span>
+        <h2>Menu</h2>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Menu categories">
+        <button class="tab-btn" role="tab" data-target="starters" aria-selected="true">Starters</button>
+        <button class="tab-btn" role="tab" data-target="mains" aria-selected="false">Mains</button>
+        <button class="tab-btn" role="tab" data-target="desserts" aria-selected="false">Desserts</button>
+        <button class="tab-btn" role="tab" data-target="drinks" aria-selected="false">Drinks</button>
+      </div>
+      <div class="menu-panel active" id="panel-starters" role="tabpanel"><div class="menu-list"></div></div>
+      <div class="menu-panel" id="panel-mains" role="tabpanel"><div class="menu-list"></div></div>
+      <div class="menu-panel" id="panel-desserts" role="tabpanel"><div class="menu-list"></div></div>
+      <div class="menu-panel" id="panel-drinks" role="tabpanel"><div class="menu-list"></div></div>
+    </div>
+  </section>
+
+  <section id="hours">
+    <div class="wrap info-grid">
+      <div class="info-card">
+        <span class="eyebrow">[Hours]</span>
+        <h2>When we're open</h2>
+        <ul class="hours-list">
+          <li><span>Mon–Thu</span><span>[5:00pm – 10:00pm]</span></li>
+          <li><span>Fri–Sat</span><span>[5:00pm – 11:00pm]</span></li>
+          <li><span>Sunday</span><span>[Closed]</span></li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <span class="eyebrow">[Find us]</span>
+        <h2>Location</h2>
+        <p>[Street Address, City, State ZIP]</p>
+        <p>[Parking / transit note, optional.]</p>
+        <a class="btn btn-outline" href="[https://maps.google.com/?q=Restaurant+Address]" target="_blank" rel="noopener">Get directions</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="reserve">
+    <div class="wrap">
+      <div class="reserve-panel">
+        <div class="rule"></div>
+        <h2>Reserve a table</h2>
+        <p>[One line inviting guests to book — large parties or special occasions, mention a
+          phone number instead if you prefer.]</p>
+        <form id="reservationForm" novalidate>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="res-name">Name</label>
+              <input type="text" id="res-name" name="name" autocomplete="name">
+              <span class="form-error" id="err-name"></span>
+            </div>
+            <div class="form-field">
+              <label for="res-email">Email</label>
+              <input type="email" id="res-email" name="email" autocomplete="email">
+              <span class="form-error" id="err-email"></span>
+            </div>
+            <div class="form-field">
+              <label for="res-date">Date</label>
+              <input type="date" id="res-date" name="date">
+              <span class="form-error" id="err-date"></span>
+            </div>
+            <div class="form-field">
+              <label for="res-time">Time</label>
+              <input type="time" id="res-time" name="time">
+              <span class="form-error" id="err-time"></span>
+            </div>
+            <div class="form-field">
+              <label for="res-party">Party size</label>
+              <input type="number" id="res-party" name="party" min="1" max="20">
+              <span class="form-error" id="err-party"></span>
+            </div>
+          </div>
+          <button class="btn btn-solid form-submit" type="submit">Request reservation</button>
+        </form>
+        <div class="confirm-box" id="confirmBox">
+          <h3>Request received</h3>
+          <p id="confirmText"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  © [Year] [Restaurant Name]
+</footer>
+
+<script>
+  // Mobile nav toggle
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('mobile-menu');
+  btn.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Menu data — replace with the restaurant's real menu. Any number of items per category works
+  // with the rendering below; if you change the category set itself, update the tab buttons above
+  // and the matching #panel-<key> elements to match.
+  var MENU = {
+    starters: [
+      { name: '[Starter One]', price: '$[0]', description: '[Short, appetizing description.]' },
+      { name: '[Starter Two]', price: '$[0]', description: '[Short, appetizing description.]' },
+      { name: '[Starter Three]', price: '$[0]', description: '[Short, appetizing description.]' }
+    ],
+    mains: [
+      { name: '[Main One]', price: '$[0]', description: '[Short, appetizing description.]' },
+      { name: '[Main Two]', price: '$[0]', description: '[Short, appetizing description.]' },
+      { name: '[Main Three]', price: '$[0]', description: '[Short, appetizing description.]' },
+      { name: '[Main Four]', price: '$[0]', description: '[Short, appetizing description.]' }
+    ],
+    desserts: [
+      { name: '[Dessert One]', price: '$[0]', description: '[Short, appetizing description.]' },
+      { name: '[Dessert Two]', price: '$[0]', description: '[Short, appetizing description.]' }
+    ],
+    drinks: [
+      { name: '[Drink One]', price: '$[0]', description: '[Short description.]' },
+      { name: '[Drink Two]', price: '$[0]', description: '[Short description.]' },
+      { name: '[Drink Three]', price: '$[0]', description: '[Short description.]' }
+    ]
+  };
+
+  function renderMenu(){
+    Object.keys(MENU).forEach(function(key){
+      var panel = document.getElementById('panel-' + key);
+      var list = panel.querySelector('.menu-list');
+      list.innerHTML = '';
+      MENU[key].forEach(function(item){
+        var el = document.createElement('div');
+        el.className = 'menu-item';
+        el.innerHTML =
+          '<div class="menu-item-head"><h3>' + item.name + '</h3>' +
+          '<span class="menu-item-price">' + item.price + '</span></div>' +
+          '<p>' + item.description + '</p>';
+        list.appendChild(el);
+      });
+    });
+  }
+
+  function activateTab(key){
+    document.querySelectorAll('.tab-btn').forEach(function(b){
+      b.setAttribute('aria-selected', b.dataset.target === key ? 'true' : 'false');
+    });
+    document.querySelectorAll('.menu-panel').forEach(function(p){
+      p.classList.toggle('active', p.id === 'panel-' + key);
+    });
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.addEventListener('click', function(){ activateTab(b.dataset.target); });
+  });
+
+  renderMenu();
+  activateTab('starters');
+
+  // Reservation form — client-side demo only. A real deployment would POST this payload to a
+  // booking API or backend here instead of just showing a confirmation message.
+  var reservationForm = document.getElementById('reservationForm');
+  var confirmBox = document.getElementById('confirmBox');
+  var confirmText = document.getElementById('confirmText');
+
+  function setError(fieldId, message){
+    document.getElementById('err-' + fieldId).textContent = message || '';
+  }
+
+  reservationForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('res-name').value.trim();
+    var email = document.getElementById('res-email').value.trim();
+    var date = document.getElementById('res-date').value;
+    var time = document.getElementById('res-time').value;
+    var party = document.getElementById('res-party').value;
+
+    ['name','email','date','time','party'].forEach(function(f){ setError(f, ''); });
+    var valid = true;
+
+    if (!name) { setError('name', 'Please enter your name.'); valid = false; }
+    if (!email || email.indexOf('@') === -1) { setError('email', 'Please enter a valid email.'); valid = false; }
+    if (!date) {
+      setError('date', 'Please choose a date.'); valid = false;
+    } else {
+      var today = new Date();
+      today.setHours(0,0,0,0);
+      var chosen = new Date(date + 'T00:00:00');
+      if (chosen < today) { setError('date', 'Date can\'t be in the past.'); valid = false; }
+    }
+    if (!time) { setError('time', 'Please choose a time.'); valid = false; }
+    if (!party || Number(party) < 1) { setError('party', 'Please enter a party size.'); valid = false; }
+
+    if (!valid) { confirmBox.classList.remove('show'); return; }
+
+    confirmText.textContent = name + ', your table for ' + party + ' on ' + date + ' at ' + time +
+      ' has been requested. We\'ll confirm by email at ' + email + '.';
+    confirmBox.classList.add('show');
+    reservationForm.reset();
+  });
+</script>
+</body>
+</html>

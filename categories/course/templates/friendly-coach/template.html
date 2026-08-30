@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Course Name] — [One-line outcome promise]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff7ef;
+    --surface:#ffffff;
+    --ink:#3a2e2c;
+    --ink-soft:#7a6b66;
+    --pink:#ff8fa3;
+    --blue:#7fd8e8;
+    --yellow:#ffd166;
+    --mint:#8fe3c0;
+    --line:#f1e3d3;
+    --max:1120px;
+    --pad:clamp(20px,5vw,64px);
+    --radius:24px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fredoka',sans-serif;font-weight:600;line-height:1.2;margin:0 0 .4em;}
+  p{margin:0 0 1em;color:var(--ink-soft);}
+  a{color:inherit;}
+  img{max-width:100%;height:auto;display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
+  section{padding:clamp(48px,8vw,96px) 0;}
+
+  header.site{position:sticky;top:0;z-index:50;background:rgba(255,247,239,.92);backdrop-filter:blur(8px);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px var(--pad);max-width:var(--max);margin:0 auto;}
+  .brand{font-family:'Fredoka',sans-serif;font-weight:700;text-decoration:none;color:var(--ink);font-size:1.15rem;}
+  .nav-links{display:none;gap:26px;list-style:none;margin:0;padding:0;}
+  .nav-links a{text-decoration:none;font-weight:700;font-size:.92rem;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{display:none;background:var(--pink);color:#fff;text-decoration:none;padding:10px 22px;border-radius:999px;font-weight:700;font-size:.88rem;}
+  .menu-btn{background:var(--surface);border:2px solid var(--line);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:16px;height:2px;border-radius:2px;background:var(--ink);position:relative;}
+  .menu-btn span::before{position:absolute;top:-5px;}
+  .menu-btn span::after{position:absolute;top:5px;}
+  #mobile-menu{display:none;flex-direction:column;padding:6px var(--pad) 18px;}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{text-decoration:none;color:var(--ink);padding:12px 6px;font-weight:700;font-size:1.05rem;}
+  @media (min-width:840px){
+    .nav-links{display:flex;}
+    .nav-cta{display:inline-block;}
+    .menu-btn{display:none;}
+  }
+
+  .hero{padding-top:clamp(48px,9vw,110px);}
+  .hero-grid{display:grid;gap:32px;align-items:center;}
+  .badge{display:inline-block;background:var(--yellow);padding:8px 18px;border-radius:999px;font-weight:700;font-size:.85rem;margin-bottom:16px;}
+  .hero h1{font-size:clamp(2.1rem,6vw,3.6rem);}
+  .hero .lede{font-size:clamp(1.05rem,2vw,1.2rem);max-width:52ch;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:24px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 28px;border-radius:999px;text-decoration:none;font-weight:700;font-size:.95rem;border:none;cursor:pointer;font-family:'Nunito',sans-serif;}
+  .btn-solid{background:var(--pink);color:#fff;}
+  .btn-outline{border:2px solid var(--ink);color:var(--ink);background:transparent;}
+  .blob-frame{
+    position:relative;aspect-ratio:1/1;max-width:340px;display:flex;align-items:center;justify-content:center;
+    background:var(--mint);border-radius:63% 37% 54% 46% / 48% 45% 55% 52%;color:var(--ink);font-weight:700;
+  }
+  @media (min-width:860px){ .hero-grid{grid-template-columns:1.2fr .8fr;} }
+
+  .about-grid{display:grid;gap:32px;align-items:center;}
+  .about-card{background:var(--surface);border-radius:var(--radius);padding:30px;box-shadow:0 6px 0 var(--line);}
+  @media (min-width:860px){ .about-grid{grid-template-columns:1fr 1fr;} }
+
+  .section-head{max-width:60ch;margin-bottom:32px;}
+  .highlights-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+  .highlight{border-radius:var(--radius);padding:26px;background:var(--surface);box-shadow:0 6px 0 var(--line);}
+  .highlight:nth-child(4n+1){background:#ffe9ee;}
+  .highlight:nth-child(4n+2){background:#e8f8fb;}
+  .highlight:nth-child(4n+3){background:#fff6df;}
+  .highlight:nth-child(4n+4){background:#eafaf1;}
+  .highlight h3{font-size:1.05rem;}
+  .highlight p{font-size:.92rem;margin:0;}
+
+  /* Curriculum accordion */
+  .accordion-item{background:var(--surface);border-radius:var(--radius);box-shadow:0 6px 0 var(--line);margin-bottom:16px;overflow:hidden;}
+  .accordion-header{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;background:none;border:none;padding:20px 26px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.05rem;color:var(--ink);cursor:pointer;text-align:left;}
+  .accordion-icon{font-size:1.4rem;color:var(--pink);transition:transform .2s ease;flex-shrink:0;line-height:1;}
+  .accordion-item.open .accordion-icon{transform:rotate(45deg);}
+  .accordion-panel{padding:0 26px 22px;}
+  .accordion-panel ul{margin:0;padding-left:22px;color:var(--ink-soft);font-size:.95rem;}
+  .accordion-panel li{margin-bottom:8px;}
+
+  /* Testimonial carousel */
+  .carousel{max-width:640px;margin:0 auto;}
+  .testimonial{background:var(--surface);border-radius:var(--radius);padding:clamp(28px,5vw,48px);text-align:center;box-shadow:0 6px 0 var(--line);min-height:160px;display:flex;flex-direction:column;justify-content:center;}
+  .testimonial blockquote{font-family:'Fredoka',sans-serif;font-size:clamp(1.05rem,2.2vw,1.3rem);margin:0 0 16px;}
+  .testimonial cite{font-style:normal;color:var(--ink-soft);font-size:.9rem;}
+  .carousel-controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:22px;}
+  .carousel-btn{background:var(--surface);border:2px solid var(--line);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:var(--ink);}
+  .carousel-dots{display:flex;gap:8px;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer;padding:0;border:none;}
+  .dot.active{background:var(--pink);}
+
+  .contact-panel{background:var(--pink);border-radius:var(--radius);padding:clamp(32px,6vw,56px);text-align:center;color:#fff;}
+  .contact-panel h2{color:#fff;}
+  .contact-panel p{color:#fff0f3;}
+  .price{font-family:'Fredoka',sans-serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:700;margin:0 0 20px;}
+  .price span{font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:400;opacity:.85;}
+  .contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:16px;}
+  .contact-links a,.contact-links button{border:2px solid #fff;border-radius:999px;padding:12px 26px;text-decoration:none;color:#fff;font-weight:700;font-size:.9rem;min-height:44px;display:inline-flex;align-items:center;background:none;cursor:pointer;font-family:'Nunito',sans-serif;}
+  .contact-links .btn-invert{background:#fff;color:var(--pink);}
+
+  footer.site{padding:28px var(--pad);text-align:center;color:var(--ink-soft);font-size:.85rem;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav">
+    <a class="brand" href="#top">[Course Name] ✦</a>
+    <ul class="nav-links">
+      <li><a href="#outcomes">Outcomes</a></li>
+      <li><a href="#curriculum">Curriculum</a></li>
+      <li><a href="#instructor">Instructor</a></li>
+      <li><a href="#enroll">Enroll</a></li>
+    </ul>
+    <a class="nav-cta" href="#enroll">Enroll now</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#outcomes">Outcomes</a>
+    <a href="#curriculum">Curriculum</a>
+    <a href="#instructor">Instructor</a>
+    <a href="#enroll">Enroll</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="badge">[Enrollment open now!]</span>
+        <h1>[A cheerful one-line promise of what students walk away with]</h1>
+        <p class="lede">[Two friendly sentences on who this course is for and the transformation
+          it delivers — write it like you're pitching a friend, not a syllabus.]</p>
+        <div class="btn-row">
+          <button class="btn btn-solid" data-scroll-to="#enroll">Enroll now 🎉</button>
+          <a class="btn btn-outline" href="#curriculum">See the curriculum</a>
+        </div>
+      </div>
+      <div class="blob-frame">Course Cover</div>
+    </div>
+  </section>
+
+  <section id="outcomes">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What you'll walk away with</h2>
+        <p>[One friendly sentence framing the outcomes below.]</p>
+      </div>
+      <div class="highlights-grid">
+        <div class="highlight"><h3>[Outcome One]</h3><p>[A sentence about this skill or result.]</p></div>
+        <div class="highlight"><h3>[Outcome Two]</h3><p>[A sentence about this skill or result.]</p></div>
+        <div class="highlight"><h3>[Outcome Three]</h3><p>[A sentence about this skill or result.]</p></div>
+        <div class="highlight"><h3>[Outcome Four]</h3><p>[A sentence about this skill or result.]</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="curriculum">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Inside the course</h2>
+        <p>[One sentence introducing the modules below. Tap a module to see its lessons.]</p>
+      </div>
+      <div id="accordion-list"></div>
+    </div>
+  </section>
+
+  <section id="instructor">
+    <div class="wrap about-grid">
+      <div class="blob-frame" style="max-width:280px;">Instructor Photo</div>
+      <div class="about-card">
+        <h2>Meet your instructor</h2>
+        <p>[2–3 warm sentences on the instructor's background, why they teach this, and what
+          makes their approach work.]</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto;">
+        <h2>What students say</h2>
+      </div>
+      <div class="carousel">
+        <div class="testimonial">
+          <blockquote id="testimonialQuote"></blockquote>
+          <cite id="testimonialCite"></cite>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="prevBtn" aria-label="Previous testimonial">←</button>
+          <div class="carousel-dots" id="carouselDots"></div>
+          <button class="carousel-btn" id="nextBtn" aria-label="Next testimonial">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="enroll">
+    <div class="wrap">
+      <div class="contact-panel">
+        <h2>[Ready to get started?]</h2>
+        <p class="price">[$297] <span>one-time payment</span></p>
+        <p>[One friendly line reinforcing the promise and urgency, e.g. seats or bonus deadline.]</p>
+        <div class="contact-links">
+          <!-- Placeholder action only — wire a real checkout/payment provider (e.g. Stripe) here. -->
+          <a class="btn-invert" href="mailto:[hello@example.com]">Enroll now</a>
+          <a href="[https://instagram.com/handle]">Questions? DM me</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  Made with ❤ by [Instructor Name], [Year]
+</footer>
+
+<script>
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('mobile-menu');
+  btn.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Scroll-to buttons (e.g. hero "Enroll now") — no real checkout wired up, see #enroll comment.
+  document.querySelectorAll('[data-scroll-to]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var target = document.querySelector(el.getAttribute('data-scroll-to'));
+      if (target) target.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  // ---- Curriculum accordion ----
+  var CURRICULUM = [
+    { title: '[Module 1: Placeholder Title]', lessons: ['[Lesson 1.1]', '[Lesson 1.2]', '[Lesson 1.3]'] },
+    { title: '[Module 2: Placeholder Title]', lessons: ['[Lesson 2.1]', '[Lesson 2.2]'] },
+    { title: '[Module 3: Placeholder Title]', lessons: ['[Lesson 3.1]', '[Lesson 3.2]', '[Lesson 3.3]', '[Lesson 3.4]'] },
+    { title: '[Module 4: Placeholder Title]', lessons: ['[Lesson 4.1]', '[Lesson 4.2]'] },
+    { title: '[Module 5: Placeholder Title]', lessons: ['[Lesson 5.1]', '[Lesson 5.2]', '[Lesson 5.3]'] }
+  ];
+
+  var accordionList = document.getElementById('accordion-list');
+  CURRICULUM.forEach(function(mod, i){
+    var item = document.createElement('div');
+    item.className = 'accordion-item';
+
+    var header = document.createElement('button');
+    header.className = 'accordion-header';
+    header.type = 'button';
+    header.setAttribute('aria-expanded', 'false');
+    header.setAttribute('aria-controls', 'mod-panel-' + i);
+    header.innerHTML = '<span>' + mod.title + '</span><span class="accordion-icon">+</span>';
+
+    var panel = document.createElement('div');
+    panel.className = 'accordion-panel';
+    panel.id = 'mod-panel-' + i;
+    panel.hidden = true;
+    var ul = document.createElement('ul');
+    mod.lessons.forEach(function(lesson){
+      var li = document.createElement('li');
+      li.textContent = lesson;
+      ul.appendChild(li);
+    });
+    panel.appendChild(ul);
+
+    header.addEventListener('click', function(){
+      var isOpen = item.classList.toggle('open');
+      panel.hidden = !isOpen;
+      header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    item.appendChild(header);
+    item.appendChild(panel);
+    accordionList.appendChild(item);
+  });
+
+  // ---- Testimonial carousel ----
+  var TESTIMONIALS = [
+    { quote: '[This course gave me exactly the structure I needed — I finally shipped the thing I\'d been putting off for months.]', name: '[Student Name]', role: '[Their role or goal]' },
+    { quote: '[Clear, practical, and genuinely fun to go through. Worth every penny.]', name: '[Student Name]', role: '[Their role or goal]' }
+  ];
+
+  var tIndex = 0;
+  var quoteEl = document.getElementById('testimonialQuote');
+  var citeEl = document.getElementById('testimonialCite');
+  var dotsEl = document.getElementById('carouselDots');
+
+  TESTIMONIALS.forEach(function(_, i){
+    var dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+    dot.addEventListener('click', function(){ showTestimonial(i); });
+    dotsEl.appendChild(dot);
+  });
+
+  function showTestimonial(i){
+    tIndex = (i + TESTIMONIALS.length) % TESTIMONIALS.length;
+    var t = TESTIMONIALS[tIndex];
+    quoteEl.textContent = '"' + t.quote + '"';
+    citeEl.textContent = '— ' + t.name + ', ' + t.role;
+    dotsEl.querySelectorAll('.dot').forEach(function(d, i2){
+      d.classList.toggle('active', i2 === tIndex);
+    });
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', function(){ showTestimonial(tIndex - 1); });
+  document.getElementById('nextBtn').addEventListener('click', function(){ showTestimonial(tIndex + 1); });
+
+  showTestimonial(0);
+</script>
+</body>
+</html>

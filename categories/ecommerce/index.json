@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-30T00:00:00.000Z",
+  "template_count": 2,
+  "templates": [
+    {
+      "slug": "minimal-studio-shop",
+      "name": "Minimal Studio Shop",
+      "tagline": "Ink-on-cream storefront with a sticky nav, restrained cards, and a calm product grid.",
+      "mood": ["clean", "calm", "considered", "trustworthy"],
+      "occasion": ["small-batch or handmade goods shop", "design studio storefront", "minimalist fashion or homeware brand", "single-founder online shop"],
+      "tone": ["polished", "quiet", "confident", "understated"],
+      "formality": "medium",
+      "density": "medium",
+      "scheme": "light",
+      "sections": ["nav", "hero", "product-grid", "quick-view-modal", "cart-drawer", "about", "contact", "footer"],
+      "best_for": "Small-batch, handmade, or design-led shops that want to read as considered and trustworthy rather than loud. Works well for a solo founder or small studio's store.",
+      "avoid_for": "Streetwear, drop-culture, or hype-driven brands — the restrained palette undersells urgency.",
+      "screenshot_desktop": null,
+      "screenshot_mobile": null
+    },
+    {
+      "slug": "bold-streetwear-shop",
+      "name": "Bold Streetwear Shop",
+      "tagline": "Neo-brutalist storefront: thick borders, offset shadows, and a neon-lime accent on off-white.",
+      "mood": ["bold", "punchy", "confident", "graphic"],
+      "occasion": ["streetwear or apparel drop", "indie brand storefront", "sneaker or accessory shop", "product launch storefront"],
+      "tone": ["direct", "energetic", "design-led", "no-nonsense"],
+      "formality": "low",
+      "density": "medium-high",
+      "scheme": "light",
+      "sections": ["nav", "hero", "product-grid", "quick-view-modal", "cart-drawer", "about", "contact", "footer"],
+      "best_for": "Streetwear, drop-culture, and indie brands that want to land as confident and memorable — the graphic border/shadow system reads as hype-ready.",
+      "avoid_for": "Contexts that need quiet institutional credibility — the thick borders and neon accent commit hard to a loud, opinionated voice.",
+      "screenshot_desktop": null,
+      "screenshot_mobile": null
+    }
+  ]
+}

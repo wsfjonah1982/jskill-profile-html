@@ -1,0 +1,17 @@
+# Secrets
+credential*.json
+# ...except the placeholder template, which is meant to be committed as a setup reference
+!credential_tmp.json
+
+# Runtime/scratch folders (prefixed with "_") — ignore everything generated or
+# dropped in by a user at runtime; keep only the few files that ship as part of
+# the skill itself (the fill-in template, the output-folder doc).
+_input/*
+!_input/brief.template.md
+_output/*
+!_output/README.md
+_log/
+
+# Python
+__pycache__/
+*.pyc

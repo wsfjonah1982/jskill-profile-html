@@ -1,0 +1,324 @@
+# Agent Instructions
+
+You are an agent working with the **profile-html-templates** library. Your job is to take a
+person's, company's, or business's information and turn it into a **single, finished, responsive
+HTML page** — by picking the right template, cloning it, and replacing the placeholder content
+with the real content. The page must look right on both a phone and a desktop; there is no
+separate "mobile version," it's one file that adapts.
+
+This document is your operating manual for **bio/portfolio/pitch pages** — the original,
+person/company-profile use case (résumé, business idea, services, portfolio, contact info).
+Some requests are for a structurally different kind of site; those live in their own subskill
+folders under `categories/`. Read Step 0 first, every time, before assuming this document's
+Step 1 applies.
+
+---
+
+## Step 0 — Pick the site category
+
+Before anything else, work out what kind of site this is:
+
+| The user wants... | Category | Go to |
+|---|---|---|
+| A bio, résumé/CV, portfolio, startup pitch one-pager, agency/company homepage, or personal brand page | **Profile/bio page** | Continue with Step 1 below — this is the rest of this document. |
+| An online store / product catalog with a cart | **E-commerce** | `categories/ecommerce/AGENTS.md` |
+| A restaurant, cafe, or similar food-service site with a menu | **Restaurant/cafe** | `categories/restaurant/AGENTS.md` |
+| An online course, cohort program, or coaching offer | **Course/coaching** | `categories/course/AGENTS.md` |
+
+If it's ambiguous which of these four it is, ask the user rather than guessing — the whole
+downstream flow (intake questions, template index, section structure) differs by category.
+
+**If the request clearly doesn't fit any of the four at all** (e.g. a blog/magazine, a real
+estate listing site, a nonprofit/donation page, an event/conference page, a wedding site, or any
+other site type with no subskill here) — **this skill is out of scope for it. Say so plainly
+("No — this skill only builds profile/bio, e-commerce, restaurant/cafe, and course/coaching
+pages") and stop.** Don't ask clarifying questions to try to fit it into one of the four, don't
+improvise a new category from scratch, and don't build a best-effort page outside this list.
+
+Each category subskill is self-contained (its own intake questions, its own `index.json`, its
+own `templates/`), but all of them **defer back to this document** for the parts that don't
+change by category: §4 (responsive checklist), §6 (no fabricated proof points), and §7 (output
+contract). Don't duplicate those sections inside a category's own doc — reference them.
+
+The rest of this document (Steps 1–7) is the **profile/bio page** flow specifically.
+
+---
+
+## Step 0.5 — Check `_input/` first, every time, before asking anything
+
+This skill defaults to reading prepared content rather than always starting from a live Q&A.
+Before asking the user anything (Step 1 below, or a category subskill's own intake section):
+
+1. Look for `_input/brief.md`. If it exists, read it — it already answers the category, mood,
+   name, and the content fields for whichever category block is filled in. Copy `_input/brief.template.md`
+   to `_input/brief.md` first if only the template is present and unfilled.
+2. Look in `_input/images/` (and `_input/videos/` if relevant) for photos/logos/video the brief
+   references by filename.
+3. Only ask the user about fields that are **missing, blank, or ambiguous** in `_input/brief.md`
+   — don't re-ask what it already answered.
+4. If `_input/brief.md` doesn't exist at all, fall back to the fully interactive flow exactly as
+   written below (and in each category's own doc) — nothing changes in that case.
+
+This step applies identically whichever category Step 0 routed to.
+
+---
+
+## 1. The full workflow
+
+For every request, follow this sequence. Do **not** skip the intake step or the preview step.
+
+### Step 1 — Ask about subject, purpose, and mood
+
+Per Step 0.5, check `_input/brief.md` first. Ask the user only what it didn't already answer:
+
+> "A few quick questions before I pick a template:
+> 1. **Is this for a person or a company?**
+> 2. **What's the page for?** (e.g. freelance portfolio, résumé/CV, startup landing page,
+>    consultant bio, product pitch, personal brand homepage)
+> 3. **What mood do you want?** (e.g. clean & professional, bold & confident, warm & personal,
+>    dark & technical)"
+
+Wait for the answers. Don't guess the mood even if the brief seems obvious.
+
+### Step 2 — Gather the actual content
+
+Read from `_input/brief.md` (per Step 0.5) first; ask for (or read from a file/résumé/notes the
+user provides directly) whatever it didn't cover. At minimum:
+
+- Name (person) or company name
+- One-line tagline / value proposition
+- Short bio or "about" paragraph
+- The core offer: services, experience, or **the business idea** (problem it solves, what it
+  does, why it matters)
+- 2–5 proof points: work samples, case studies, past roles, metrics, or testimonials
+- Contact info: email, and any social/portfolio links
+- Any images (headshot, logo, product shots) — check `_input/images/` first; note filenames/paths;
+  if none exist, keep the template's placeholder blocks
+
+If the user gives you a raw document (resume PDF, LinkedIn export, company one-pager), extract
+these from it instead of re-asking for everything. If they'd rather have a draft written for them
+from `_input/brief.md` than write it themselves, `scripts/write_content.py` calls an LLM with
+this skill's own `prompt_templates/content_writing_*.md` to produce one (same no-fabrication
+rule enforced in its system prompt) — review the draft before using it, don't paste it in blind.
+
+### Step 3 — Read `index.json` and pick 3 candidates
+
+Match `profile_type` (personal / company / both) and the stated mood against each template's
+`mood`, `tone`, `best_for`, `formality`. **Pick three templates** that are genuinely different
+from each other — not three variations on the same look.
+
+### Step 4 — Build a hero-section preview of each candidate
+
+For each of the 3 candidates:
+
+1. Read the template's `template.html` to learn its structure and design system.
+2. Take the **nav + hero section only** (the top of the page — name/company, tagline, primary
+   CTA).
+3. Replace the placeholder content with the user's **real** name/company and tagline — make the
+   preview real, not generic.
+4. Save each as a standalone file, e.g. `previews/01-<slug>.html`. It must be openable on its own
+   (inline CSS/fonts — the templates already are self-contained single files, so this is just a
+   truncated copy).
+
+### Step 5 — Open all 3 previews, send paths, wait for the pick
+
+Open each preview in the browser. Message the user:
+
+> "Three options to compare:
+>
+> 1. **<Template A>** — <one-line tone description>
+>    `/path/to/previews/01-template-a.html`
+> 2. **<Template B>** — <one-line tone description>
+>    `/path/to/previews/02-template-b.html`
+> 3. **<Template C>** — <one-line tone description>
+>    `/path/to/previews/03-template-c.html`
+>
+> Which one feels right? (Resize your browser window, or view on your phone, to check how it
+> adapts.)"
+
+Wait for the user to pick.
+
+### Step 6 — Build the full page in the chosen template
+
+1. Clone the chosen template's file into `_output/<slug>/` per §7 (or wherever the user directed
+   instead).
+2. Fill in every section per the rules in §3.
+3. If the user's content needs more repeating items than the template's demo holds (more
+   services, more work samples), duplicate the existing card/item markup — the CSS `grid`/`flex`
+   layouts already reflow, so added items should not break the layout. If there are fewer items,
+   remove the extras.
+4. **If the content needs a section type the template doesn't have** (e.g. a pricing table, a
+   FAQ, a team grid), design it from scratch using the template's design system — same fonts,
+   colors, spacing scale, corner treatment, and component style as the rest of the page. Don't
+   switch templates, don't import a different visual language. (See §5.)
+5. Verify responsiveness (see §4) before calling it done.
+
+### Step 7 — Open the final page, send the path
+
+Open the finished page in the browser. Message the user:
+
+> "Done. Your page is at `/path/to/_output/<slug>/index.html` — opened it in your browser.
+>
+> [One line about which template you picked and why, plus any caveats.]"
+
+This applies to **every artifact you produce** — previews and the final page. Always open it,
+always send the absolute path.
+
+---
+
+## 2. What's in `index.json`
+
+```jsonc
+{
+  "slug": "dark-tech-modern",
+  "name": "Dark Tech Modern",
+  "tagline": "Dark canvas with a violet-to-cyan glow, built to pitch a product or business idea.",
+  "profile_type": ["personal", "company"],
+  "mood": ["modern", "confident", "technical", "ambitious"],
+  "occasion": ["startup / SaaS landing page", "developer personal site", ...],
+  "tone": ["sleek", "sharp", "forward-looking", "credible"],
+  "formality": "medium",
+  "density": "medium",
+  "scheme": "dark",
+  "sections": ["nav", "hero", "problem-solution", "features-grid", "metrics", "cta", "contact", "footer"],
+  "best_for": "...",
+  "avoid_for": "..."
+}
+```
+
+| field | how to use it |
+|---|---|
+| `profile_type` | Hard filter first: does the template fit `personal`, `company`, or `both`? |
+| `mood` | emotional adjectives — match against the user's stated feeling. |
+| `occasion` | example use cases — soft signal, not a hard filter. |
+| `tone` | voice/personality — match descriptors like "playful", "sober", "literary". |
+| `formality` | sanity-check against the audience (a low-formality template for a formal advisory firm is a mismatch worth flagging). |
+| `density` | how much content per screen the template comfortably holds. |
+| `scheme` | `light` / `dark`. Hard signal if the user explicitly wants one. |
+| `sections` | the section blocks the template ships with — tells you what's already there vs. what you'd need to design per §5. |
+| `best_for` / `avoid_for` | lead with `best_for` when narrating your pick; treat `avoid_for` as a soft warning. |
+
+---
+
+## 3. How to adapt a chosen template
+
+### Always preserve (this IS the design system)
+
+- **Fonts** — whatever is imported from Google Fonts / declared in `font-family`. Never substitute.
+- **Color palette** — all CSS custom properties under `:root`. Never recolor.
+- **Layout grid & spacing scale** — the `clamp()` fluid type, the grid/flex structure, the padding rhythm.
+- **Component classes** (e.g. `.card`, `.hero`, `.nav-link`) — they carry the visual identity.
+- **The responsive behavior already built in** — breakpoints, the mobile nav toggle script, fluid type. Don't rewrite it; extend it.
+- **Decorative elements** — borders, shadows, gradients, corner marks — they're part of the system.
+
+### Always replace (this is the user's content)
+
+- Name / company name, tagline, headings.
+- Bio / about copy, service or experience descriptions, the business-idea pitch text.
+- Proof points: work samples, case studies, testimonials, metrics.
+- Contact details, social links.
+- Image placeholders — replace `<div class="img-placeholder">` blocks with real `<img>` tags at
+  the same aspect ratio/dimensions; if no image exists yet, leave the placeholder rather than
+  breaking the layout. If the user wants one generated instead, `scripts/generate_image.py`
+  (Seedream, self-contained — reads this skill's own `config.json`/`credential.json`) can produce
+  one from a prompt written per `prompt_templates/image_prompt_portrait.md` or
+  `image_prompt_scene_or_product.md`. Confirm with the user before running it — it's a real, paid
+  API call.
+
+### Adding or removing repeated items
+
+Templates use one markup block per repeatable item (a service card, a work-sample tile, a nav
+link). To add more, duplicate that block and edit its content — the surrounding `grid`/`flex`
+container already reflows. To remove, delete the block. Don't hand-adjust column counts or
+widths; the CSS handles it.
+
+---
+
+## 4. Responsive checklist (must pass before you're done)
+
+Every page produced with this skill must work on a phone and a desktop from **one HTML file** —
+no separate mobile template, no server-side device detection. Before finishing, verify:
+
+- [ ] `<meta name="viewport" content="width=device-width, initial-scale=1">` is present.
+- [ ] Body text and headings use fluid sizing (`clamp()` or breakpoint-based `font-size`), not
+      fixed pixel values that overflow small screens.
+- [ ] Multi-column sections (services, work grid, features) collapse to a single column below
+      the template's mobile breakpoint (typically ~640px).
+- [ ] The nav collapses to a hamburger/menu toggle on small screens if it has more than ~3 links.
+- [ ] No element causes horizontal scroll on a 375px-wide viewport (check images, long
+      unbreakable text like URLs, and fixed-width containers).
+- [ ] Tap targets (buttons, nav links) are at least ~44px tall on mobile.
+- [ ] Images use `max-width: 100%; height: auto;` so they scale down instead of overflowing.
+- [ ] Actually check it at a phone width (375–414px) and a desktop width (1280px+) before
+      declaring the page done — use whatever browser-preview/screenshot capability this
+      environment provides (Playwright, a headless-browser CLI, an IDE live preview, or manual
+      resize in any browser). If a template has interactive JS (a category subskill's cart,
+      tabs, accordion, etc.), exercise it at both widths, not just render it.
+- [ ] If no such capability exists in this environment, do a careful manual review of the CSS
+      breakpoints and JS logic instead, and say plainly in your output (§7) that visual
+      verification wasn't performed — don't claim it passed a check you couldn't run.
+
+---
+
+## 5. Designing a missing section (extending a template)
+
+Some briefs need a section type a template doesn't ship with — e.g. a pricing table, an FAQ
+accordion, a team grid, a press/logo strip. Design it using the template's existing system:
+
+- **Same fonts and type scale** as the rest of the page (h1/h2/body/label weights, sizes, tracking).
+- **Same color palette** — reuse existing `:root` variables; if you need an "accent" or "muted"
+  tone that doesn't exist, use the closest existing variable rather than inventing a new color.
+- **Same spacing rhythm** — match the padding/margin scale and grid-gap values already in use.
+- **Same component grammar** — if cards elsewhere use a border + shadow + icon-over-title
+  structure, new cards should too.
+- **Same responsive pattern** — the new section must collapse the same way the rest of the page
+  does (multi-column → single column on mobile).
+
+Test: drop the new section between two existing ones. If it looks like a natural part of the
+same page, you succeeded. If it looks grafted on from elsewhere, redo it.
+
+---
+
+## 6. Common pitfalls
+
+- **Don't skip the intake questions**, even for a detailed brief — "person vs. company" and
+  mood change the template pick entirely.
+- **Don't skip the hero previews.** Showing beats describing.
+- **Don't substitute fonts or recolor** — that's the design system, not decoration.
+- **Don't mix sections from two different templates** in one page — pick one, extend it (§5) if needed.
+- **Don't ship a page you haven't checked at a mobile width.** "It's just CSS Grid, it'll be fine"
+  is not verification — actually look at it narrow.
+- **Don't invent fake metrics/testimonials as if they were the user's real data.** Placeholder
+  numbers in the templates are demo content; when building the real page, use only what the user
+  gave you, and leave a section out (or mark it TODO) rather than fabricate proof points.
+
+---
+
+## 7. Output contract
+
+Write the finished page to `_output/<slug>/index.html` by default (`<slug>` = a short kebab-case
+name for this site, e.g. `jonah-wang-sofas`), with an `assets/` folder alongside it for any local
+images/videos copied in from `_input/` — unless the user has told you to put it somewhere else,
+in which case follow that instead. Hero previews (Step 5) can live in a `previews/` folder next
+to wherever you're building, they don't need to go in `_output/`.
+
+After **every artifact** you produce — hero previews and the final page — do both:
+
+1. **Open the file** in whatever preview capability this environment has (a browser, an IDE
+   preview pane, etc.). If nothing can render it, skip this and say so.
+2. **Send the user the absolute file path** in your message, on its own line.
+
+For the final page, also include:
+- A one-line note on which template you picked and why (the tone match).
+- Any caveats (e.g. "left the testimonial section as a placeholder since you didn't give me one
+  yet", "added a pricing section from scratch using the template's card style since none of the
+  templates ship with one", or "couldn't visually verify responsiveness — no browser tooling in
+  this environment").
+
+If the user wants the page live/publicly viewable rather than just a local file,
+`scripts/upload_site.py` publishes `_output/<slug>/` to BytePlus TOS object storage, public-read,
+and prints the public URL — the same credentials this skill's `config.json`/`credential.json`
+already hold. This is a real, public, non-instant action: confirm with the user which folder and
+slug before running it, same as the image-generation confirmation above.
+
+Do not narrate every step you took. The user wants the artifact + the path + a one-line rationale.
