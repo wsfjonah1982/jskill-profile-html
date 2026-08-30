@@ -18,13 +18,14 @@ from pathlib import Path
 
 import tos
 
+from credentials import load_credential
+
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-CREDENTIAL_PATH = BASE_DIR / "credential.json"
 CONFIG_PATH = BASE_DIR / "config.json"
 LOG_DIR = BASE_DIR / "_log"
 
@@ -44,13 +45,8 @@ def load_config() -> dict:
 
 
 def load_tos_credentials() -> tuple[str, str]:
-    if not CREDENTIAL_PATH.exists():
-        raise FileNotFoundError(f"Credential file not found: {CREDENTIAL_PATH}")
-    cred = read_json(CREDENTIAL_PATH)
-    access_key = cred.get("tos_access_key_id")
-    secret_key = cred.get("tos_secret_access_key")
-    if not access_key or not secret_key:
-        raise KeyError("tos_access_key_id / tos_secret_access_key missing in credential.json")
+    access_key = load_credential("tos_access_key_id", "TOS_ACCESS_KEY_ID")
+    secret_key = load_credential("tos_secret_access_key", "TOS_SECRET_ACCESS_KEY")
     return access_key, secret_key
 
 

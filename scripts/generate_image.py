@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from ark_service import ArkImageService, download_file
+from credentials import load_credential
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -24,7 +25,6 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-CREDENTIAL_PATH = BASE_DIR / "credential.json"
 CONFIG_PATH = BASE_DIR / "config.json"
 LOG_DIR = BASE_DIR / "_log"
 
@@ -38,22 +38,6 @@ def load_config() -> dict:
     if not CONFIG_PATH.exists():
         raise FileNotFoundError(f"Config file not found: {CONFIG_PATH}")
     return read_json(CONFIG_PATH)
-
-
-def load_api_key() -> str:
-    import os
-    env_key = os.environ.get("ARK_API_KEY")
-    if env_key:
-        return env_key
-    if not CREDENTIAL_PATH.exists():
-        raise FileNotFoundError(
-            f"ARK_API_KEY env var not set, and credential file not found: {CREDENTIAL_PATH}"
-        )
-    cred = read_json(CREDENTIAL_PATH)
-    api_key = cred.get("model_ark_key")
-    if not api_key:
-        raise KeyError("ARK_API_KEY env var not set and `model_ark_key` missing in credential.json")
-    return api_key
 
 
 def read_prompts(path: Path) -> list[str]:
@@ -89,7 +73,7 @@ def main() -> int:
         watermark = config.get("watermark", False)
         base_url = config["maas_api_endpoint"]
 
-        api_key = load_api_key()
+        api_key = load_credential("model_ark_key", "ARK_API_KEY")
         prompts = read_prompts(prompt_path)
         service = ArkImageService(base_url=base_url, api_key=api_key)
 

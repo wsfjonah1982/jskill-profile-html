@@ -31,6 +31,25 @@ By default the skill reads prepared content instead of only asking questions int
 If you'd rather just talk through it, that still works — leave `_input/brief.md` absent (or
 incomplete) and the agent falls back to asking everything interactively.
 
+## Scripts & credentials
+
+`scripts/` has four self-contained helpers an agent can call while building a page — each reads
+its settings from `config.json` and its secrets from `credential.json`:
+
+| Script | Does |
+|---|---|
+| `generate_image.py` | Generates an image via Seedream from a prompt file (see `prompt_templates/image_prompt_*.md`) |
+| `write_content.py` | Drafts tagline/bio/section copy from `_input/brief.md` via a chat model, enforcing the no-fabricated-proof-points rule |
+| `upload_site.py` | Publishes a finished `_output/<slug>/` folder to BytePlus TOS object storage, public-read, and prints the URL |
+| `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers the other three import |
+
+Copy `credential_tmp.json` to `credential.json` and fill in your own keys (`model_ark_key` for
+image generation and content writing; `tos_access_key_id` / `tos_secret_access_key` for
+publishing — omit whichever you don't need). For each key, `credential.json` is checked first;
+if it's missing or blank there, the matching environment variable is used instead
+(`ARK_API_KEY`, `TOS_ACCESS_KEY_ID`, `TOS_SECRET_ACCESS_KEY`) — handy for CI or a shared machine
+where you'd rather not put a real key in a file at all.
+
 ## Get started
 
 Fill in `_input/brief.md` (see above) and point your coding agent at this folder, or just say:
