@@ -37,25 +37,31 @@ incomplete) and the agent falls back to asking everything interactively.
 
 ## Scripts & credentials
 
-`scripts/` has self-contained helpers an agent calls while building and shipping a page — each
-reads its settings from `config.json` and its secrets from `credential.json`:
+`scripts/` has self-contained helpers an agent calls while building and shipping a page. This
+skill **never generates images** — every photo comes from the user's own `_input/images/`;
+`fit_image.py` just crops/resizes what they gave you. Only `write_content.py` and the publishing
+scripts talk to a network API; `fit_image.py` needs neither credentials nor `config.json` values
+beyond its own defaults.
+
+**Prerequisites:** Python 3.10+, and `pip install -r requirements.txt` (`requests` for
+`write_content.py`'s Ark calls, `Pillow` for `fit_image.py`'s crop/resize, `tos` for
+`upload_site.py`/`delete_site.py`'s BytePlus TOS calls). The HTML templates themselves have no
+build step and no dependency on any of this — only the scripts do.
 
 | Script | Does |
 |---|---|
-| `generate_image.py` | Generates an image via Seedream from a prompt file — text-to-image, or image-to-image with `--img` reference photo(s) (see `prompt_templates/image_prompt_*.md`) |
-| `generate_character_sheet.py` | Generates a 3-view (front/side/back) identity-anchor turnaround sheet from a subject description, for a recurring person across multiple images |
-| `generate_profile_photo.py` | Generates a professional headshot for an existing subject, using their character sheet (or any photo of them) as the identity reference |
+| `fit_image.py` | Crops a user's photo to a slot's aspect ratio and resizes it down for the web — local only, no network call, no credentials |
 | `write_content.py` | Drafts tagline/bio/section copy from `_input/brief.md` via a chat model, enforcing the no-fabricated-proof-points rule |
 | `upload_site.py` | **The default way a finished page ships.** Publishes `_output/<slug>/` to BytePlus TOS object storage, public-read, and prints the live URL — this is the standard last step for every build, not something only done on request |
 | `delete_site.py` | Removes a previously-published site from TOS by slug — use before re-publishing a redone build under the same slug, so nothing stale is left behind |
-| `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers the other scripts import |
+| `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers `write_content.py` imports |
 
 Copy `credential_tmp.json` to `credential.json` and fill in your own keys (`model_ark_key` for
-image generation and content writing; `tos_access_key_id` / `tos_secret_access_key` for
-publishing — omit whichever you don't need). For each key, `credential.json` is checked first;
-if it's missing or blank there, an environment variable of the **same name** is used instead
-(`model_ark_key`, `tos_access_key_id`, `tos_secret_access_key`) — handy for CI or a shared machine
-where you'd rather not put a real key in a file at all.
+content writing; `tos_access_key_id` / `tos_secret_access_key` for publishing — omit whichever
+you don't need). For each key, `credential.json` is checked first; if it's missing or blank
+there, an environment variable of the **same name** is used instead (`model_ark_key`,
+`tos_access_key_id`, `tos_secret_access_key`) — handy for CI or a shared machine where you'd
+rather not put a real key in a file at all.
 
 ## Get started
 

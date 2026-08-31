@@ -12,10 +12,10 @@ Per root AGENTS.md Step 0.5, check `_input/brief.md`'s `## If E-commerce` block 
 
 - **Brand/store name** and a one-line tagline.
 - **Product catalog**: for each item — name, price, category tag, and a short (1–2 sentence)
-  description. Real product photos if they have them (check `_input/images/`); otherwise the
-  template's placeholder image blocks stay in place (per root AGENTS.md §3 — never fabricate a
-  stand-in photo as if it were real; if this environment has an image-generation tool available
-  you may offer to use it, but never assume one exists).
+  description. Real product photos if they have them (check `_input/images/`), run through
+  `scripts/fit_image.py --aspect 4:3` (matching `.product-photo`'s ratio) before dropping into
+  the grid; otherwise the template's placeholder image blocks stay in place (per root AGENTS.md
+  §3 — never fabricate a stand-in photo, and this skill never generates one).
 - **Shipping / returns blurb** — one or two sentences for the footer/contact section.
 - **Contact / social links.**
 - **Vibe**: minimal & considered vs. bold & graphic (this maps directly to the two templates

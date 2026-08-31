@@ -221,12 +221,11 @@ published, and handed off by its public URL.
 - Proof points: work samples, case studies, testimonials, metrics.
 - Contact details, social links.
 - Image placeholders — replace `<div class="img-placeholder">` blocks with real `<img>` tags at
-  the same aspect ratio/dimensions; if no image exists yet, leave the placeholder rather than
-  breaking the layout. If the user wants one generated instead, `scripts/generate_image.py`
-  (Seedream, self-contained — reads this skill's own `config.json`/`credential.json`) can produce
-  one from a prompt written per `prompt_templates/image_prompt_portrait.md` or
-  `image_prompt_scene_or_product.md`. Confirm with the user before running it — it's a real, paid
-  API call.
+  the same aspect ratio/dimensions, using only a real photo the user provided in `_input/images/`
+  (per Step 0.5/brief.md). Run it through `scripts/fit_image.py --aspect <W:H>` first (matching
+  the slot's aspect ratio) so it's cropped and sized to drop in cleanly — no network call, no
+  credentials, purely local. **This skill never generates images.** If no user photo exists for a
+  slot, leave the template's placeholder block rather than breaking the layout or inventing one.
 
 ### Adding or removing repeated items
 
