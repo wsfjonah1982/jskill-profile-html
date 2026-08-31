@@ -7,7 +7,7 @@ subskills (responsive checklist, no-fabrication rule, output contract), see the 
 
 ## 1. Intake
 
-Per root AGENTS.md Step 0.5, check `_input/brief.md`'s `## If E-commerce` block and
+Per root AGENTS.md Step 1, check `_input/brief.md`'s `## If E-commerce` block and
 `_input/images/` first — only ask the user about what's missing or ambiguous:
 
 - **Brand/store name** and a one-line tagline.
@@ -68,5 +68,5 @@ Defer to the root AGENTS.md: §4 for the responsive checklist (and additionally,
 filter chips, open a quick-view, add to cart, and open the cart drawer at both desktop and mobile
 width before calling it done — this template's core value is the interaction, not just the
 layout), §6 for the no-fabricated-proof-points rule, and §7 for the output contract (publish via
-`scripts/upload_site.py` and lead with the public URL, plus a one-line rationale for the template
+`scripts/publish_site.py` and lead with the public URL, plus a one-line rationale for the template
 pick and any caveats — including the demo-cart/demo-checkout note above).

@@ -1,9 +1,10 @@
-"""Delete a previously-published site from BytePlus TOS — the counterpart to
-upload_site.py, for when a build is superseded or was published by mistake.
-Removes every object under the site's key prefix.
+"""Unpublish a previously-published site from BytePlus TOS — the counterpart
+to publish_site.py, for when a build is superseded or was published by
+mistake. Removes every object under the site's key prefix, via
+tos_client.py's plain-HTTP TOS4-HMAC-SHA256 signing — no vendor SDK.
 
 Usage:
-    python scripts/delete_site.py --slug jonah-wang-sofas
+    python scripts/unpublish_site.py --slug jonah-wang-sofas
 """
 import argparse
 import json
@@ -11,9 +12,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-import tos
-
 from credentials import load_credential
+from tos_client import delete_object, list_objects
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -44,10 +44,10 @@ def write_log(log_path: Path, data: dict) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--slug", required=True, help="URL slug of the published site to delete")
+    parser.add_argument("--slug", required=True, help="URL slug of the published site to unpublish")
     args = parser.parse_args()
 
-    log_path = LOG_DIR / f"delete-{args.slug}.log"
+    log_path = LOG_DIR / f"unpublish-{args.slug}.log"
 
     try:
         config = load_config()
@@ -58,21 +58,14 @@ def main() -> int:
 
         access_key = load_credential("tos_access_key_id")
         secret_key = load_credential("tos_secret_access_key")
-        client = tos.TosClientV2(access_key, secret_key, endpoint, region)
 
-        keys = []
-        result = client.list_objects_type2(bucket, prefix=key_prefix + "/")
-        keys.extend(o.key for o in result.contents)
-        while result.is_truncated:
-            result = client.list_objects_type2(bucket, prefix=key_prefix + "/",
-                                                 continuation_token=result.next_continuation_token)
-            keys.extend(o.key for o in result.contents)
+        keys = list_objects(endpoint, region, bucket, access_key, secret_key, prefix=key_prefix + "/")
 
         if not keys:
             print(f"Nothing found under {key_prefix}/ — already empty or never published.", file=sys.stderr)
         else:
-            client.delete_multi_objects(bucket, [tos.models2.ObjectTobeDeleted(key=k) for k in keys])
             for k in keys:
+                delete_object(endpoint, region, bucket, k, access_key, secret_key)
                 print(f"  deleted: {k}", file=sys.stderr)
 
         write_log(log_path, {

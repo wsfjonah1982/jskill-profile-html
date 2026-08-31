@@ -9,7 +9,7 @@ subskills under `categories/`: e-commerce stores, restaurants/cafes, and courses
 
 **Publishing is the default, not an optional extra.** A finished page isn't just written to
 disk — the standard last step is uploading it to object storage and handing back a live public
-URL, via `scripts/upload_site.py`. See "Scripts & credentials" below.
+URL, via `scripts/publish_site.py`. See "Scripts & credentials" below.
 
 Agents using the library should read [`AGENTS.md`](./AGENTS.md). It's the operating manual: how
 to read `index.json`, match the user's brief to a template, clone it, and adapt the content.
@@ -44,16 +44,18 @@ scripts talk to a network API; `fit_image.py` needs neither credentials nor `con
 beyond its own defaults.
 
 **Prerequisites:** Python 3.10+, and `pip install -r requirements.txt` (`requests` for
-`write_content.py`'s Ark calls, `Pillow` for `fit_image.py`'s crop/resize, `tos` for
-`upload_site.py`/`delete_site.py`'s BytePlus TOS calls). The HTML templates themselves have no
-build step and no dependency on any of this — only the scripts do.
+`write_content.py`'s Ark calls and `tos_client.py`'s hand-signed TOS calls, `Pillow` for
+`fit_image.py`'s crop/resize — no vendor SDK for TOS; see `tos_client.py`). The HTML templates
+themselves have no build step and no dependency on any of this — only the scripts do.
 
 | Script | Does |
 |---|---|
+| `precheck.py` | **Run this first**, once per session (or after touching credentials/config). Confirms every credential loads and does a live publish→fetch→unpublish round-trip against TOS, so a broken setup surfaces before you've built anything |
 | `fit_image.py` | Crops a user's photo to a slot's aspect ratio and resizes it down for the web — local only, no network call, no credentials |
 | `write_content.py` | Drafts tagline/bio/section copy from `_input/brief.md` via a chat model, enforcing the no-fabricated-proof-points rule |
-| `upload_site.py` | **The default way a finished page ships.** Publishes `_output/<slug>/` to BytePlus TOS object storage, public-read, and prints the live URL — this is the standard last step for every build, not something only done on request |
-| `delete_site.py` | Removes a previously-published site from TOS by slug — use before re-publishing a redone build under the same slug, so nothing stale is left behind |
+| `publish_site.py` | **The default way a finished page ships.** Publishes `_output/<slug>/` to BytePlus TOS object storage, public-read, and prints the live URL — this is the standard last step for every build, not something only done on request |
+| `unpublish_site.py` | Removes a previously-published site from TOS by slug — use before re-publishing a redone build under the same slug, so nothing stale is left behind |
+| `tos_client.py` | Shared TOS client both scripts above import — plain `requests` calls hand-signed with TOS's own TOS4-HMAC-SHA256 scheme, not the `tos` vendor SDK (see its docstring for why literal AWS S3 signing doesn't work against TOS despite its S3-like REST surface, discovered by hitting the real API) |
 | `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers `write_content.py` imports |
 
 Copy `credential_tmp.json` to `credential.json` and fill in your own keys (`model_ark_key` for

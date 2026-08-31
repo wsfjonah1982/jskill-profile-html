@@ -1,11 +1,9 @@
 """Publish a finished static page/site (from _output/<slug>/) to BytePlus TOS
-object storage, public-read — the same client/credential pattern already used in
-web_app/jonah-agentbot/main/app.py (get_tos_client / upload_site_to_tos /
-tos_public_url), made self-contained here with this skill's own config.json/
-credential.json rather than depending on that app being present.
+object storage, public-read — via tos_client.py's plain-HTTP TOS4-HMAC-SHA256
+signing, no vendor SDK.
 
 Usage:
-    python scripts/upload_site.py --dir _output/jonah-wang-sofas --slug jonah-wang-sofas
+    python scripts/publish_site.py --dir _output/jonah-wang-sofas --slug jonah-wang-sofas
 
 Prints the public URL to stdout on success (the index file, per --index-name).
 """
@@ -16,9 +14,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-import tos
-
 from credentials import load_credential
+from tos_client import put_object
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -64,7 +61,7 @@ def main() -> int:
     args = parser.parse_args()
 
     source_dir = Path(args.dir)
-    log_path = LOG_DIR / f"upload-{args.slug}.log"
+    log_path = LOG_DIR / f"publish-{args.slug}.log"
 
     try:
         if not source_dir.is_dir():
@@ -77,9 +74,8 @@ def main() -> int:
         key_prefix = config.get("tos_key_prefix_template", "site/manual/{slug}").replace("{slug}", args.slug)
 
         access_key, secret_key = load_tos_credentials()
-        client = tos.TosClientV2(access_key, secret_key, endpoint, region)
 
-        uploaded = []
+        published = []
         for path in sorted(source_dir.rglob("*")):
             if not path.is_file():
                 continue
@@ -91,20 +87,19 @@ def main() -> int:
             )
             key = f"{key_prefix}/{rel}"
             data = path.read_bytes()
-            client.put_object(bucket, key, content=data, content_type=mime_type,
-                               acl=tos.ACLType.ACL_Public_Read)
-            uploaded.append(rel)
-            print(f"  uploaded: {rel}  ({mime_type}, {len(data)} bytes)", file=sys.stderr)
+            put_object(endpoint, region, bucket, key, access_key, secret_key, data, mime_type)
+            published.append(rel)
+            print(f"  published: {rel}  ({mime_type}, {len(data)} bytes)", file=sys.stderr)
 
         public_url = f"https://{bucket}.{endpoint}/{key_prefix}/{args.index_name}"
 
         write_log(log_path, {
             "timestamp": datetime.now(timezone.utc).isoformat(), "slug": args.slug,
-            "dir": str(source_dir), "key_prefix": key_prefix, "file_count": len(uploaded),
+            "dir": str(source_dir), "key_prefix": key_prefix, "file_count": len(published),
             "status": "succeeded", "public_url": public_url,
         })
 
-        print(f"\n{len(uploaded)} files uploaded.", file=sys.stderr)
+        print(f"\n{len(published)} files published.", file=sys.stderr)
         print(public_url)
         return 0
 

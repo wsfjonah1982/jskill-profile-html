@@ -14,7 +14,7 @@ the root `../../AGENTS.md` §4, §6, and §7 rather than re-reading them here.
 
 ## 1. Intake — ask for this before picking a template
 
-Per root AGENTS.md Step 0.5, check `_input/brief.md`'s `## If Course / Coaching` block and
+Per root AGENTS.md Step 1, check `_input/brief.md`'s `## If Course / Coaching` block and
 `_input/images/` first — only ask what's missing or ambiguous from the list below:
 
 > "A few questions before I build your course page:
@@ -73,6 +73,6 @@ Follow the root AGENTS.md exactly for these — don't skip them:
 - §4 responsive checklist (also confirm the accordion and carousel work at ~375px width, not
   just desktop).
 - §6 no fabricated proof points.
-- §7 output contract — publish via `scripts/upload_site.py` and lead with the public URL, plus a
+- §7 output contract — publish via `scripts/publish_site.py` and lead with the public URL, plus a
   one-line rationale for the template pick and any caveats (e.g. "kept the 2 placeholder
   testimonials since you didn't have real ones yet").

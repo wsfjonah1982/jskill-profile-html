@@ -8,7 +8,7 @@ duplicate them here, just follow them.
 
 ## 1. Intake — ask before building
 
-Per root AGENTS.md Step 0.5, check `_input/brief.md`'s `## If Restaurant / Cafe` block and
+Per root AGENTS.md Step 1, check `_input/brief.md`'s `## If Restaurant / Cafe` block and
 `_input/images/` first — only ask what's missing or ambiguous from the list below:
 
 > "A few questions before I pick a template:
@@ -62,5 +62,5 @@ If the user wants it to actually deliver reservations somewhere, that's a separa
 ## 5. Before finishing
 
 Run the root AGENTS.md §4 responsive checklist, then its §7 output contract (publish via
-`scripts/upload_site.py` and lead with the public URL, one line on which template you picked and
+`scripts/publish_site.py` and lead with the public URL, one line on which template you picked and
 why, plus the reservation-form caveat from §4 above).

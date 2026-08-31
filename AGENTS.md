@@ -37,17 +37,32 @@ improvise a new category from scratch, and don't build a best-effort page outsid
 
 Each category subskill is self-contained (its own intake questions, its own `index.json`, its
 own `templates/`), but all of them **defer back to this document** for the parts that don't
-change by category: §4 (responsive checklist), §6 (no fabricated proof points), and §7 (output
-contract). Don't duplicate those sections inside a category's own doc — reference them.
+change by category: Step 1 (precheck), §4 (responsive checklist), §6 (no fabricated proof
+points), and §7 (output contract). Don't duplicate those sections inside a category's own doc —
+reference them.
 
-The rest of this document (Steps 1–7) is the **profile/bio page** flow specifically.
+The rest of this document (Steps 1–8) is the **profile/bio page** flow specifically — but Step 1
+(the precheck and `_input/` check) is shared verbatim by every category, including the three
+subskills above.
 
 ---
 
-## Step 0.5 — Check `_input/` first, every time, before asking anything
+## 1. The full workflow
+
+For every request, follow this sequence. Do **not** skip the intake step or the preview step.
+
+### Step 1 — Precheck, then check `_input/`
+
+**Once per session** (not for every single page — just the first time this skill runs in a given
+environment, or after touching `credential.json`/`config.json`), run `python scripts/precheck.py`
+before doing any real work. It confirms `model_ark_key`/`tos_access_key_id`/`tos_secret_access_key`
+actually load (from `credential.json` or the matching environment variable) and does a live
+publish→fetch→unpublish round-trip against TOS, so a broken credential or a publishing problem
+surfaces immediately instead of after you've already built the page. If it reports a failure, fix
+that first — don't start building against a setup you haven't confirmed works.
 
 This skill defaults to reading prepared content rather than always starting from a live Q&A.
-Before asking the user anything (Step 1 below, or a category subskill's own intake section):
+Before asking the user anything (Step 2 below, or a category subskill's own intake section):
 
 1. Look for `_input/brief.md`. If it exists, read it — it already answers the category, mood,
    name, and the content fields for whichever category block is filled in. Copy `_input/brief.template.md`
@@ -61,15 +76,9 @@ Before asking the user anything (Step 1 below, or a category subskill's own inta
 
 This step applies identically whichever category Step 0 routed to.
 
----
+### Step 2 — Ask about subject, purpose, and mood
 
-## 1. The full workflow
-
-For every request, follow this sequence. Do **not** skip the intake step or the preview step.
-
-### Step 1 — Ask about subject, purpose, and mood
-
-Per Step 0.5, check `_input/brief.md` first. Ask the user only what it didn't already answer:
+Per Step 1, check `_input/brief.md` first. Ask the user only what it didn't already answer:
 
 > "A few quick questions before I pick a template:
 > 1. **Is this for a person or a company?**
@@ -80,9 +89,9 @@ Per Step 0.5, check `_input/brief.md` first. Ask the user only what it didn't al
 
 Wait for the answers. Don't guess the mood even if the brief seems obvious.
 
-### Step 2 — Gather the actual content
+### Step 3 — Gather the actual content
 
-Read from `_input/brief.md` (per Step 0.5) first; ask for (or read from a file/résumé/notes the
+Read from `_input/brief.md` (per Step 1) first; ask for (or read from a file/résumé/notes the
 user provides directly) whatever it didn't cover. At minimum:
 
 - Name (person) or company name
@@ -101,13 +110,13 @@ from `_input/brief.md` than write it themselves, `scripts/write_content.py` call
 this skill's own `prompt_templates/content_writing_*.md` to produce one (same no-fabrication
 rule enforced in its system prompt) — review the draft before using it, don't paste it in blind.
 
-### Step 3 — Read `index.json` and pick 3 candidates
+### Step 4 — Read `index.json` and pick 3 candidates
 
 Match `profile_type` (personal / company / both) and the stated mood against each template's
 `mood`, `tone`, `best_for`, `formality`. **Pick three templates** that are genuinely different
 from each other — not three variations on the same look.
 
-### Step 4 — Build a hero-section preview of each candidate
+### Step 5 — Build a hero-section preview of each candidate
 
 For each of the 3 candidates:
 
@@ -120,7 +129,7 @@ For each of the 3 candidates:
    (inline CSS/fonts — the templates already are self-contained single files, so this is just a
    truncated copy).
 
-### Step 5 — Open all 3 previews, send paths, wait for the pick
+### Step 6 — Open all 3 previews, send paths, wait for the pick
 
 Open each preview in the browser. Message the user:
 
@@ -138,7 +147,7 @@ Open each preview in the browser. Message the user:
 
 Wait for the user to pick.
 
-### Step 6 — Build the full page in the chosen template
+### Step 7 — Build the full page in the chosen template
 
 1. Clone the chosen template's file into `_output/<slug>/` per §7 (or wherever the user directed
    instead).
@@ -153,10 +162,10 @@ Wait for the user to pick.
    switch templates, don't import a different visual language. (See §5.)
 5. Verify responsiveness (see §4) before calling it done.
 
-### Step 7 — Publish the final page, send the URL
+### Step 8 — Publish the final page, send the URL
 
 Open the finished page in the browser to sanity-check it, then publish it with
-`scripts/upload_site.py` (see §7 below — this is the default last step, not optional) and message
+`scripts/publish_site.py` (see §7 below — this is the default last step, not optional) and message
 the user:
 
 > "Done. Your page is live at `https://<bucket>.<tos-endpoint>/site/manual/<slug>/index.html`.
@@ -222,7 +231,7 @@ published, and handed off by its public URL.
 - Contact details, social links.
 - Image placeholders — replace `<div class="img-placeholder">` blocks with real `<img>` tags at
   the same aspect ratio/dimensions, using only a real photo the user provided in `_input/images/`
-  (per Step 0.5/brief.md). Run it through `scripts/fit_image.py --aspect <W:H>` first (matching
+  (per Step 1/brief.md). Run it through `scripts/fit_image.py --aspect <W:H>` first (matching
   the slot's aspect ratio) so it's cropped and sized to drop in cleanly — no network call, no
   credentials, purely local. **This skill never generates images.** If no user photo exists for a
   slot, leave the template's placeholder block rather than breaking the layout or inventing one.
@@ -283,6 +292,8 @@ same page, you succeeded. If it looks grafted on from elsewhere, redo it.
 
 ## 6. Common pitfalls
 
+- **Don't skip Step 1's precheck** the first time this skill runs somewhere — finding out
+  credentials or publishing are broken after building the page wastes the whole build.
 - **Don't skip the intake questions**, even for a detailed brief — "person vs. company" and
   mood change the template pick entirely.
 - **Don't skip the hero previews.** Showing beats describing.
@@ -301,10 +312,10 @@ same page, you succeeded. If it looks grafted on from elsewhere, redo it.
 Write the finished page to `_output/<slug>/index.html` by default (`<slug>` = a short kebab-case
 name for this site, e.g. `jonah-wang-sofas`), with an `assets/` folder alongside it for any local
 images/videos copied in from `_input/` — unless the user has told you to put it somewhere else,
-in which case follow that instead. Hero previews (Step 5) can live in a `previews/` folder next
+in which case follow that instead. Hero previews (Step 6) can live in a `previews/` folder next
 to wherever you're building, they don't need to go in `_output/`.
 
-For hero previews (Step 5), do both:
+For hero previews (Step 6), do both:
 
 1. **Open the file** in whatever preview capability this environment has (a browser, an IDE
    preview pane, etc.). If nothing can render it, skip this and say so.
@@ -312,10 +323,10 @@ For hero previews (Step 5), do both:
 
 **For the final page, always publish it — this is the default last step, not an optional
 extra.** Once it passes §4's responsive/interaction checklist, run
-`scripts/upload_site.py --dir _output/<slug> --slug <slug>` to push it to BytePlus TOS object
+`scripts/publish_site.py --dir _output/<slug> --slug <slug>` to push it to BytePlus TOS object
 storage, public-read (same `config.json`/`credential.json` credentials every other script here
 uses). Then report to the user:
-- **The public URL** `scripts/upload_site.py` prints — this is the headline deliverable, not the
+- **The public URL** `scripts/publish_site.py` prints — this is the headline deliverable, not the
   local file path. Lead with it.
 - A one-line note on which template you picked and why (the tone match).
 - Any caveats (e.g. "left the testimonial section as a placeholder since you didn't give me one
@@ -327,7 +338,7 @@ This does push real files to a public bucket — say so plainly when you do it �
 behind a question each time the way a fresh paid image generation is (§3): publishing the
 finished page is standard behavior for this skill, every time, unless the user has explicitly
 said they just want the local file. If you redo a build under the same slug, `scripts/
-delete_site.py --slug <slug>` clears the old objects first so nothing stale is left alongside
+unpublish_site.py --slug <slug>` clears the old objects first so nothing stale is left alongside
 the new upload.
 
 Do not narrate every step you took. The user wants the URL + a one-line rationale.
