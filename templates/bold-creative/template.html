@@ -9,6 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo:wght@400;600;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* =================================================================
+       THEME — change --accent to recolour the brand colour everywhere.
+       Secondary colours (--accent2) are separate — change them too
+       if they clash with the new accent.
+       FONTS: --font-display / --font-body / --font-mono. To switch a font, change the Google Fonts
+       <link> in <head> and the matching variable.
+       ================================================================= */
     --bg:#f5f3ea;
     --surface:#ffffff;
     --ink:#111111;
@@ -18,18 +25,26 @@
     --max:1160px;
     --pad:clamp(20px,5vw,64px);
     --shadow:6px 6px 0 var(--ink);
+
+    --font-body:'Archivo',system-ui,sans-serif;
+    --font-display:'Space Grotesk',sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+
+    /* fixed tones (not derived from --accent) */
+    --tone-e4dfc9:#e4dfc9;
+    --tone-eeeada:#eeeada;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     margin:0;background:var(--bg);color:var(--ink);
-    font-family:'Archivo',system-ui,sans-serif;line-height:1.55;
+    font-family:var(--font-body);line-height:1.55;
   }
-  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1.05;margin:0 0 .4em;text-transform:uppercase;letter-spacing:-.01em;}
+  h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.05;margin:0 0 .4em;text-transform:uppercase;letter-spacing:-.01em;}
   p{margin:0 0 1em;}
   a{color:inherit;}
   img{max-width:100%;height:auto;display:block;}
-  .mono{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;}
+  .mono{font-family:var(--font-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;}
   .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
   section{padding:clamp(48px,8vw,100px) 0;}
 
@@ -38,7 +53,7 @@
     border-bottom:3px solid var(--line);
   }
   .nav{display:flex;align-items:center;justify-content:space-between;padding:16px var(--pad);max-width:var(--max);margin:0 auto;}
-  .brand{font-family:'Space Grotesk',sans-serif;font-weight:700;text-decoration:none;text-transform:uppercase;font-size:1.1rem;}
+  .brand{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-weight:700;text-decoration:none;text-transform:uppercase;font-size:1.1rem;}
   .nav-links{display:none;gap:26px;list-style:none;margin:0;padding:0;}
   .nav-links a{text-decoration:none;font-weight:600;font-size:.9rem;text-transform:uppercase;}
   .nav-cta{
@@ -113,7 +128,7 @@
   .masonry{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
   .work-item{background:var(--surface);border:3px solid var(--ink);box-shadow:var(--shadow);overflow:hidden;}
   .img-placeholder{
-    aspect-ratio:4/3;background:repeating-linear-gradient(45deg,#eeeada,#eeeada 10px,#e4dfc9 10px,#e4dfc9 20px);
+    aspect-ratio:4/3;background:repeating-linear-gradient(45deg,var(--tone-eeeada),var(--tone-eeeada) 10px,var(--tone-e4dfc9) 10px,var(--tone-e4dfc9) 20px);
     display:flex;align-items:center;justify-content:center;
   }
   .work-body{padding:18px 20px;border-top:3px solid var(--ink);}
@@ -136,6 +151,24 @@
 
   footer.site{border-top:3px solid var(--ink);padding:28px var(--pad);text-align:center;}
   footer.site p{margin:0;font-size:.85rem;}
+
+  /* ---------- print / Save as PDF ---------- */
+  .print-btn{display:inline-flex;align-items:center;min-height:44px;margin:0 0 0 10px;padding:0 12px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:inherit;font-size:.8em;opacity:.75;cursor:pointer;vertical-align:middle;}
+  .print-btn:hover{opacity:1;}
+  @media print{
+    @page{margin:14mm 12mm;}
+    *{box-shadow:none !important;text-shadow:none !important;animation:none !important;transition:none !important;}
+    html,body{background:#fff !important;color:#111;}
+    body{font-size:10.5pt;line-height:1.45;}
+    header.site,#mobile-menu,.menu-btn,.nav-cta,.btn,.btn-row,.print-btn,form,.theme-hit,.rail,.mouse,.arrow{display:none !important;}
+    section,.hero{min-height:0 !important;padding-top:14pt !important;padding-bottom:14pt !important;}
+    [style*="position:sticky"],.sticky{position:static !important;}
+    article,figure,li,.card,.panel,.feature,.exp,.repo,.project,.proj,.pub,.article,.ach,.blog,.edu-item,.member,.tile,.cta-panel,.cta-banner{break-inside:avoid;}
+    h1,h2,h3{break-after:avoid;}
+    img{max-height:9cm;object-fit:contain;}
+    a{color:inherit;text-decoration:none;}
+    footer.site{padding-top:10pt !important;}
+  }
 </style>
 </head>
 <body>
@@ -266,7 +299,7 @@
 </main>
 
 <footer class="site">
-  <p class="mono">© [Year] [Name / Co.] — [City]</p>
+  <p class="mono">© [Year] [Name / Co.] — [City]<button class="print-btn" type="button" onclick="window.print()">Save as PDF</button></p>
 </footer>
 
 <script>

@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Your Name] — [Your Role]</title>
+<meta name="description" content="[One sentence: what you do, for whom, and the outcome — used by search engines and link previews.]">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* =====================================================================
+     THEME — to recolour the page, change --accent (one line).
+     Every accent shade below (text-on-light, tints, outlines, gradients,
+     dark-surface tints) is derived from it with color-mix().
+     Bright, saturated accents work best (the accent is also used as text
+     on the dark hero and sidebar). If you pick a DARK accent, set
+     --on-accent to #ffffff so the solid button text stays readable.
+     ===================================================================== */
+  :root{
+    --accent:#29db5b;
+    --on-accent:#0b0d09;                     /* text on solid accent buttons */
+
+    /* derived accent shades — normally leave these alone */
+    --accent-ink:color-mix(in oklab, var(--accent) 52%, #000);   /* accent text on light backgrounds */
+    --accent-2:color-mix(in oklab, var(--accent) 55%, #1f8a9e);  /* secondary hue for gradients */
+    --accent-3:color-mix(in oklab, var(--accent) 60%, #cfe800);  /* tertiary hue for gradients */
+    --accent-deep:color-mix(in oklab, var(--accent) 82%, #000);  /* button gradient end */
+    --accent-soft:color-mix(in srgb, var(--accent) 12%, transparent);
+    --accent-tint:color-mix(in srgb, var(--accent) 8%, transparent);
+    --accent-line:color-mix(in srgb, var(--accent) 45%, transparent);
+    --accent-glow:color-mix(in srgb, var(--accent) 55%, transparent);
+
+    /* dark surfaces (nav, sidebar, hero) — lightly tinted toward the accent */
+    --black:#0b0d09;
+    --carbon:#14180f;
+    --dark-raise:color-mix(in oklab, var(--accent) 6%, #23271f);  /* raised controls on dark */
+    --dark-line:color-mix(in oklab, var(--accent) 8%, #353b2f);   /* borders on dark */
+    --dark-tint:color-mix(in oklab, var(--accent) 18%, #10140c);  /* hero / nav gradient tint */
+
+    /* text */
+    --ink:#12161a;            /* body text on light */
+    --ink-soft:#4b5563;       /* secondary text on light */
+    --ink-muted:#6b7280;      /* labels, footer */
+    --chip-ink:#2b3324;       /* text inside light chips */
+    --on-dark:#f3f6ee;        /* default text on dark */
+    --on-dark-strong:#ffffff; /* hero lead sentence, strip labels */
+    --on-dark-nav:#e6ebde;    /* top-menu links */
+    --on-dark-body:#d7ddcf;   /* sidebar bio */
+    --on-dark-soft:#e6db74;   /* hero paragraph */
+    --on-dark-muted:#9aa38e;  /* stat captions */
+    --placeholder:#5f6b52;    /* image-placeholder label */
+
+    /* light surfaces */
+    --surface:#ffffff;
+    --surface-2:#f4f7ef;
+    --chip:#f1f4ec;
+    --line:#e2e8d8;
+
+    --grad-nav:linear-gradient(120deg,var(--black) 0%,var(--dark-tint) 100%);
+    --grad-sidebar:linear-gradient(160deg,var(--carbon) 0%,#050704 100%);
+    --grad-hero:linear-gradient(150deg,var(--dark-tint) 0%,var(--carbon) 45%,#050704 100%);
+    --grad-btn:linear-gradient(135deg,var(--accent),var(--accent-deep));
+    --grad-bar:linear-gradient(90deg,var(--accent),var(--accent-2));
+    --shadow-sm:0 1px 2px rgba(11,13,9,.06),0 1px 3px rgba(11,13,9,.1);
+    --shadow-lg:0 12px 24px -6px rgba(11,13,9,.14),0 6px 12px -8px rgba(11,13,9,.1);
+
+    --radius:14px;
+    --radius-sm:10px;
+    --radius-lg:20px;
+    --sidebar:280px;
+    --main-max:900px;
+    --pad:clamp(16px,4vw,40px);
+    --mono:'JetBrains Mono',ui-monospace,Consolas,'Courier New',monospace;
+    /* FONT — the whole page uses --font. For a sans-serif look instead of mono:
+       1) in the Google Fonts <link> above, use family=Inter:wght@400;500;600;700
+       2) set --font:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; */
+    --font:var(--mono);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:72px;}
+  body{
+    margin:0;background:var(--surface-2);color:var(--ink);
+    font-family:var(--font);
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:var(--font);line-height:1.15;margin:0;}
+  p{margin:0;}
+  a{color:inherit;}
+  img{max-width:100%;height:auto;display:block;}
+  .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;}
+  .ico svg{width:17px;height:17px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* ---------- top nav ---------- */
+  header.site{position:sticky;top:0;z-index:50;background:var(--grad-nav);border-bottom:1px solid var(--dark-line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1400px;margin:0 auto;padding:8px var(--pad);min-height:58px;}
+  .brand{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font);font-weight:900;color:var(--on-dark-strong);text-decoration:none;font-size:1.05rem;}
+  .nav-links{display:none;list-style:none;margin:0;padding:0;gap:4px;}
+  .nav-links a{
+    display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid transparent;
+    color:var(--on-dark-nav);text-decoration:none;font-size:.85rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+    transition:all .25s cubic-bezier(.4,0,.2,1);
+  }
+  .nav-links a:hover{color:var(--accent);}
+  .nav-links a.active{color:var(--accent);background:var(--accent-soft);border-color:var(--accent-line);}
+  .menu-btn{width:44px;height:44px;border-radius:10px;border:1px solid var(--dark-line);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:18px;height:2px;background:var(--on-dark);position:relative;}
+  .menu-btn span::before{position:absolute;top:-6px;}
+  .menu-btn span::after{position:absolute;top:6px;}
+  #mobile-menu{display:none;flex-direction:column;padding:4px var(--pad) 14px;}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{color:var(--on-dark);text-decoration:none;padding:12px 4px;font-weight:600;font-size:.95rem;border-top:1px solid var(--dark-line);}
+  @media (min-width:960px){
+    .brand{display:none;}
+    .nav{justify-content:center;}
+    .nav-links{display:flex;}
+    .menu-btn{display:none;}
+    #mobile-menu{display:none !important;}
+  }
+
+  /* ---------- shell: sidebar + main ---------- */
+  .shell{margin:0;}
+  @media (min-width:1024px){
+    .shell{display:grid;grid-template-columns:var(--sidebar) 1fr;}
+    .shell > *{min-width:0;}
+  }
+
+  .sidebar{background:var(--grad-sidebar);color:var(--on-dark);text-align:center;padding:40px 20px 36px;}
+  @media (min-width:1024px){
+    .sidebar-inner{position:sticky;top:98px;}
+  }
+  .portrait{
+    width:120px;aspect-ratio:2/3;margin:0 auto 26px;border-radius:999px;overflow:hidden;
+    border:4px solid var(--dark-raise);box-shadow:0 0 0 1px var(--accent-line),0 12px 30px rgba(0,0,0,.45);
+    background:var(--dark-raise);
+  }
+  .portrait img{width:100%;height:100%;object-fit:cover;}
+  .img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--placeholder);font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+  .side-name{font-size:1.8rem;font-weight:700;color:var(--on-dark-strong);}
+  .side-role{margin-top:10px;font-size:1.05rem;font-weight:700;color:var(--accent);line-height:1.45;padding-bottom:16px;border-bottom:1px solid var(--dark-line);}
+  .side-bio{margin-top:16px;font-size:.95rem;color:var(--on-dark-body);line-height:1.6;}
+  .side-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 6px;margin-top:22px;}
+  .side-tag{font-size:.74rem;font-weight:700;color:var(--accent);border:1px solid var(--accent-line);background:var(--accent-tint);border-radius:999px;padding:3px 10px;}
+  .side-social{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:26px;}
+  .social-btn{
+    display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:999px;
+    background:var(--dark-raise);border:1px solid var(--dark-line);color:var(--on-dark);text-decoration:none;font-weight:600;font-size:.9rem;
+    transition:all .25s cubic-bezier(.4,0,.2,1);
+  }
+  .social-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .social-btn svg{width:17px;height:17px;fill:currentColor;}
+
+  .main{background:var(--surface);padding:clamp(28px,5vw,60px) var(--pad) clamp(48px,6vw,72px);}
+  @media (min-width:1024px){
+    .main{min-height:calc(100vh - 58px);}
+  }
+  .main-inner{max-width:var(--main-max);margin:0 auto;}
+  .main-inner > section + section{margin-top:clamp(36px,5vw,48px);}
+
+  /* ---------- hero card ---------- */
+  .hero{
+    position:relative;overflow:hidden;background:var(--grad-hero);color:var(--on-dark);
+    border-radius:var(--radius-lg);border:1px solid var(--dark-line);box-shadow:var(--shadow-lg);
+    padding:clamp(24px,4.5vw,40px) clamp(18px,4vw,38px);
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(var(--accent-tint) 1px,transparent 1px),linear-gradient(90deg,var(--accent-tint) 1px,transparent 1px);
+    background-size:48px 48px;
+    -webkit-mask-image:linear-gradient(160deg,#000 0%,transparent 70%);mask-image:linear-gradient(160deg,#000 0%,transparent 70%);
+  }
+  .hero > *{position:relative;}
+  .hero-pill{display:inline-block;color:var(--accent);border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:999px;padding:7px 14px;line-height:1.5;}
+  .hero h1{margin-top:18px;font-size:clamp(2.2rem,6vw,3.3rem);font-weight:700;color:var(--on-dark-strong);letter-spacing:-.01em;}
+  .hero-lede{margin-top:18px;font-size:clamp(1.05rem,2.2vw,1.35rem);font-weight:500;color:var(--on-dark-strong);line-height:1.5;}
+  .hero-sub{margin-top:18px;max-width:62ch;color:var(--on-dark-soft);font-size:clamp(.95rem,1.6vw,1.02rem);}
+  .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px;}
+  @media (min-width:720px){ .stats{grid-template-columns:repeat(4,minmax(0,1fr));} }
+  .stat{border:1px solid var(--dark-line);background:rgba(255,255,255,.025);border-radius:var(--radius-sm);padding:14px 16px;}
+  .stat b{display:block;font-family:var(--font);font-size:clamp(.95rem,1.7vw,1.25rem);overflow-wrap:anywhere;color:var(--accent);line-height:1.25;}
+  .stat span{display:block;margin-top:4px;font-size:.74rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--on-dark-muted);line-height:1.4;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:var(--radius-sm);
+    font-family:var(--font);font-weight:700;font-size:1.02rem;text-decoration:none;transition:all .25s cubic-bezier(.4,0,.2,1);
+  }
+  .btn-solid{background:var(--grad-btn);color:var(--on-accent);box-shadow:0 6px 18px -6px var(--accent-glow);}
+  .btn-solid:hover{filter:brightness(1.08);}
+  .btn-ghost{border:1px solid var(--accent-line);color:var(--accent);}
+  .btn-ghost:hover{background:var(--accent-soft);}
+  @media (max-width:520px){ .btn{width:100%;justify-content:flex-start;} }
+
+  /* ---------- chip panel ---------- */
+  .panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);padding:clamp(18px,3vw,26px);}
+  .panel .eyebrow{color:var(--ink-muted);}
+  .pill-row{display:flex;flex-wrap:wrap;gap:10px 8px;margin-top:14px;}
+  .pill{font-size:.9rem;font-weight:500;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:999px;padding:6px 14px;}
+
+  /* ---------- section heads ---------- */
+  .section-title{font-size:clamp(1.55rem,3.4vw,1.95rem);font-weight:700;color:var(--ink);}
+  .section-title::after{content:"";display:block;width:80px;height:4px;border-radius:4px;background:var(--grad-bar);margin-top:10px;}
+  .section-intro{margin-top:16px;max-width:62ch;color:var(--ink-soft);font-size:1rem;}
+  .sub-title{margin-top:28px;font-size:1rem;font-weight:700;color:var(--ink);}
+
+  /* ---------- stage strip ---------- */
+  .strip:empty{display:none;}
+  .strip{
+    margin-top:24px;background:var(--grad-sidebar);border-radius:var(--radius);padding:18px clamp(12px,3vw,28px);
+    display:flex;align-items:flex-start;gap:6px;overflow-x:auto;scrollbar-width:thin;
+  }
+  .strip-step{flex:1 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:var(--on-dark-strong);min-width:78px;padding:2px 4px;}
+  .strip-step .n{font-size:.68rem;font-weight:700;color:var(--accent);letter-spacing:.06em;}
+  .strip-step .ico{width:34px;height:34px;border-radius:50%;background:var(--dark-raise);border:1px solid var(--dark-line);display:flex;align-items:center;justify-content:center;transition:all .25s;}
+  .strip-step:hover .ico{border-color:var(--accent);}
+  .strip-step .lbl{font-size:.8rem;font-weight:600;white-space:nowrap;}
+  .strip-dash{flex:0 0 14px;height:2px;background:var(--accent-line);margin-top:40px;border-radius:2px;}
+
+  /* ---------- stage timeline ---------- */
+  .timeline{list-style:none;margin:28px 0 0;padding:0;position:relative;}
+  .stage{position:relative;display:grid;grid-template-columns:44px 1fr;gap:14px;padding-bottom:18px;}
+  .stage::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:linear-gradient(var(--accent),var(--accent-soft));}
+  .stage:last-child::before{display:none;}
+  .stage-num{
+    width:44px;height:44px;border-radius:50%;border:2px solid var(--accent);background:#fff;color:var(--accent-ink);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;box-shadow:0 0 0 5px var(--accent-soft);
+  }
+  .stage-card{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);padding:clamp(16px,2.6vw,22px);min-width:0;}
+  .stage-head{display:flex;align-items:center;gap:10px;}
+  .stage-head .ico{width:28px;height:28px;flex:0 0 28px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;}
+  .stage-head .ico svg{stroke:var(--accent-ink);width:16px;height:16px;}
+  .stage-card h3{font-size:1.12rem;font-weight:700;}
+  .stage-card .why{margin-top:6px;color:var(--ink-soft);font-size:.97rem;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px 6px;margin-top:14px;}
+  .chip{font-size:.8rem;font-weight:500;color:var(--chip-ink);background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:4px 10px;}
+  .proven{display:flex;align-items:flex-start;gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-size:.93rem;color:var(--ink-soft);}
+  .proven-tag{flex:0 0 auto;font-size:.66rem;font-weight:700;letter-spacing:.12em;color:var(--accent-ink);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:999px;padding:3px 9px;margin-top:2px;}
+  .loop-note{margin-top:8px;border:1px dashed var(--accent-line);background:var(--accent-tint);border-radius:var(--radius-sm);padding:14px 16px;color:var(--accent-ink);font-weight:600;font-size:.95rem;}
+
+  /* ---------- experience (work history) ---------- */
+  .jobs{list-style:none;margin:26px 0 0;padding:0;position:relative;}
+  .jobs::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:var(--line);}
+  .job{position:relative;padding:0 0 22px 28px;}
+  .job:last-child{padding-bottom:0;}
+  .job::before{content:"";position:absolute;left:0;top:7px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);box-shadow:0 0 0 4px var(--accent-soft);}
+  .job:first-child::before{background:var(--accent);}
+  .job-when{font-size:.78rem;font-weight:700;letter-spacing:.04em;color:var(--accent-ink);}
+  .job h3{margin-top:4px;font-size:1.05rem;font-weight:700;}
+  .job-org{margin-top:2px;font-size:.92rem;color:var(--ink-soft);}
+  .job ul{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;}
+  .job li{position:relative;padding-left:16px;font-size:.92rem;color:var(--ink-soft);}
+  .job li::before{content:"›";position:absolute;left:2px;top:0;color:var(--accent-ink);font-weight:700;}
+  @media (min-width:720px){
+    .jobs::before{left:155px;}
+    .job{display:grid;grid-template-columns:130px 1fr;gap:0 48px;padding-left:0;}
+    .job::before{left:150px;}
+    .job-when{text-align:right;padding-top:3px;}
+    .job h3{margin-top:0;}
+  }
+
+  /* ---------- skills grid ---------- */
+  .skills{display:grid;grid-template-columns:1fr;gap:18px;margin-top:24px;}
+  @media (min-width:760px){ .skills{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  .skill{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);padding:24px 22px 22px;overflow:hidden;}
+  .skill::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--bar,var(--grad-bar));}
+  .skill:nth-child(6n+1){--bar:linear-gradient(90deg,var(--accent-ink),var(--accent));--chip-line:var(--accent-ink);}
+  .skill:nth-child(6n+2){--bar:linear-gradient(90deg,var(--accent-2),var(--accent));--chip-line:var(--accent-2);}
+  .skill:nth-child(6n+3){--bar:linear-gradient(90deg,var(--accent),var(--accent-2));--chip-line:var(--accent);}
+  .skill:nth-child(6n+4){--bar:linear-gradient(90deg,var(--accent),var(--accent-3));--chip-line:var(--accent-3);}
+  .skill:nth-child(6n+5){--bar:linear-gradient(90deg,var(--accent-3),var(--accent));--chip-line:var(--accent);}
+  .skill:nth-child(6n+6){--bar:linear-gradient(90deg,var(--carbon),var(--accent));--chip-line:var(--carbon);}
+  .skill-head{display:flex;align-items:center;gap:12px;}
+  .skill-head .ico{width:40px;height:40px;flex:0 0 40px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
+  .skill-head .ico svg{stroke:var(--accent-ink);width:20px;height:20px;}
+  .skill h3{font-size:1.18rem;font-weight:700;}
+  .skill p{margin-top:14px;color:var(--ink-soft);font-size:.96rem;}
+  .skill .chip-row{margin-top:16px;}
+  .skill .chip{font-weight:600;border-bottom:2px solid var(--chip-line,var(--accent));}
+
+  /* ---------- outcomes + education rows ---------- */
+  .outcomes{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
+  .outcome{display:grid;grid-template-columns:1fr;gap:10px;align-items:start;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;transition:border-color .25s;}
+  .outcome:hover{border-left-color:var(--accent);}
+  @media (min-width:640px){ .outcome{grid-template-columns:120px 1fr;gap:18px;} }
+  .outcome-label{align-self:start;justify-self:start;font-weight:700;color:var(--ink);line-height:1.5;background:linear-gradient(90deg,var(--surface-2),transparent);border-radius:6px;padding:4px 10px;}
+  .outcome p{color:var(--ink-soft);font-size:.98rem;}
+  .outcome p b{color:var(--ink);font-weight:700;}
+
+  /* ---------- contact + footer ---------- */
+  .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin-top:22px;}
+  .contact-link{
+    display:flex;flex-direction:column;justify-content:center;min-height:64px;padding:12px 16px;border:1px solid var(--line);border-radius:var(--radius-sm);
+    text-decoration:none;color:var(--ink);background:var(--surface);transition:all .25s;overflow-wrap:anywhere;
+  }
+  a.contact-link:hover{border-color:var(--accent);box-shadow:var(--shadow-sm);}
+  .contact-link .eyebrow{color:var(--ink-muted);font-size:.66rem;}
+  .contact-link b{margin-top:2px;font-weight:600;font-size:.97rem;}
+  footer.site{text-align:center;color:var(--ink-soft);font-size:.85rem;padding:24px var(--pad) 32px;}
+  .print-btn{display:inline-flex;align-items:center;min-height:44px;margin-left:10px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink-soft);font:inherit;font-size:.8rem;cursor:pointer;}
+  .print-btn:hover{border-color:var(--accent);color:var(--ink);}
+
+  /* ---------- print / Save as PDF: single column, black on white ---------- */
+  @media print{
+    @page{margin:14mm 12mm;}
+    :root{--accent-ink:#1a1a1a;}
+    *{box-shadow:none !important;text-shadow:none !important;}
+    body{background:#fff;color:#111;font-size:10.5pt;line-height:1.45;}
+    header.site,.btn-row,.strip,.print-btn,.side-social,.loop-note,.hero::before,.section-title::after{display:none !important;}
+    .shell{display:block !important;}
+    .main{padding:0 !important;min-height:0 !important;}
+    .main-inner{max-width:none;}
+    .main-inner > section + section{margin-top:16pt;}
+    .sidebar{background:none !important;color:#111;padding:0 0 10pt;text-align:left;display:grid;grid-template-columns:auto 1fr;gap:4pt 16pt;align-items:start;border-bottom:1.5pt solid #111;margin-bottom:12pt;}
+    .sidebar-inner{display:contents;}
+    .portrait{grid-row:span 4;width:70pt;margin:0;border:0;background:none;}
+    .side-name,.side-role{color:#111;}
+    .side-role{border:0;padding:0;margin:0;}
+    .side-bio{color:#333;margin:0;}
+    .side-tags{justify-content:flex-start;margin:2pt 0 0;}
+    .side-tag,.pill,.proven-tag,.hero-pill{color:#111 !important;background:none !important;border-color:#999 !important;}
+    .hero{background:none !important;color:#111;border:0;padding:0;border-radius:0;}
+    .hero h1,.hero-pill{display:none;}
+    .hero-lede{color:#111;margin-top:0;font-size:12pt;}
+    .hero-sub{color:#333;}
+    .stats{grid-template-columns:repeat(4,1fr);gap:6pt;margin-top:10pt;}
+    .stat{border-color:#bbb;background:none;padding:6pt 8pt;}
+    .stat b{color:#111;}
+    .stat span{color:#555;}
+    .panel,.stage-card,.skill,.outcome,.contact-link{border-color:#ccc !important;background:none !important;}
+    .stage::before,.stage-num,.skill::before{display:none;}
+    .timeline{display:grid;grid-template-columns:1fr 1fr;gap:8pt;margin-top:10pt;}
+    .stage{display:block;padding:0;}
+    .stage-card{height:100%;border-left-width:1px !important;}
+    .skills{grid-template-columns:1fr 1fr;gap:8pt;}
+    .chip{background:none;border-color:#bbb;color:#222;}
+    .stage-card,.skill,.outcome,.job,.contact-link,.panel{break-inside:avoid;}
+    .section-title{break-after:avoid;}
+    .ico svg{stroke:#333 !important;}
+    footer.site{padding:10pt 0 0;color:#555;}
+  }
+
+  /* theme-fallbacks:start */
+  /* Plain colours for browsers without color-mix() / relative oklch(). Generated by
+     scripts/theme_fallbacks.py for the current theme — re-run it after changing --accent. */
+  @supports not (color: oklch(from red l c h)){
+    :root{--accent-ink:#0a5920;--accent-2:#1eb783;--accent-3:#82e149;--accent-deep:#1da844;--accent-soft:rgba(41,219,91,0.12);--accent-tint:rgba(41,219,91,0.08);--accent-line:rgba(41,219,91,0.45);--accent-glow:rgba(41,219,91,0.55);--dark-raise:#263023;--dark-line:#384733;--dark-tint:#1b3219;}
+  }
+  /* theme-fallbacks:end */
+</style>
+</head>
+<body>
+
+<!-- Reusable icons for the social / contact buttons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13Zm2 .9V18h16V6.4l-8 6.1-8-6.1ZM5.6 6l6.4 4.9L18.4 6H5.6Z"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></symbol>
+  <symbol id="i-gh" viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8.1-9.3L1 2h7l4.8 6.3L18.9 2Zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20Z"/></symbol>
+  <symbol id="i-web" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 6h-2.95a15.6 15.6 0 0 0-1.38-3.56A8 8 0 0 1 18.93 8ZM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96ZM4.26 14a8 8 0 0 1 0-4h3.38a16.5 16.5 0 0 0 0 4H4.26Zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8 8 0 0 1 5.07 16Zm2.95-8H5.07a8 8 0 0 1 4.33-3.56A15.6 15.6 0 0 0 8.02 8ZM12 19.96A14 14 0 0 1 10.09 16h3.82A14 14 0 0 1 12 19.96ZM14.34 14H9.66a14.7 14.7 0 0 1 0-4h4.68a14.7 14.7 0 0 1 0 4Zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8 8 0 0 1-4.33 3.56ZM16.36 14a16.5 16.5 0 0 0 0-4h3.38a8 8 0 0 1 0 4h-3.38Z"/></symbol>
+</svg>
+
+<header class="site">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="#top">[Your Name]</a>
+    <ul class="nav-links">
+      <li><a href="#top" class="active">Home</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#outcomes">Outcomes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#top">Home</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#outcomes">Outcomes</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<div class="shell" id="top">
+
+  <!-- ===== Sidebar: portrait, name, role, short bio, focus tags, social ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="portrait">
+        <!-- Replace with <img src="assets/images/portrait.jpg" alt="[Your Name]"> — fit to 2:3 -->
+        <div class="img-placeholder">Photo</div>
+      </div>
+      <h2 class="side-name">[Your Name]</h2>
+      <p class="side-role">[Your Role]</p>
+      <p class="side-bio">[Two or three sentences: the kind of customers or teams you work with, what you
+        ship for them, and where you work now — e.g. "Turning frontier models into production systems
+        inside enterprise teams. Currently at Company."]</p>
+      <!-- 3–6 short focus areas. -->
+      <div class="side-tags">
+        <span class="side-tag">[Focus 1]</span>
+        <span class="side-tag">[Focus 2]</span>
+        <span class="side-tag">[Focus 3]</span>
+        <span class="side-tag">[Focus 4]</span>
+        <span class="side-tag">[Domain]</span>
+      </div>
+      <!-- Social buttons: keep only the ones the user actually has; delete the rest.
+           Available: Email, LinkedIn, GitHub, X, Website. Never invent a link. -->
+      <div class="side-social">
+        <a class="social-btn" href="mailto:[you@example.com]"><svg aria-hidden="true"><use href="#i-mail"/></svg>Email</a>
+        <a class="social-btn" href="[https://www.linkedin.com/in/your-handle]" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-in"/></svg>LinkedIn</a>
+        <a class="social-btn" href="[https://github.com/your-handle]" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-gh"/></svg>GitHub</a>
+        <a class="social-btn" href="[https://x.com/your-handle]" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-x"/></svg>X</a>
+        <a class="social-btn" href="[https://your-site.example]" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-web"/></svg>Website</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== Main column ===== -->
+  <main class="main">
+    <div class="main-inner">
+
+      <!-- Hero card -->
+      <section class="hero" aria-labelledby="hero-name">
+        <span class="hero-pill eyebrow">[Your Role] · [Seniority / Focus]</span>
+        <h1 id="hero-name">[Your Name]</h1>
+        <p class="hero-lede">[One-line value proposition — e.g. "I embed with customer teams and take
+          AI from a promising demo to a system their business actually runs on."]</p>
+        <p class="hero-sub">[Two sentences of context: current role and company, the customers or
+          industries you work with, and what you did before.]</p>
+        <!-- The user's real headline facts — 2 to 4 tiles. Remove a tile rather than invent a number. -->
+        <div class="stats">
+          <div class="stat"><b>[Value]</b><span>[What it measures]</span></div>
+          <div class="stat"><b>[Value]</b><span>[What it measures]</span></div>
+          <div class="stat"><b>[N] yrs</b><span>[Experience in what]</span></div>
+          <div class="stat"><b>[Value]</b><span>[What it measures]</span></div>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-solid" href="#contact">Get in touch</a>
+          <a class="btn btn-ghost" href="#outcomes">Selected outcomes</a>
+        </div>
+      </section>
+
+      <!-- Platforms / stack chips -->
+      <section class="panel" aria-label="Models and platforms">
+        <span class="eyebrow">[Models &amp; Platforms]</span>
+        <div class="pill-row">
+          <span class="pill">[Platform]</span>
+          <span class="pill">[Platform]</span>
+          <span class="pill">[Model family]</span>
+          <span class="pill">[Cloud]</span>
+          <span class="pill">[Database]</span>
+          <span class="pill">[Framework]</span>
+          <span class="pill">[Tool]</span>
+        </div>
+      </section>
+
+      <!-- Projects / delivery stages. Each card can be a stage of how the person works (the default
+           FDE lifecycle below) or one project per card — rename, add, or remove cards freely (3–8
+           works). Numbers, ids and the icon strip above are generated from the cards: just set a
+           short strip label in data-short and pick an icon. -->
+      <section id="projects" aria-labelledby="projects-title">
+        <h2 class="section-title" id="projects-title">Projects</h2>
+        <p class="section-intro">[One or two sentences on how you work across these stages — e.g. "From the
+          first discovery call to a system the customer's own team owns."]</p>
+
+        <!-- Built automatically from the stages below (number, icon, data-short label).
+             Leave it empty; it hides itself if JavaScript is off. -->
+        <nav class="strip" aria-label="Stages"></nav>
+
+        <!-- One <li class="stage"> per stage. Chips are the user's own tools/methods for that stage.
+             Keep the "PROVEN" line only for a real, specific result — delete the .proven div otherwise. -->
+        <ol class="timeline">
+          <li class="stage" data-short="Discovery">
+            <span class="stage-num"></span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><h3>Discovery &amp; Scoping</h3></div>
+              <p class="why">[One line: what this stage is for.]</p>
+              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+            </div>
+          </li>
+          <li class="stage" data-short="Data">
+            <span class="stage-num"></span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><h3>Data Access &amp; Readiness</h3></div>
+              <p class="why">[One line: what this stage is for.]</p>
+              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+            </div>
+          </li>
+          <li class="stage" data-short="Prototype">
+            <span class="stage-num"></span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/></svg></span><h3>Prototype</h3></div>
+              <p class="why">[One line: what this stage is for.]</p>
+              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+            </div>
+          </li>
+          <li class="stage" data-short="Evaluation">
+            <span class="stage-num"></span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span><h3>Evaluation &amp; Guardrails</h3></div>
+              <p class="why">[One line: what this stage is for.]</p>
+              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+            </div>
+          </li>
+          <li class="stage" data-short="Integration">
+            <span class="stage-num"></span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><h3>Integration &amp; Security</h3></div>
+              <p class="why">[One line: what this stage is for.]</p>
+              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+            </div>
+          </li>
+          <li class="stage" data-short="Production">
+            <span class="stage-num"></span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.1 2.1 0 0 0-2.9-.1Z"/><path d="M12 15l-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2Z"/></svg></span><h3>Production &amp; Scale</h3></div>
+              <p class="why">[One line: what this stage is for.]</p>
+              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+            </div>
+          </li>
+          <li class="stage" data-short="Handoff">
+            <span class="stage-num"></span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><h3>Adoption &amp; Handoff</h3></div>
+              <p class="why">[One line: what this stage is for.]</p>
+              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+            </div>
+          </li>
+        </ol>
+        <p class="loop-note">[Optional one-line takeaway about how the stages connect — or delete this line.]</p>
+      </section>
+
+      <!-- Work history, most recent first. One <li class="job"> per role; 1–3 bullets each. -->
+      <section id="experience" aria-labelledby="exp-title">
+        <h2 class="section-title" id="exp-title">Experience</h2>
+        <ol class="jobs">
+          <li class="job">
+            <div class="job-when">[2024 – Now]</div>
+            <div>
+              <h3>[Role]</h3>
+              <p class="job-org">[Company] · [City]</p>
+              <ul><li>[What you owned, with a real result if there is one]</li><li>[What you owned]</li></ul>
+            </div>
+          </li>
+          <li class="job">
+            <div class="job-when">[2020 – 2024]</div>
+            <div>
+              <h3>[Role]</h3>
+              <p class="job-org">[Company] · [City]</p>
+              <ul><li>[What you owned]</li><li>[What you owned]</li></ul>
+            </div>
+          </li>
+          <li class="job">
+            <div class="job-when">[2016 – 2020]</div>
+            <div>
+              <h3>[Role]</h3>
+              <p class="job-org">[Company] · [City]</p>
+              <ul><li>[What you owned]</li></ul>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Skills: 2–6 cards. Card titles, descriptions and chips are all the user's own. -->
+      <section id="skills" aria-labelledby="skills-title">
+        <h2 class="section-title" id="skills-title">Skills</h2>
+        <div class="skills">
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg></span><h3>[Skill area]</h3></div>
+            <p>[One or two sentences on this area and the standard you hold your work to.]</p>
+            <div class="chip-row"><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span></div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><path d="M6 7l4 3M18 7l-4 3M6 17l4-3M18 17l-4-3"/></svg></span><h3>[Skill area]</h3></div>
+            <p>[One or two sentences on this area.]</p>
+            <div class="chip-row"><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span></div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><h3>[Skill area]</h3></div>
+            <p>[One or two sentences on this area.]</p>
+            <div class="chip-row"><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span></div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M18 10h-1.3A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10Z"/></svg></span><h3>[Skill area]</h3></div>
+            <p>[One or two sentences on this area.]</p>
+            <div class="chip-row"><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span></div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></span><h3>[Skill area]</h3></div>
+            <p>[One or two sentences on this area.]</p>
+            <div class="chip-row"><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span></div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span><h3>[Skill area]</h3></div>
+            <p>[One or two sentences on this area.]</p>
+            <div class="chip-row"><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span><span class="chip">[Skill]</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Selected outcomes: 2–6 real results only. Remove rows rather than invent one. -->
+      <section id="outcomes" aria-labelledby="outcomes-title">
+        <h2 class="section-title" id="outcomes-title">Selected outcomes</h2>
+        <div class="outcomes">
+          <div class="outcome"><span class="outcome-label">[Short label]</span><p>[A real result: what you built, for which kind of customer, and what changed because of it.]</p></div>
+          <div class="outcome"><span class="outcome-label">[Short label]</span><p>[A real result: what you built, for which kind of customer, and what changed because of it.]</p></div>
+          <div class="outcome"><span class="outcome-label">[Short label]</span><p>[A real result: what you built, for which kind of customer, and what changed because of it.]</p></div>
+        </div>
+      </section>
+
+      <!-- Education & certifications, newest first. Awards panel is optional — delete it if there are none. -->
+      <section id="education" aria-labelledby="edu-title">
+        <h2 class="section-title" id="edu-title">Education &amp; Certifications</h2>
+        <div class="outcomes">
+          <div class="outcome"><span class="outcome-label">[Year]</span><p><b>[Certification]</b> — [Issuer]</p></div>
+          <div class="outcome"><span class="outcome-label">[Year]</span><p><b>[Degree]</b> — [University]</p></div>
+          <div class="outcome"><span class="outcome-label">[Year]</span><p><b>[Degree]</b> — [University]</p></div>
+        </div>
+        <div class="panel" style="margin-top:18px">
+          <span class="eyebrow">Awards</span>
+          <div class="pill-row">
+            <span class="pill">[Award · Year]</span>
+            <span class="pill">[Award · Year]</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact: same rule as the sidebar — keep only real channels. "Based in" is a plain card (city or country only). -->
+      <section id="contact" aria-labelledby="contact-title">
+        <h2 class="section-title" id="contact-title">Contact</h2>
+        <p class="section-intro">[One line on what you're open to — e.g. "Open to conversations about deploying AI with enterprise teams."]</p>
+        <div class="contact-grid">
+          <a class="contact-link" href="mailto:[you@example.com]"><span class="eyebrow">Email</span><b>[you@example.com]</b></a>
+          <a class="contact-link" href="[https://www.linkedin.com/in/your-handle]" target="_blank" rel="noopener"><span class="eyebrow">LinkedIn</span><b>[linkedin.com/in/your-handle]</b></a>
+          <a class="contact-link" href="[https://github.com/your-handle]" target="_blank" rel="noopener"><span class="eyebrow">GitHub</span><b>[github.com/your-handle]</b></a>
+          <a class="contact-link" href="[https://x.com/your-handle]" target="_blank" rel="noopener"><span class="eyebrow">X</span><b>[@your-handle]</b></a>
+          <a class="contact-link" href="[https://your-site.example]" target="_blank" rel="noopener"><span class="eyebrow">Website</span><b>[your-site.example]</b></a>
+          <div class="contact-link"><span class="eyebrow">Based in</span><b>[City, Country]</b></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<footer class="site">© [Year] [Your Name]<button class="print-btn" type="button" onclick="window.print()">Save as PDF</button></footer>
+
+<script>
+  // Number the stage cards and build the icon strip from them.
+  (function(){
+    var stages = document.querySelectorAll('.timeline .stage');
+    var strip = document.querySelector('.strip');
+    stages.forEach(function(li, i){
+      var n = String(i + 1).padStart(2, '0');
+      if (!li.id) li.id = 'stage-' + (i + 1);
+      var num = li.querySelector('.stage-num');
+      if (num) num.textContent = n;
+      if (!strip) return;
+      if (i > 0) {
+        var dash = document.createElement('span');
+        dash.className = 'strip-dash'; dash.setAttribute('aria-hidden', 'true');
+        strip.appendChild(dash);
+      }
+      var a = document.createElement('a');
+      a.className = 'strip-step'; a.href = '#' + li.id;
+      var icon = li.querySelector('.stage-head .ico svg');
+      var h3 = li.querySelector('h3');
+      a.innerHTML = '<span class="n">' + n + '</span><span class="ico"></span><span class="lbl"></span>';
+      if (icon) a.querySelector('.ico').appendChild(icon.cloneNode(true));
+      a.querySelector('.lbl').textContent = li.dataset.short || (h3 ? h3.textContent : n);
+      strip.appendChild(a);
+    });
+  })();
+
+  (function(){
+    var btn = document.getElementById('menuBtn');
+    var menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', function(){
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -9,6 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* =================================================================
+       THEME — change --accent to recolour the brand colour everywhere;
+       derived shades (--blue-2) follow it.
+       FONTS: --font-display / --font-body. To switch a font, change the Google Fonts
+       <link> in <head> and the matching variable.
+       ================================================================= */
+    --accent:#1d4ed8;
     --bg:#ffffff;
     --ink:#111827;
     --ink-2:#1f2937;
@@ -18,15 +25,23 @@
     --line:#e5e7eb;
     --soft:#f9fafb;
     --soft-2:#f3f4f6;
-    --blue:#1d4ed8;
-    --blue-2:#2563eb;
+    --blue:var(--accent);
+    --blue-2:oklch(from var(--accent) calc(l + 0.05) calc(c * 1) h);
     --max:1100px;
     --pad:clamp(18px,5vw,40px);
     --radius:16px;
+
+    --font-body:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-display:var(--font-body);
+
+    /* fixed tones (not derived from --accent) */
+    --tone-9ca3af:#9ca3af;
+    --tone-cbd5e1:#cbd5e1;
+    --tone-dbeafe:#dbeafe;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;scroll-padding-top:72px;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.7;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.7;}
   h1,h2,h3{margin:0;line-height:1.15;}
   p{margin:0;}
   a{color:inherit;}
@@ -60,11 +75,11 @@
   .hero{position:relative;isolation:isolate;overflow:hidden;margin-top:-60px;padding:calc(60px + clamp(80px,14vw,170px)) 0 clamp(70px,10vw,120px);}
   .hero::before{
     content:"";position:absolute;inset:0;z-index:-1;
-    background:radial-gradient(ellipse 60% 70% at 0% 0%,rgba(37,99,235,.22),transparent 70%);
+    background:radial-gradient(ellipse 60% 70% at 0% 0%,color-mix(in srgb, var(--blue-2) 22%, transparent),transparent 70%);
   }
   .hero::after{
     content:"";position:absolute;inset:0;z-index:-1;
-    background-image:linear-gradient(rgba(17,24,39,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(17,24,39,.045) 1px,transparent 1px);
+    background-image:linear-gradient(color-mix(in srgb, var(--ink) 4.5%, transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb, var(--ink) 4.5%, transparent) 1px,transparent 1px);
     background-size:90px 90px;
     -webkit-mask-image:radial-gradient(ellipse 55% 70% at 20% 30%,#000,transparent 75%);mask-image:radial-gradient(ellipse 55% 70% at 20% 30%,#000,transparent 75%);
   }
@@ -92,7 +107,7 @@
   /* ---------- projects ---------- */
   .projects{display:flex;flex-direction:column;gap:18px;}
   .project{position:relative;display:block;text-decoration:none;background:var(--soft);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,3vw,26px);padding-right:clamp(64px,8vw,76px);transition:border-color .2s,box-shadow .2s;}
-  .project:hover{border-color:#cbd5e1;box-shadow:0 6px 24px -10px rgba(17,24,39,.2);}
+  .project:hover{border-color:var(--tone-cbd5e1);box-shadow:0 6px 24px -10px color-mix(in srgb, var(--ink) 20%, transparent);}
   .project .num{font-size:.72rem;font-weight:500;color:var(--blue);}
   .project h3{margin-top:6px;font-size:clamp(1.05rem,2vw,1.25rem);font-weight:700;color:var(--ink);}
   .project p{margin-top:10px;font-size:.9rem;color:var(--body);}
@@ -105,16 +120,16 @@
   /* ---------- experience timeline ---------- */
   .timeline{display:flex;flex-direction:column;align-items:center;}
   .timeline .card{width:100%;}
-  .tl-dot{width:12px;height:12px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px #dbeafe;}
+  .tl-dot{width:12px;height:12px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px var(--tone-dbeafe);}
   .tl-line{width:2px;height:22px;background:var(--line);}
-  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:clamp(16px,2.6vw,22px);box-shadow:0 1px 2px rgba(17,24,39,.05);}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:clamp(16px,2.6vw,22px);box-shadow:0 1px 2px color-mix(in srgb, var(--ink) 5%, transparent);}
   .card-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;}
   .card h3{font-size:1rem;font-weight:700;color:var(--ink);}
   .card .org{font-size:.9rem;font-weight:500;color:var(--blue);}
   .card .when{font-size:.78rem;color:var(--muted);white-space:nowrap;}
   .card ul{margin:12px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;}
   .card li{position:relative;padding-left:16px;font-size:.86rem;color:var(--body);}
-  .card li::before{content:"";position:absolute;left:2px;top:.7em;width:5px;height:5px;border-radius:50%;background:#9ca3af;}
+  .card li::before{content:"";position:absolute;left:2px;top:.7em;width:5px;height:5px;border-radius:50%;background:var(--tone-9ca3af);}
   .stack{display:flex;flex-direction:column;gap:18px;}
 
   /* ---------- footer ---------- */
@@ -128,6 +143,38 @@
   .foot-links a:hover{color:var(--blue);}
   .copy{font-size:.78rem;color:var(--muted);margin-top:4px;text-align:right;}
   @media (max-width:640px){ .copy{text-align:left;} }
+
+  /* ---------- print / Save as PDF ---------- */
+  .print-btn{display:inline-flex;align-items:center;min-height:44px;margin:0 0 0 10px;padding:0 12px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:inherit;font-size:.8em;opacity:.75;cursor:pointer;vertical-align:middle;}
+  .print-btn:hover{opacity:1;}
+  @media print{
+    @page{margin:14mm 12mm;}
+    *{box-shadow:none !important;text-shadow:none !important;animation:none !important;transition:none !important;}
+    html,body{background:#fff !important;color:#111;}
+    body{font-size:10.5pt;line-height:1.45;}
+    header.site,#mobile-menu,.menu-btn,.nav-cta,.btn,.btn-row,.print-btn,form,.theme-hit,.rail,.mouse,.arrow{display:none !important;}
+    section,.hero{min-height:0 !important;padding-top:14pt !important;padding-bottom:14pt !important;}
+    [style*="position:sticky"],.sticky{position:static !important;}
+    article,figure,li,.card,.panel,.feature,.exp,.repo,.project,.proj,.pub,.article,.ach,.blog,.edu-item,.member,.tile,.cta-panel,.cta-banner{break-inside:avoid;}
+    h1,h2,h3{break-after:avoid;}
+    img{max-height:9cm;object-fit:contain;}
+    a{color:inherit;text-decoration:none;}
+    footer.site{padding-top:10pt !important;}
+    .hero::before,.hero::after{display:none;}
+    .hero{margin-top:0 !important;padding-top:0 !important;}
+  }
+
+  /* theme-fallbacks:start */
+  /* Plain colours for browsers without color-mix() / relative oklch(). Generated by
+     scripts/theme_fallbacks.py for the current theme — re-run it after changing --accent. */
+  @supports not (color: oklch(from red l c h)){
+    :root{--blue-2:#2a5fe9;}
+    .hero::before{background:radial-gradient(ellipse 60% 70% at 0% 0%,rgba(42,95,233,0.22),transparent 70%);}
+    .hero::after{background-image:linear-gradient(rgba(17,24,39,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(17,24,39,0.045) 1px,transparent 1px);}
+    .project:hover{box-shadow:0 6px 24px -10px rgba(17,24,39,0.2);}
+    .card{box-shadow:0 1px 2px rgba(17,24,39,0.05);}
+  }
+  /* theme-fallbacks:end */
 </style>
 </head>
 <body>
@@ -276,7 +323,7 @@
       <nav class="foot-links" aria-label="Footer">
         <a href="#about">About</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#education">Education</a>
       </nav>
-      <p class="copy">© [Year] [Your Name]. All rights reserved.</p>
+      <p class="copy">© [Year] [Your Name]. All rights reserved.<button class="print-btn" type="button" onclick="window.print()">Save as PDF</button></p>
     </div>
   </div>
 </footer>

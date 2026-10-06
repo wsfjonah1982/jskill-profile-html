@@ -9,6 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* =================================================================
+       THEME — change --accent to recolour the brand colour everywhere.
+       Secondary colours (--navy) are separate — change them too
+       if they clash with the new accent.
+       FONTS: --font-display / --font-body. To switch a font, change the Google Fonts
+       <link> in <head> and the matching variable.
+       ================================================================= */
     --bg:#f7f8fa;
     --surface:#ffffff;
     --navy:#0f2a4a;
@@ -19,11 +26,17 @@
     --max:1160px;
     --pad:clamp(20px,5vw,64px);
     --radius:12px;
+
+    --font-body:'IBM Plex Sans',system-ui,sans-serif;
+    --font-display:'Manrope',sans-serif;
+
+    /* fixed tones (not derived from --accent) */
+    --tone-c8d3e2:#c8d3e2;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;line-height:1.6;}
-  h1,h2,h3{font-family:'Manrope',sans-serif;font-weight:800;line-height:1.15;margin:0 0 .4em;color:var(--navy);}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.6;}
+  h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.15;margin:0 0 .4em;color:var(--navy);}
   p{margin:0 0 1em;color:var(--ink-soft);}
   a{color:inherit;}
   img{max-width:100%;height:auto;display:block;}
@@ -31,9 +44,9 @@
   section{padding:clamp(48px,8vw,96px) 0;}
   .eyebrow{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:12px;display:block;}
 
-  header.site{position:sticky;top:0;z-index:50;background:rgba(247,248,250,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  header.site{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--bg) 92%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
   .nav{display:flex;align-items:center;justify-content:space-between;padding:16px var(--pad);max-width:var(--max);margin:0 auto;}
-  .brand{font-family:'Manrope',sans-serif;font-weight:800;color:var(--navy);text-decoration:none;font-size:1.1rem;}
+  .brand{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-weight:800;color:var(--navy);text-decoration:none;font-size:1.1rem;}
   .nav-links{display:none;gap:28px;list-style:none;margin:0;padding:0;}
   .nav-links a{text-decoration:none;font-size:.92rem;color:var(--ink-soft);font-weight:500;}
   .nav-links a:hover{color:var(--navy);}
@@ -88,18 +101,44 @@
   .team-card span{font-size:.82rem;color:var(--ink-soft);}
 
   .metrics{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));text-align:center;}
-  .metric b{display:block;font-family:'Manrope',sans-serif;font-size:clamp(1.8rem,4vw,2.4rem);color:var(--navy);}
+  .metric b{display:block;font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.4rem);color:var(--navy);}
   .metric span{font-size:.85rem;color:var(--ink-soft);}
 
   .cta-panel{background:var(--navy);color:#fff;border-radius:var(--radius);padding:clamp(32px,6vw,56px);text-align:center;}
   .cta-panel h2{color:#fff;}
-  .cta-panel p{color:#c8d3e2;}
+  .cta-panel p{color:var(--tone-c8d3e2);}
   .cta-panel .btn-primary{background:var(--accent);}
 
   .contact-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
   .contact-link{display:flex;align-items:center;justify-content:space-between;min-height:56px;padding:0 20px;background:var(--surface);border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--navy);font-weight:600;font-size:.92rem;}
 
   footer.site{border-top:1px solid var(--line);padding:28px var(--pad);text-align:center;color:var(--ink-soft);font-size:.85rem;}
+
+  /* ---------- print / Save as PDF ---------- */
+  .print-btn{display:inline-flex;align-items:center;min-height:44px;margin:0 0 0 10px;padding:0 12px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:inherit;font-size:.8em;opacity:.75;cursor:pointer;vertical-align:middle;}
+  .print-btn:hover{opacity:1;}
+  @media print{
+    @page{margin:14mm 12mm;}
+    *{box-shadow:none !important;text-shadow:none !important;animation:none !important;transition:none !important;}
+    html,body{background:#fff !important;color:#111;}
+    body{font-size:10.5pt;line-height:1.45;}
+    header.site,#mobile-menu,.menu-btn,.nav-cta,.btn,.btn-row,.print-btn,form,.theme-hit,.rail,.mouse,.arrow{display:none !important;}
+    section,.hero{min-height:0 !important;padding-top:14pt !important;padding-bottom:14pt !important;}
+    [style*="position:sticky"],.sticky{position:static !important;}
+    article,figure,li,.card,.panel,.feature,.exp,.repo,.project,.proj,.pub,.article,.ach,.blog,.edu-item,.member,.tile,.cta-panel,.cta-banner{break-inside:avoid;}
+    h1,h2,h3{break-after:avoid;}
+    img{max-height:9cm;object-fit:contain;}
+    a{color:inherit;text-decoration:none;}
+    footer.site{padding-top:10pt !important;}
+  }
+
+  /* theme-fallbacks:start */
+  /* Plain colours for browsers without color-mix() / relative oklch(). Generated by
+     scripts/theme_fallbacks.py for the current theme — re-run it after changing --accent. */
+  @supports not (color: oklch(from red l c h)){
+    header.site{background:rgba(247,248,250,0.92);}
+  }
+  /* theme-fallbacks:end */
 </style>
 </head>
 <body>
@@ -237,7 +276,7 @@
 
 <footer class="site">
   © [Year] [Company Name]. All rights reserved.
-</footer>
+<button class="print-btn" type="button" onclick="window.print()">Save as PDF</button></footer>
 
 <script>
   var btn = document.getElementById('menuBtn');

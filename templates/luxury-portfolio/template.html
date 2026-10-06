@@ -9,19 +9,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* =================================================================
+       THEME — change --accent to recolour the brand colour everywhere.
+       FONTS: --font-display / --font-body. To switch a font, change the Google Fonts
+       <link> in <head> and the matching variable.
+       ================================================================= */
+    --accent:#c9a227;
     --bg:#0d0d0d;
     --surface:#161616;
     --ink:#f2ede4;
     --ink-soft:#a39d92;
-    --gold:#c9a227;
+    --gold:var(--accent);
     --line:#2a2a2a;
     --max:1200px;
     --pad:clamp(20px,6vw,80px);
+
+    --font-body:'Montserrat',sans-serif;
+    --font-display:'Cormorant Garamond',Georgia,serif;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Montserrat',sans-serif;font-weight:300;line-height:1.7;}
-  h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-style:italic;line-height:1.15;margin:0 0 .4em;color:var(--ink);}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-weight:300;line-height:1.7;}
+  h1,h2,h3{font-family:var(--font-display);font-weight:500;font-style:italic;line-height:1.15;margin:0 0 .4em;color:var(--ink);}
   p{margin:0 0 1em;color:var(--ink-soft);font-weight:300;}
   a{color:inherit;}
   img{max-width:100%;height:auto;display:block;}
@@ -29,9 +38,9 @@
   section{padding:clamp(56px,9vw,120px) 0;}
   .label{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:16px;font-weight:500;}
 
-  header.site{position:sticky;top:0;z-index:50;background:rgba(13,13,13,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  header.site{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--bg) 85%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
   .nav{display:flex;align-items:center;justify-content:space-between;padding:22px var(--pad);max-width:var(--max);margin:0 auto;}
-  .brand{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;text-decoration:none;color:var(--ink);letter-spacing:.02em;}
+  .brand{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-style:italic;font-size:1.4rem;text-decoration:none;color:var(--ink);letter-spacing:.02em;}
   .nav-links{display:none;gap:34px;list-style:none;margin:0;padding:0;}
   .nav-links a{text-decoration:none;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
   .nav-links a:hover{color:var(--gold);}
@@ -49,7 +58,7 @@
 
   .hero-fullbleed{
     min-height:70vh;display:flex;align-items:flex-end;
-    background:linear-gradient(180deg, rgba(13,13,13,.1), rgba(13,13,13,.85)), var(--surface);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 10%, transparent), color-mix(in srgb, var(--bg) 85%, transparent)), var(--surface);
     border-bottom:1px solid var(--line);padding-top:80px;
   }
   .hero-fullbleed .wrap{padding-bottom:clamp(40px,8vw,80px);width:100%;}
@@ -71,9 +80,37 @@
 
   .contact-panel{text-align:center;max-width:600px;margin:0 auto;}
   .contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;margin-top:20px;}
-  .contact-links a{text-decoration:none;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--gold);padding-bottom:4px;color:var(--ink);}
+  .contact-links a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:7px;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);}
 
   footer.site{padding:32px var(--pad);text-align:center;color:var(--ink-soft);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--line);}
+
+  /* ---------- print / Save as PDF ---------- */
+  .print-btn{display:inline-flex;align-items:center;min-height:44px;margin:0 0 0 10px;padding:0 12px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:inherit;font-size:.8em;opacity:.75;cursor:pointer;vertical-align:middle;}
+  .print-btn:hover{opacity:1;}
+  @media print{
+    @page{margin:14mm 12mm;}
+    *{box-shadow:none !important;text-shadow:none !important;animation:none !important;transition:none !important;}
+    html,body{background:#fff !important;color:#111;}
+    body{font-size:10.5pt;line-height:1.45;}
+    header.site,#mobile-menu,.menu-btn,.nav-cta,.btn,.btn-row,.print-btn,form,.theme-hit,.rail,.mouse,.arrow{display:none !important;}
+    section,.hero{min-height:0 !important;padding-top:14pt !important;padding-bottom:14pt !important;}
+    [style*="position:sticky"],.sticky{position:static !important;}
+    article,figure,li,.card,.panel,.feature,.exp,.repo,.project,.proj,.pub,.article,.ach,.blog,.edu-item,.member,.tile,.cta-panel,.cta-banner{break-inside:avoid;}
+    h1,h2,h3{break-after:avoid;}
+    img{max-height:9cm;object-fit:contain;}
+    a{color:inherit;text-decoration:none;}
+    footer.site{padding-top:10pt !important;}
+    :root,:root[data-theme]{--bg:#fff;--surface:#fff;--ink:#111;--ink-soft:#444;--line:#ccc;}
+  }
+
+  /* theme-fallbacks:start */
+  /* Plain colours for browsers without color-mix() / relative oklch(). Generated by
+     scripts/theme_fallbacks.py for the current theme — re-run it after changing --accent. */
+  @supports not (color: oklch(from red l c h)){
+    header.site{background:rgba(13,13,13,0.85);}
+    .hero-fullbleed{background:linear-gradient(180deg, rgba(13,13,13,0.1), rgba(13,13,13,0.85)), var(--surface);}
+  }
+  /* theme-fallbacks:end */
 </style>
 </head>
 <body>
@@ -158,7 +195,7 @@
 
 <footer class="site">
   [Full Name] · © [Year]
-</footer>
+<button class="print-btn" type="button" onclick="window.print()">Save as PDF</button></footer>
 
 <script>
   var btn = document.getElementById('menuBtn');

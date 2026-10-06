@@ -9,11 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* =================================================================
+       THEME — change --accent to recolour the brand colour everywhere.
+       Secondary colours (--blue, --yellow, --mint) are separate — change them too
+       if they clash with the new accent.
+       FONTS: --font-display / --font-body. To switch a font, change the Google Fonts
+       <link> in <head> and the matching variable.
+       ================================================================= */
+    --accent:#ff8fa3;
     --bg:#fff7ef;
     --surface:#ffffff;
     --ink:#3a2e2c;
     --ink-soft:#7a6b66;
-    --pink:#ff8fa3;
+    --pink:var(--accent);
     --blue:#7fd8e8;
     --yellow:#ffd166;
     --mint:#8fe3c0;
@@ -21,20 +29,29 @@
     --max:1120px;
     --pad:clamp(20px,5vw,64px);
     --radius:24px;
+
+    --font-body:'Nunito',system-ui,sans-serif;
+    --font-display:'Fredoka',sans-serif;
+
+    /* fixed tones (not derived from --accent) */
+    --tone-e8f8fb:#e8f8fb;
+    --tone-ffe9ee:#ffe9ee;
+    --tone-fff0f3:#fff0f3;
+    --tone-fff6df:#fff6df;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;line-height:1.6;}
-  h1,h2,h3{font-family:'Fredoka',sans-serif;font-weight:600;line-height:1.2;margin:0 0 .4em;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.6;}
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.2;margin:0 0 .4em;}
   p{margin:0 0 1em;color:var(--ink-soft);}
   a{color:inherit;}
   img{max-width:100%;height:auto;display:block;}
   .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
   section{padding:clamp(48px,8vw,96px) 0;}
 
-  header.site{position:sticky;top:0;z-index:50;background:rgba(255,247,239,.92);backdrop-filter:blur(8px);}
+  header.site{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--bg) 92%, transparent);backdrop-filter:blur(8px);}
   .nav{display:flex;align-items:center;justify-content:space-between;padding:16px var(--pad);max-width:var(--max);margin:0 auto;}
-  .brand{font-family:'Fredoka',sans-serif;font-weight:700;text-decoration:none;color:var(--ink);font-size:1.15rem;}
+  .brand{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-display);font-weight:700;text-decoration:none;color:var(--ink);font-size:1.15rem;}
   .nav-links{display:none;gap:26px;list-style:none;margin:0;padding:0;}
   .nav-links a{text-decoration:none;font-weight:700;font-size:.92rem;color:var(--ink-soft);}
   .nav-links a:hover{color:var(--ink);}
@@ -74,9 +91,9 @@
   .section-head{max-width:60ch;margin-bottom:32px;}
   .highlights-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
   .highlight{border-radius:var(--radius);padding:26px;background:var(--surface);box-shadow:0 6px 0 var(--line);}
-  .highlight:nth-child(1){background:#ffe9ee;}
-  .highlight:nth-child(2){background:#e8f8fb;}
-  .highlight:nth-child(3){background:#fff6df;}
+  .highlight:nth-child(1){background:var(--tone-ffe9ee);}
+  .highlight:nth-child(2){background:var(--tone-e8f8fb);}
+  .highlight:nth-child(3){background:var(--tone-fff6df);}
   .highlight h3{font-size:1.05rem;}
   .highlight p{font-size:.92rem;margin:0;}
 
@@ -84,16 +101,42 @@
   .gallery-item{aspect-ratio:1/1;border-radius:var(--radius);background:var(--surface);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-weight:700;font-size:.85rem;}
 
   .testimonial{background:var(--surface);border-radius:var(--radius);padding:clamp(28px,5vw,48px);text-align:center;box-shadow:0 6px 0 var(--line);}
-  .testimonial blockquote{font-family:'Fredoka',sans-serif;font-size:clamp(1.1rem,2.4vw,1.4rem);margin:0 0 16px;}
+  .testimonial blockquote{font-family:var(--font-display);font-size:clamp(1.1rem,2.4vw,1.4rem);margin:0 0 16px;}
   .testimonial cite{font-style:normal;color:var(--ink-soft);font-size:.9rem;}
 
   .contact-panel{background:var(--pink);border-radius:var(--radius);padding:clamp(32px,6vw,56px);text-align:center;color:#fff;}
   .contact-panel h2{color:#fff;}
-  .contact-panel p{color:#fff0f3;}
+  .contact-panel p{color:var(--tone-fff0f3);}
   .contact-links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:16px;}
   .contact-links a{border:2px solid #fff;border-radius:999px;padding:12px 22px;text-decoration:none;color:#fff;font-weight:700;font-size:.9rem;min-height:44px;display:inline-flex;align-items:center;}
 
   footer.site{padding:28px var(--pad);text-align:center;color:var(--ink-soft);font-size:.85rem;}
+
+  /* ---------- print / Save as PDF ---------- */
+  .print-btn{display:inline-flex;align-items:center;min-height:44px;margin:0 0 0 10px;padding:0 12px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:inherit;font-size:.8em;opacity:.75;cursor:pointer;vertical-align:middle;}
+  .print-btn:hover{opacity:1;}
+  @media print{
+    @page{margin:14mm 12mm;}
+    *{box-shadow:none !important;text-shadow:none !important;animation:none !important;transition:none !important;}
+    html,body{background:#fff !important;color:#111;}
+    body{font-size:10.5pt;line-height:1.45;}
+    header.site,#mobile-menu,.menu-btn,.nav-cta,.btn,.btn-row,.print-btn,form,.theme-hit,.rail,.mouse,.arrow{display:none !important;}
+    section,.hero{min-height:0 !important;padding-top:14pt !important;padding-bottom:14pt !important;}
+    [style*="position:sticky"],.sticky{position:static !important;}
+    article,figure,li,.card,.panel,.feature,.exp,.repo,.project,.proj,.pub,.article,.ach,.blog,.edu-item,.member,.tile,.cta-panel,.cta-banner{break-inside:avoid;}
+    h1,h2,h3{break-after:avoid;}
+    img{max-height:9cm;object-fit:contain;}
+    a{color:inherit;text-decoration:none;}
+    footer.site{padding-top:10pt !important;}
+  }
+
+  /* theme-fallbacks:start */
+  /* Plain colours for browsers without color-mix() / relative oklch(). Generated by
+     scripts/theme_fallbacks.py for the current theme — re-run it after changing --accent. */
+  @supports not (color: oklch(from red l c h)){
+    header.site{background:rgba(255,247,239,0.92);}
+  }
+  /* theme-fallbacks:end */
 </style>
 </head>
 <body>
@@ -204,7 +247,7 @@
 
 <footer class="site">
   Made with ❤ by [Full Name], [Year]
-</footer>
+<button class="print-btn" type="button" onclick="window.print()">Save as PDF</button></footer>
 
 <script>
   var btn = document.getElementById('menuBtn');

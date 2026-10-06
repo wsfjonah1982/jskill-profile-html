@@ -9,8 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --blue:#0062b9;
-    --blue-2:#0a72d1;
+    /* =================================================================
+       THEME — change --accent to recolour the brand colour everywhere;
+       derived shades (--blue-2) follow it.
+       FONTS: --font-display / --font-body. To switch a font, change the Google Fonts
+       <link> in <head> and the matching variable.
+       ================================================================= */
+    --accent:#0062b9;
+    --blue:var(--accent);
+    --blue-2:oklch(from var(--accent) calc(l + 0.06) calc(c * 1.1) h);
     --ink:#111111;
     --body:#555555;
     --muted:#777777;
@@ -24,17 +31,32 @@
     --pad:clamp(18px,5vw,48px);
     --shadow:0 7px 29px rgba(100,100,111,.2);
     --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='104' viewBox='0 0 120 104'%3E%3Cg fill='%23ffffff'%3E%3Cpath fill-opacity='.05' d='M0 0h60L30 52z'/%3E%3Cpath fill-opacity='.08' d='M60 0h60L90 52z'/%3E%3Cpath fill-opacity='.03' d='M30 52h60L60 104z'/%3E%3Cpath fill-opacity='.06' d='M90 52h60l-30 52zM-30 52h60L0 104z'/%3E%3Cpath fill-opacity='.04' d='M30 52 60 0l30 52z'/%3E%3C/g%3E%3C/svg%3E");
+
+    --font-body:'Source Sans 3','Source Sans Pro',sans-serif;
+    --font-display:var(--font-body);
+
+    /* fixed tones (not derived from --accent) */
+    --tone-222222:#222222;
+    --tone-444444:#444444;
+    --tone-9aa6b2:#9aa6b2;
+    --tone-bdbdbd:#bdbdbd;
+    --tone-cccccc:#cccccc;
+    --tone-cfcfcf:#cfcfcf;
+    --tone-dbe8f5:#dbe8f5;
+    --tone-e6e6e6:#e6e6e6;
+    --tone-eeeeee:#eeeeee;
+    --tone-f3f6fa:#f3f6fa;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;scroll-padding-top:72px;}
-  body{margin:0;background:var(--white);color:var(--ink);font-family:'Source Sans 3','Source Sans Pro',sans-serif;line-height:1.7;}
+  body{margin:0;background:var(--white);color:var(--ink);font-family:var(--font-body);line-height:1.7;}
   h1,h2,h3{margin:0;line-height:1.2;}
   p{margin:0;}
   a{color:inherit;}
   img{max-width:100%;height:auto;display:block;}
   .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad);}
   section{padding:clamp(60px,9vw,110px) 0;}
-  .img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f3f6fa;color:#9aa6b2;font-weight:700;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:8px;}
+  .img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--tone-f3f6fa);color:var(--tone-9aa6b2);font-weight:700;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:8px;}
 
   .heading{text-align:center;}
   .heading h2{font-size:clamp(1.9rem,4vw,2.4rem);font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
@@ -54,7 +76,7 @@
   .nav{display:flex;align-items:center;justify-content:space-between;max-width:1360px;margin:0 auto;padding:8px var(--pad);min-height:64px;}
   .brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
   .brand-img{width:46px;height:46px;border-radius:50%;overflow:hidden;flex:0 0 46px;}
-  .brand-img .img-placeholder{font-size:.55rem;letter-spacing:0;border-radius:50%;background:#dbe8f5;color:var(--blue);}
+  .brand-img .img-placeholder{font-size:.55rem;letter-spacing:0;border-radius:50%;background:var(--tone-dbe8f5);color:var(--blue);}
   .brand-name{font-weight:800;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;}
   .nav-links{display:none;list-style:none;margin:0;padding:0;gap:4px;}
   .nav-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;text-decoration:none;font-size:.85rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);transition:color .2s;}
@@ -108,11 +130,11 @@
   .project{display:grid;gap:36px;align-items:center;}
   @media (min-width:860px){ .project{grid-template-columns:1.1fr 1fr;gap:70px;} }
   .laptop{width:100%;max-width:520px;justify-self:center;}
-  .laptop .screen{margin:0 6%;background:#111;border-radius:16px 16px 0 0;padding:4.5% 4.5% 3.5%;border:2px solid #444;}
+  .laptop .screen{margin:0 6%;background:var(--ink);border-radius:16px 16px 0 0;padding:4.5% 4.5% 3.5%;border:2px solid var(--tone-444444);}
   .laptop .screen-inner{aspect-ratio:16/10;background:#fff;overflow:hidden;}
   .laptop .screen-inner img{width:100%;height:100%;object-fit:cover;object-position:top;}
-  .laptop .base{height:14px;margin:0;background:linear-gradient(#e6e6e6,#bdbdbd);border-radius:0 0 14px 14px;position:relative;}
-  .laptop .base::before{content:"";position:absolute;left:50%;top:0;width:18%;height:6px;transform:translateX(-50%);background:#cfcfcf;border-radius:0 0 8px 8px;}
+  .laptop .base{height:14px;margin:0;background:linear-gradient(var(--tone-e6e6e6),var(--tone-bdbdbd));border-radius:0 0 14px 14px;position:relative;}
+  .laptop .base::before{content:"";position:absolute;left:50%;top:0;width:18%;height:6px;transform:translateX(-50%);background:var(--tone-cfcfcf);border-radius:0 0 8px 8px;}
   .project h3{font-size:clamp(1.5rem,2.6vw,1.9rem);font-weight:800;}
   .project p{margin-top:16px;color:var(--body);font-size:1.05rem;max-width:520px;}
   .project .btn{margin-top:28px;}
@@ -130,16 +152,49 @@
 
   /* ---------- footer ---------- */
   footer.site{background:var(--black);color:#fff;padding:clamp(40px,6vw,64px) 0 28px;}
-  .foot-grid{display:grid;gap:32px;padding-bottom:36px;border-bottom:1px solid #444;}
+  .foot-grid{display:grid;gap:32px;padding-bottom:36px;border-bottom:1px solid var(--tone-444444);}
   @media (min-width:760px){ .foot-grid{grid-template-columns:2fr 1fr;} }
   .foot-grid h4{margin:0 0 14px;font-size:1.1rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}
-  .foot-grid p{color:#eee;max-width:460px;}
+  .foot-grid p{color:var(--tone-eeeeee);max-width:460px;}
   .foot-social{display:flex;gap:4px;}
   .foot-social a{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;color:#fff;border-radius:6px;transition:background .2s;}
-  .foot-social a:hover{background:#222;}
+  .foot-social a:hover{background:var(--tone-222222);}
   .foot-social svg{width:22px;height:22px;fill:currentColor;}
   @media (min-width:760px){ .foot-right{justify-self:end;} }
-  .copy{text-align:center;padding-top:26px;font-size:.88rem;color:#ccc;}
+  .copy{text-align:center;padding-top:26px;font-size:.88rem;color:var(--tone-cccccc);}
+
+  /* ---------- print / Save as PDF ---------- */
+  .print-btn{display:inline-flex;align-items:center;min-height:44px;margin:0 0 0 10px;padding:0 12px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:inherit;font-size:.8em;opacity:.75;cursor:pointer;vertical-align:middle;}
+  .print-btn:hover{opacity:1;}
+  @media print{
+    @page{margin:14mm 12mm;}
+    *{box-shadow:none !important;text-shadow:none !important;animation:none !important;transition:none !important;}
+    html,body{background:#fff !important;color:#111;}
+    body{font-size:10.5pt;line-height:1.45;}
+    header.site,#mobile-menu,.menu-btn,.nav-cta,.btn,.btn-row,.print-btn,form,.theme-hit,.rail,.mouse,.arrow{display:none !important;}
+    section,.hero{min-height:0 !important;padding-top:14pt !important;padding-bottom:14pt !important;}
+    [style*="position:sticky"],.sticky{position:static !important;}
+    article,figure,li,.card,.panel,.feature,.exp,.repo,.project,.proj,.pub,.article,.ach,.blog,.edu-item,.member,.tile,.cta-panel,.cta-banner{break-inside:avoid;}
+    h1,h2,h3{break-after:avoid;}
+    img{max-height:9cm;object-fit:contain;}
+    a{color:inherit;text-decoration:none;}
+    footer.site{padding-top:10pt !important;}
+    .hero,.contact{background:none !important;color:#111 !important;}
+    .hero{min-height:0 !important;}
+    .on-blue .heading h2,.on-blue .heading p{color:#111 !important;}
+    .on-blue .heading h2::after{background:#111 !important;}
+    .about{background:none !important;}
+    footer.site{background:none !important;color:#111 !important;}
+    .foot-grid p,.copy{color:#333 !important;}
+  }
+
+  /* theme-fallbacks:start */
+  /* Plain colours for browsers without color-mix() / relative oklch(). Generated by
+     scripts/theme_fallbacks.py for the current theme — re-run it after changing --accent. */
+  @supports not (color: oklch(from red l c h)){
+    :root{--blue-2:#0873d6;}
+  }
+  /* theme-fallbacks:end */
 </style>
 </head>
 <body>
@@ -298,7 +353,7 @@
         </div>
       </div>
     </div>
-    <p class="copy">© Copyright [Year]. Made by [Your Name]</p>
+    <p class="copy">© Copyright [Year]. Made by [Your Name]<button class="print-btn" type="button" onclick="window.print()">Save as PDF</button></p>
   </div>
 </footer>
 
