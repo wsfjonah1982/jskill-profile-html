@@ -87,7 +87,8 @@ Per Step 1, check `_input/brief.md` first. Ask the user only what it didn't alre
 > 3. **What mood do you want?** (e.g. clean & professional, bold & confident, warm & personal,
 >    dark & technical)"
 
-Wait for the answers. Don't guess the mood even if the brief seems obvious.
+Wait for the answers. If the brief's **Mood** field is filled in, use it — don't re-ask. If it's
+blank or vague (e.g. "nice"), ask; don't guess the mood from the rest of the brief.
 
 ### Step 3 — Gather the actual content
 
@@ -209,6 +210,8 @@ published, and handed off by its public URL.
 | `scheme` | `light` / `dark`. Hard signal if the user explicitly wants one. |
 | `sections` | the section blocks the template ships with — tells you what's already there vs. what you'd need to design per §5. |
 | `best_for` / `avoid_for` | lead with `best_for` when narrating your pick; treat `avoid_for` as a soft warning. |
+| `inspired_by` | (some templates) the open-source template whose visual style it was rewritten from. Credit only — no code was copied; don't treat it as a matching signal. |
+| `screenshot_desktop` / `screenshot_mobile` | paths under `screenshots/` — glance at them to compare candidates before building previews. |
 
 ---
 
@@ -216,8 +219,15 @@ published, and handed off by its public URL.
 
 ### Always preserve (this IS the design system)
 
-- **Fonts** — whatever is imported from Google Fonts / declared in `font-family`. Never substitute.
-- **Color palette** — all CSS custom properties under `:root`. Never recolor.
+- **Fonts** — whatever is imported from Google Fonts. Every template routes fonts through
+  variables (`--font-display` / `--font-body` / `--font-mono`, or `--font` / `--mono`). Never
+  substitute on your own; if the user asks for a different font, change the Google Fonts `<link>`
+  and the matching variable only.
+- **Color palette** — all colours live in CSS custom properties under `:root` (see the THEME
+  comment at its top). Never recolor on your own. If the user asks for their brand colour,
+  change `--accent` only — derived shades follow it — plus any secondary colours the THEME
+  comment lists if they clash. For a dark accent, also set `--on-accent` (where present) to
+  `#ffffff` so button text stays readable.
 - **Layout grid & spacing scale** — the `clamp()` fluid type, the grid/flex structure, the padding rhythm.
 - **Component classes** (e.g. `.card`, `.hero`, `.nav-link`) — they carry the visual identity.
 - **The responsive behavior already built in** — breakpoints, the mobile nav toggle script, fluid type. Don't rewrite it; extend it.
@@ -228,13 +238,20 @@ published, and handed off by its public URL.
 - Name / company name, tagline, headings.
 - Bio / about copy, service or experience descriptions, the business-idea pitch text.
 - Proof points: work samples, case studies, testimonials, metrics.
-- Contact details, social links.
-- Image placeholders — replace `<div class="img-placeholder">` blocks with real `<img>` tags at
-  the same aspect ratio/dimensions, using only a real photo the user provided in `_input/images/`
+- Contact details, social links. Keep only channels the user actually has — delete the other
+  buttons/cards (email, LinkedIn, GitHub, X, website, …) rather than leaving placeholders or
+  inventing a link. **Never put a home address or personal phone number on a public page** unless
+  the user explicitly asks; a city or country is enough for "Based in".
+- Bracketed text (`[Skill]`, `[Method]`, `[Value]`) is always the user's content — never ship it,
+  and never treat bracketed demo examples as the user's real skills or results.
+- Image placeholders — every `<div class="img-placeholder">` sits inside a sized slot (e.g.
+  `.portrait`, `.avatar`, `.hero-art`, `.laptop .screen-inner`, `.shot`, `.thumb`); replace the
+  placeholder div with a real `<img>` inside that slot, at the slot's aspect ratio, using only a real photo the user provided in `_input/images/`
   (per Step 1/brief.md). Run it through `scripts/fit_image.py --aspect <W:H>` first (matching
   the slot's aspect ratio) so it's cropped and sized to drop in cleanly — no network call, no
-  credentials, purely local. **This skill never generates images.** If no user photo exists for a
-  slot, leave the template's placeholder block rather than breaking the layout or inventing one.
+  credentials, purely local, and it strips EXIF (including GPS location). **This skill never
+  generates images.** If no user photo exists for a slot, leave the template's placeholder block
+  rather than breaking the layout or inventing one.
 
 ### Adding or removing repeated items
 
@@ -260,8 +277,16 @@ no separate mobile template, no server-side device detection. Before finishing, 
       unbreakable text like URLs, and fixed-width containers).
 - [ ] Tap targets (buttons, nav links) are at least ~44px tall on mobile.
 - [ ] Images use `max-width: 100%; height: auto;` so they scale down instead of overflowing.
+- [ ] Print / Save as PDF still works: every template ships a print stylesheet and a footer
+      "Save as PDF" button. If you added a section (§5) or a dark block, check print preview
+      (or a headless `page.pdf()`) — black on white, no nav/buttons, no card split across pages.
+- [ ] Text contrast: body text and button text meet ~4.5:1 against their background — check
+      again after any `--accent` change, and re-run `python scripts/theme_fallbacks.py <file>` so
+      older browsers get the new colours too.
 - [ ] Actually check it at a phone width (375–414px) and a desktop width (1280px+) before
-      declaring the page done — use whatever browser-preview/screenshot capability this
+      declaring the page done. If Playwright is available, `python scripts/check_page.py
+      _output/<slug>/index.html` runs every check in this list in one go (fix all FAILs; review
+      WARNs). Otherwise use whatever browser-preview/screenshot capability this
       environment provides (Playwright, a headless-browser CLI, an IDE live preview, or manual
       resize in any browser). If a template has interactive JS (a category subskill's cart,
       tabs, accordion, etc.), exercise it at both widths, not just render it.
@@ -294,8 +319,9 @@ same page, you succeeded. If it looks grafted on from elsewhere, redo it.
 
 - **Don't skip Step 1's precheck** the first time this skill runs somewhere — finding out
   credentials or publishing are broken after building the page wastes the whole build.
-- **Don't skip the intake questions**, even for a detailed brief — "person vs. company" and
-  mood change the template pick entirely.
+- **Don't skip intake for anything the brief leaves blank** — "person vs. company" and mood
+  change the template pick entirely. But don't re-ask what `_input/brief.md` already answers
+  (Step 1); ask only about missing or ambiguous fields.
 - **Don't skip the hero previews.** Showing beats describing.
 - **Don't substitute fonts or recolor** — that's the design system, not decoration.
 - **Don't mix sections from two different templates** in one page — pick one, extend it (§5) if needed.
@@ -335,10 +361,12 @@ uses). Then report to the user:
   this environment").
 
 This does push real files to a public bucket — say so plainly when you do it — but don't gate it
-behind a question each time the way a fresh paid image generation is (§3): publishing the
-finished page is standard behavior for this skill, every time, unless the user has explicitly
-said they just want the local file. If you redo a build under the same slug, `scripts/
-unpublish_site.py --slug <slug>` clears the old objects first so nothing stale is left alongside
-the new upload.
+behind a question each time: publishing the finished page is standard behavior for this skill, every time, unless the user has explicitly
+said they just want the local file. Republishing under the same slug is safe: `publish_site.py`
+deletes any object under that slug that isn't in the new build, and serves HTML with
+`Cache-Control: no-cache` so the update shows immediately. Slugs must be lowercase kebab-case
+(letters, digits, hyphens); both scripts refuse anything else. Use `scripts/unpublish_site.py
+--slug <slug>` only to take a site down entirely, and `scripts/list_sites.py` to see everything
+that's currently public.
 
 Do not narrate every step you took. The user wants the URL + a one-line rationale.

@@ -54,7 +54,11 @@ themselves have no build step and no dependency on any of this — only the scri
 | `fit_image.py` | Crops a user's photo to a slot's aspect ratio and resizes it down for the web — local only, no network call, no credentials |
 | `write_content.py` | Drafts tagline/bio/section copy from `_input/brief.md` via a chat model, enforcing the no-fabricated-proof-points rule |
 | `publish_site.py` | **The default way a finished page ships.** Publishes `_output/<slug>/` to BytePlus TOS object storage, public-read, and prints the live URL — this is the standard last step for every build, not something only done on request |
-| `unpublish_site.py` | Removes a previously-published site from TOS by slug — use before re-publishing a redone build under the same slug, so nothing stale is left behind |
+| `unpublish_site.py` | Takes a published site down by slug (republishing doesn't need it — `publish_site.py` already removes stale files) |
+| `list_sites.py` | Lists every site currently public in the bucket — files, size, last update, whether a local build still exists — so old test builds don't stay online unnoticed. Read-only |
+| `check_page.py` | Automated §4 checklist for any page or template: overflow, clipped text, tap targets, JS errors, mobile menu, leftover `[placeholders]`, text contrast, print mode; `--compare` pixel-diffs against another version. Needs Playwright |
+| `theme_fallbacks.py` | Adds plain-colour fallbacks for browsers without `color-mix()` / relative `oklch()` — re-run after changing `--accent` |
+| `site_paths.py` | Shared slug validation and bucket-prefix building for publish/unpublish/list |
 | `tos_client.py` | Shared TOS client both scripts above import — plain `requests` calls hand-signed with TOS's own TOS4-HMAC-SHA256 scheme, not the `tos` vendor SDK (see its docstring for why literal AWS S3 signing doesn't work against TOS despite its S3-like REST surface, discovered by hitting the real API) |
 | `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers `write_content.py` imports |
 
@@ -163,16 +167,17 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 > Structured, serif-set CV page: timeline, publications, and a résumé-download button. Best for
 > academics, researchers, and job-seekers who need a dense, print-friendly page instead of a PDF.
 
-### [AI FDE Engineer](./templates/ai-fde-engineer/)
+### [Technical Sidebar Profile](./templates/technical-sidebar-profile/)
 
 <p>
-  <img src="./screenshots/ai-fde-engineer-desktop.png" width="70%" alt="AI FDE Engineer — desktop" />
-  <img src="./screenshots/ai-fde-engineer-mobile.png" width="24%" alt="AI FDE Engineer — mobile" />
+  <img src="./screenshots/technical-sidebar-profile-desktop.png" width="70%" alt="Technical Sidebar Profile — desktop" />
+  <img src="./screenshots/technical-sidebar-profile-mobile.png" width="24%" alt="Technical Sidebar Profile — mobile" />
 </p>
 
-> Carbon-and-lime engineer homepage: dark profile sidebar, glowing hero card, a numbered delivery
-> lifecycle, and chip-dense skill cards. Best for AI forward deployed engineers, solutions/field
-> engineers, and ML/infra ICs who want to show end-to-end delivery on one information-only page.
+> Monospace engineer homepage: dark profile sidebar, hero card with stats, a numbered delivery-stage
+> timeline, work history, chip-dense skill cards, and education. Recolour it with one `--accent`
+> variable, switch mono/sans with `--font`, and print it as a PDF résumé. Best for AI forward deployed engineers, solution/pre-sales architects,
+> field engineers, and ML/platform ICs.
 
 ### Developer portfolio styles
 
@@ -241,12 +246,59 @@ Each template is **one HTML page**, not a series of slides:
   menu toggle.
 - Section-based structure (hero, about, services/experience, work, contact, etc.) so an agent can
   add, remove, or reorder sections without breaking the layout.
+- Themeable from `:root`: change `--accent` to recolour the brand colour (derived shades follow),
+  and swap fonts through the `--font-*` variables. The THEME comment at the top of each `:root`
+  lists what's safe to change.
+- Print-ready: every template has a print stylesheet (black on white, no nav or buttons, no
+  cards split across pages) and a "Save as PDF" button in the footer.
 
 See `index.json` for each template's mood/tone/formality metadata, and `AGENTS.md` for the full
 matching-and-build workflow.
 
 ## Skill Version
-v 0.0.083011
+v 0.1.100601
+
+## Changelog
+
+### v 0.1.100601 — 2026-10-06
+**Tooling**
+- `check_page.py` (automated responsive/contrast/print checks), `list_sites.py` (what's public),
+  `theme_fallbacks.py` (colour fallbacks for older browsers). All 14 profile templates pass
+  `check_page.py`; it also caught and fixed undersized tap targets in 9 templates and a 1px
+  overflow in Playful Dev Folio.
+- Technical Sidebar Profile: name shown in white; footer contrast fixed.
+
+**Templates**
+- Added 6 profile templates: Technical Sidebar Profile, plus five developer-portfolio styles
+  rewritten from scratch after popular GitHub `portfolio-template` projects (Playful Dev Folio,
+  Mono Minimal Dev, Illustrated Sky Folio, Bold Blue Folio, GitHub Card Profile). Credited in
+  `index.json` → `inspired_by`.
+- All 14 profile templates: every colour moved into `:root`, one `--accent` knob with derived
+  shades, font variables, a print stylesheet and a "Save as PDF" footer button. Refactor verified
+  pixel-identical against the previous versions.
+- Technical Sidebar Profile: Experience timeline, Education & Certifications (+ optional Awards),
+  social/contact list (keep only real channels), stage strip built automatically from the cards,
+  accessible solid-button contrast, `--font` mono/sans switch.
+- Demo content that could be mistaken for real data is now bracketed (`[Skill]`, `[Method]`, …).
+
+**Publishing**
+- Slugs are validated (lowercase kebab-case) in publish and unpublish, so an empty or `/`-containing
+  slug can no longer reach other sites' files.
+- Republishing deletes objects no longer in the build, and refuses an empty build folder.
+- HTML is served with `Cache-Control: no-cache`; other assets with `max-age=3600`.
+
+**Privacy & config**
+- `config.json` ships with a placeholder bucket; the real one comes from `credential.json` or
+  `$tos_bucket`.
+- Personal example names removed from docs and scripts.
+
+**Docs**
+- `AGENTS.md`: intake no longer contradicts itself (don't re-ask what the brief answers), dead
+  image-generation reference removed, theming/font/print/contrast guidance, image-slot names,
+  "never publish a home address or phone number" rule, `inspired_by` documented.
+
+### v 0.0.083011
+- Initial release: 8 profile templates and the e-commerce, restaurant and course subskills.
 
 ## License
 
