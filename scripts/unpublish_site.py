@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from credentials import load_bucket, load_credential
+from site_paths import site_prefix, validate_slug
 from tos_client import delete_object, list_objects
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -47,6 +48,12 @@ def main() -> int:
     parser.add_argument("--slug", required=True, help="URL slug of the published site to unpublish")
     args = parser.parse_args()
 
+    try:
+        validate_slug(args.slug)
+    except ValueError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 2
+
     log_path = LOG_DIR / f"unpublish-{args.slug}.log"
 
     try:
@@ -54,7 +61,7 @@ def main() -> int:
         endpoint = config["tos_endpoint"]
         region = config["tos_region"]
         bucket = load_bucket(config)
-        key_prefix = config.get("tos_key_prefix_template", "site/manual/{slug}").replace("{slug}", args.slug)
+        key_prefix = site_prefix(config, args.slug)
 
         access_key = load_credential("tos_access_key_id")
         secret_key = load_credential("tos_secret_access_key")

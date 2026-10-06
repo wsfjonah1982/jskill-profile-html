@@ -71,8 +71,10 @@ def _authorization(method: str, path: str, query_params: dict, headers_to_sign: 
 
 
 def put_object(endpoint: str, region: str, bucket: str, key: str,
-                access_key: str, secret_key: str, content: bytes, content_type: str) -> None:
-    """PUT one object, public-read."""
+                access_key: str, secret_key: str, content: bytes, content_type: str,
+                cache_control: str | None = None) -> None:
+    """PUT one object, public-read. `cache_control` is stored as the object's
+    Cache-Control metadata and served back on every GET."""
     host = f"{bucket}.{endpoint}"
     date = datetime.now(timezone.utc).strftime(TOS_DATE_FORMAT)
     content_sha256 = hashlib.sha256(content).hexdigest()
@@ -84,16 +86,21 @@ def put_object(endpoint: str, region: str, bucket: str, key: str,
         "x-tos-content-sha256": content_sha256,
         "x-tos-date": date,
     }
+    if cache_control:
+        headers_to_sign["cache-control"] = cache_control
     authorization = _authorization("PUT", f"/{key}", {}, headers_to_sign, content_sha256,
                                     access_key, secret_key, region, date)
 
+    headers = {
+        "Host": host, "Date": date, "x-tos-date": date, "x-tos-acl": "public-read",
+        "x-tos-content-sha256": content_sha256, "Content-Type": content_type,
+        "Authorization": authorization,
+    }
+    if cache_control:
+        headers["Cache-Control"] = cache_control
     resp = requests.put(
         f"https://{host}/{key}",
-        headers={
-            "Host": host, "Date": date, "x-tos-date": date, "x-tos-acl": "public-read",
-            "x-tos-content-sha256": content_sha256, "Content-Type": content_type,
-            "Authorization": authorization,
-        },
+        headers=headers,
         data=content,
         timeout=60,
     )
@@ -131,8 +138,15 @@ def delete_object(endpoint: str, region: str, bucket: str, key: str,
 def list_objects(endpoint: str, region: str, bucket: str,
                   access_key: str, secret_key: str, prefix: str) -> list[str]:
     """List every object key under `prefix`, following pagination."""
+    return [e["Key"] for e in list_object_entries(endpoint, region, bucket, access_key, secret_key, prefix)]
+
+
+def list_object_entries(endpoint: str, region: str, bucket: str,
+                        access_key: str, secret_key: str, prefix: str) -> list[dict]:
+    """Like list_objects, but returns each object's listing entry
+    ({"Key", "Size", "LastModified", ...}), following pagination."""
     host = f"{bucket}.{endpoint}"
-    keys: list[str] = []
+    entries: list[dict] = []
     continuation_token = None
 
     while True:
@@ -163,7 +177,7 @@ def list_objects(endpoint: str, region: str, bucket: str,
             raise RuntimeError(f"TOS list failed for prefix {prefix!r}: {resp.status_code} {resp.text}")
 
         data = resp.json()
-        keys.extend(item["Key"] for item in (data.get("Contents") or []))
+        entries.extend(data.get("Contents") or [])
 
         if not data.get("IsTruncated"):
             break
@@ -171,4 +185,4 @@ def list_objects(endpoint: str, region: str, bucket: str,
         if not continuation_token:
             break
 
-    return keys
+    return entries
