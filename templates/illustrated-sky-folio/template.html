@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Your Name] — [Your Role]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#edf9fe;
+    --navy:#001c55;
+    --navy-2:#0e2a6e;
+    --muted:#7f8daa;
+    --card:#a6e1fa;
+    --card-hover:#8fd6f5;
+    --line:#cbe9f7;
+    --white:#ffffff;
+    --bolt:#f5821f;
+    --max:1200px;
+    --pad:clamp(18px,5vw,48px);
+    --radius:12px;
+    --shadow:0 10px 30px -10px rgba(0,28,85,.25);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:76px;}
+  body{margin:0;background:var(--bg);color:var(--navy);font-family:'Figtree',-apple-system,'Segoe UI',Roboto,sans-serif;line-height:1.55;}
+  h1,h2,h3{margin:0;line-height:1.12;}
+  p{margin:0;}
+  a{color:inherit;}
+  img{max-width:100%;height:auto;display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad);}
+  section{padding:clamp(44px,7vw,90px) 0;}
+  .img-placeholder{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;
+    background:radial-gradient(circle at 30% 30%,#ffffff 0,#dff4fd 60%,#cdeefb 100%);
+    border:2px dashed #9fd3ec;border-radius:28px;color:var(--muted);font-weight:600;font-size:.88rem;
+  }
+
+  /* ---------- header ---------- */
+  header.site{position:sticky;top:0;z-index:50;background:var(--bg);}
+  header.site.scrolled{box-shadow:0 2px 12px rgba(0,28,85,.08);}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:var(--max);margin:0 auto;padding:8px var(--pad);min-height:68px;}
+  .logo{min-height:44px;text-decoration:none;color:var(--navy);display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .logo .br{font-size:1.2rem;}
+  .logo .sig{font-family:'Great Vibes',cursive;font-size:clamp(1.6rem,3vw,2rem);line-height:1;}
+  .nav-links{display:none;list-style:none;margin:0;padding:0;gap:4px;}
+  .nav-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;text-decoration:none;font-size:1rem;color:var(--navy);border-radius:8px;transition:background .2s;}
+  .nav-links a:hover{background:var(--card);}
+  .menu-btn{width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:18px;height:2px;background:var(--navy);position:relative;}
+  .menu-btn span::before{position:absolute;top:-6px;}
+  .menu-btn span::after{position:absolute;top:6px;}
+  #mobile-menu{display:none;flex-direction:column;padding:4px var(--pad) 14px;}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{padding:12px 4px;text-decoration:none;border-top:1px solid var(--line);}
+  @media (min-width:900px){
+    .nav-links{display:flex;}
+    .menu-btn{display:none;}
+    #mobile-menu{display:none !important;}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{display:grid;gap:36px;align-items:center;padding-top:clamp(24px,4vw,48px);}
+  @media (min-width:880px){ .hero{grid-template-columns:1fr 1.1fr;} }
+  .hero h1{font-size:clamp(2.6rem,6.5vw,4.4rem);font-weight:800;}
+  .handle{margin-top:14px;font-size:clamp(1.15rem,2.2vw,1.6rem);font-weight:700;font-style:italic;}
+  .hero-text{margin-top:18px;font-size:clamp(1.2rem,2.6vw,2.1rem);font-weight:500;color:var(--muted);line-height:1.25;}
+  .socials{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;}
+  .social{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:transform .2s;}
+  .social:hover{transform:translateY(-3px);}
+  .social svg{width:20px;height:20px;fill:currentColor;}
+  .s-gh{background:#333;} .s-in{background:#0e76a8;} .s-yt{background:#ff0000;} .s-mail{background:#ea4335;} .s-x{background:#000;}
+  .btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 20px;margin-top:22px;border-radius:6px;background:var(--navy);color:#fff;text-decoration:none;font-weight:600;letter-spacing:.02em;box-shadow:var(--shadow);transition:background .2s,transform .2s;}
+  .btn:hover{background:var(--navy-2);transform:translateY(-2px);}
+  .hero-art{aspect-ratio:4/3;width:100%;max-width:600px;justify-self:center;}
+
+  /* ---------- what I do ---------- */
+  .center-title{text-align:center;font-size:clamp(2rem,4.6vw,3.2rem);font-weight:800;}
+  .center-sub{text-align:center;margin:14px auto 0;max-width:62ch;color:var(--muted);font-size:clamp(1rem,1.8vw,1.15rem);}
+  .do-row{display:grid;gap:30px;align-items:center;margin-top:clamp(36px,6vw,70px);}
+  @media (min-width:880px){
+    .do-row{grid-template-columns:1fr 1fr;gap:56px;}
+    .do-row.flip .do-art{order:2;}
+  }
+  .do-art{aspect-ratio:4/3;width:100%;max-width:520px;justify-self:center;}
+  .do-row h3{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:500;text-align:center;}
+  .tech-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px;}
+  .tech{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border-radius:8px;background:var(--white);box-shadow:0 2px 8px rgba(0,28,85,.08);font-size:.85rem;font-weight:700;color:var(--navy);transition:transform .2s;}
+  .tech:hover{transform:scale(1.08);}
+  .bolts{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .bolts li{position:relative;padding-left:24px;color:var(--muted);font-size:clamp(.95rem,1.6vw,1.08rem);}
+  .bolts li::before{content:"⚡";position:absolute;left:0;top:0;}
+
+  /* ---------- experience ---------- */
+  .page-head{display:grid;gap:28px;align-items:center;}
+  @media (min-width:880px){ .page-head{grid-template-columns:1fr 1fr;} }
+  .page-head .art{aspect-ratio:4/3;width:100%;max-width:480px;justify-self:center;}
+  .page-head h2{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;text-align:center;}
+  .page-head p{margin-top:14px;text-align:center;color:var(--muted);font-size:clamp(1rem,1.8vw,1.15rem);}
+  .exp-list{display:flex;flex-direction:column;gap:18px;margin-top:clamp(28px,5vw,48px);}
+  .exp{display:grid;grid-template-columns:72px 1fr;gap:18px;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(16px,3vw,24px);border-left:6px solid var(--card);}
+  .exp-logo{width:72px;height:72px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--navy);overflow:hidden;}
+  .exp-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 18px;}
+  .exp h3{font-size:clamp(1.1rem,2.2vw,1.35rem);font-weight:700;}
+  .exp .co{font-weight:600;color:var(--navy-2);}
+  .exp .when{font-size:.9rem;color:var(--muted);white-space:nowrap;}
+  .exp p{margin-top:8px;color:var(--muted);font-size:.97rem;}
+  @media (max-width:540px){ .exp{grid-template-columns:1fr;} .exp-logo{width:56px;height:56px;} }
+
+  /* ---------- projects ---------- */
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px;margin-top:clamp(28px,5vw,48px);}
+  .proj{display:flex;flex-direction:column;text-decoration:none;background:var(--card);border-radius:4px;padding:22px 20px;box-shadow:0 12px 24px -12px rgba(0,28,85,.35);transition:background .2s,transform .2s;}
+  .proj:hover{background:var(--card-hover);transform:translateY(-3px);}
+  .proj h3{font-size:1.2rem;font-weight:700;display:flex;align-items:center;gap:8px;overflow-wrap:anywhere;}
+  .proj h3::before{content:"▤";font-size:.9rem;opacity:.7;}
+  .proj p{margin-top:8px;font-size:.95rem;color:var(--navy);}
+  .proj-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:14px;}
+  .proj-foot .date{font-size:.88rem;color:#3d5175;}
+  .proj-foot .langs{display:flex;gap:6px;}
+  .proj-foot .langs span{font-size:.7rem;font-weight:800;padding:3px 6px;border-radius:4px;background:#fff;color:var(--navy);}
+  .center{display:flex;justify-content:center;}
+
+  /* ---------- contact ---------- */
+  .contact{display:grid;gap:32px;align-items:center;}
+  @media (min-width:880px){ .contact{grid-template-columns:1fr 1.2fr;} }
+  .contact .photo{width:min(320px,72vw);aspect-ratio:1/1;justify-self:center;border-radius:50%;overflow:hidden;box-shadow:var(--shadow);}
+  .contact .photo .img-placeholder{border-radius:50%;}
+  .contact .photo img{width:100%;height:100%;object-fit:cover;}
+  .contact h2{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;}
+  .contact p{margin-top:14px;color:var(--muted);font-size:clamp(1rem,1.8vw,1.2rem);}
+  .contact .addr{margin-top:18px;font-weight:600;color:var(--navy);}
+  .contact .addr a{overflow-wrap:anywhere;}
+  footer.site{text-align:center;padding:28px var(--pad) 40px;font-weight:600;color:var(--muted);font-size:.92rem;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-gh" viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></symbol>
+  <symbol id="i-yt" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13Zm2 .9V18h16V6.4l-8 6.1-8-6.1ZM5.6 6l6.4 4.9L18.4 6H5.6Z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.8l-5.3-6.9L4.8 22H1.7l8.1-9.3L1 2h7l4.8 6.3L18.9 2Zm-1.2 18h1.7L7.4 3.9H5.6L17.7 20Z"/></symbol>
+</svg>
+
+<header class="site" id="siteHeader">
+  <nav class="nav" aria-label="Primary">
+    <a class="logo" href="#top"><span class="br">&lt;</span><span class="sig">[Your Name]</span><span class="br">/&gt;</span></a>
+    <ul class="nav-links">
+      <li><a href="#top">Home</a></li>
+      <li><a href="#what">What I Do</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact Me</a></li>
+    </ul>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#top">Home</a>
+    <a href="#what">What I Do</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact Me</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===== Hero ===== -->
+  <section>
+    <div class="wrap hero">
+      <div>
+        <h1>[Your Name]</h1>
+        <p class="handle">( [your_handle] )</p>
+        <p class="hero-text">[One or two sentences on what drives your work — e.g. "A builder who loves
+          taking products end to end, from data models to the screen people use every day."]</p>
+        <div class="socials">
+          <a class="social s-gh" href="[https://github.com/your-handle]" aria-label="GitHub" target="_blank" rel="noopener"><svg><use href="#i-gh"/></svg></a>
+          <a class="social s-in" href="[https://www.linkedin.com/in/your-handle]" aria-label="LinkedIn" target="_blank" rel="noopener"><svg><use href="#i-in"/></svg></a>
+          <a class="social s-yt" href="[https://youtube.com/@your-handle]" aria-label="YouTube" target="_blank" rel="noopener"><svg><use href="#i-yt"/></svg></a>
+          <a class="social s-mail" href="mailto:[you@example.com]" aria-label="Email"><svg><use href="#i-mail"/></svg></a>
+          <a class="social s-x" href="[https://x.com/your-handle]" aria-label="X" target="_blank" rel="noopener"><svg><use href="#i-x"/></svg></a>
+        </div>
+        <a class="btn" href="#contact">★ [Primary call to action]</a>
+      </div>
+      <!-- Replace with a flat illustration or photo, 4:3. -->
+      <div class="hero-art"><div class="img-placeholder">Hero illustration (4:3)</div></div>
+    </div>
+  </section>
+
+  <!-- ===== What I do: alternating rows ===== -->
+  <section id="what" aria-labelledby="what-title">
+    <div class="wrap">
+      <h2 class="center-title" id="what-title">What I Do?</h2>
+
+      <div class="do-row">
+        <div class="do-art"><div class="img-placeholder">Illustration (4:3)</div></div>
+        <div>
+          <h3>[Area One — e.g. Data Science &amp; AI]</h3>
+          <div class="tech-row"><span class="tech">[PyTorch]</span><span class="tech">[TensorFlow]</span><span class="tech">[Python]</span><span class="tech">[scikit-learn]</span></div>
+          <ul class="bolts">
+            <li>[What you do in this area, as a short claim]</li>
+            <li>[Second thing you do in this area]</li>
+            <li>[Third thing you do in this area]</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="do-row flip">
+        <div class="do-art"><div class="img-placeholder">Illustration (4:3)</div></div>
+        <div>
+          <h3>[Area Two — e.g. Full Stack Development]</h3>
+          <div class="tech-row"><span class="tech">[HTML/CSS]</span><span class="tech">[JavaScript]</span><span class="tech">[React]</span><span class="tech">[Node.js]</span><span class="tech">[Flutter]</span></div>
+          <ul class="bolts">
+            <li>[What you do in this area, as a short claim]</li>
+            <li>[Second thing you do in this area]</li>
+            <li>[Third thing you do in this area]</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="do-row">
+        <div class="do-art"><div class="img-placeholder">Illustration (4:3)</div></div>
+        <div>
+          <h3>[Area Three — e.g. Cloud Infra-Architecture]</h3>
+          <div class="tech-row"><span class="tech">[GCP]</span><span class="tech">[AWS]</span><span class="tech">[Azure]</span><span class="tech">[Docker]</span><span class="tech">[Kubernetes]</span></div>
+          <ul class="bolts">
+            <li>[What you do in this area, as a short claim]</li>
+            <li>[Second thing you do in this area]</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="do-row flip">
+        <div class="do-art"><div class="img-placeholder">Illustration (4:3)</div></div>
+        <div>
+          <h3>[Area Four — e.g. UI/UX Design]</h3>
+          <div class="tech-row"><span class="tech">[Figma]</span><span class="tech">[Adobe XD]</span><span class="tech">[Illustrator]</span></div>
+          <ul class="bolts">
+            <li>[What you do in this area, as a short claim]</li>
+            <li>[Second thing you do in this area]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Experience ===== -->
+  <section id="experience" aria-labelledby="exp-title">
+    <div class="wrap">
+      <div class="page-head">
+        <div class="art"><div class="img-placeholder">Illustration (4:3)</div></div>
+        <div>
+          <h2 id="exp-title">Experience</h2>
+          <p>[One or two sentences summarising your career so far.]</p>
+        </div>
+      </div>
+      <div class="exp-list">
+        <article class="exp">
+          <div class="exp-logo">[A]</div>
+          <div>
+            <div class="exp-top"><div><h3>[Role]</h3><span class="co">[Company]</span></div><span class="when">[Jun 2022 – Present]</span></div>
+            <p>[Two sentences on what you owned and a real result.]</p>
+          </div>
+        </article>
+        <article class="exp">
+          <div class="exp-logo">[B]</div>
+          <div>
+            <div class="exp-top"><div><h3>[Role]</h3><span class="co">[Company]</span></div><span class="when">[Jan 2020 – May 2022]</span></div>
+            <p>[Two sentences on what you owned and a real result.]</p>
+          </div>
+        </article>
+        <article class="exp">
+          <div class="exp-logo">[C]</div>
+          <div>
+            <div class="exp-top"><div><h3>[Internship]</h3><span class="co">[Company]</span></div><span class="when">[Summer 2019]</span></div>
+            <p>[Two sentences on what you worked on.]</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Projects ===== -->
+  <section id="projects" aria-labelledby="proj-title">
+    <div class="wrap">
+      <div class="page-head">
+        <div class="art"><div class="img-placeholder">Illustration (4:3)</div></div>
+        <div>
+          <h2 id="proj-title">Projects</h2>
+          <p>[One or two sentences on the kind of projects you build and the tools you reach for.]</p>
+        </div>
+      </div>
+      <div class="proj-grid">
+        <a class="proj" href="[project-url]" target="_blank" rel="noopener">
+          <h3>[project-one]</h3>
+          <p>[One-line description of the project.]</p>
+          <div class="proj-foot"><span class="date">Created on [2024-03-13]</span><span class="langs"><span>PY</span></span></div>
+        </a>
+        <a class="proj" href="[project-url]" target="_blank" rel="noopener">
+          <h3>[project-two]</h3>
+          <p>[One-line description of the project.]</p>
+          <div class="proj-foot"><span class="date">Created on [2023-07-02]</span><span class="langs"><span>JS</span><span>CSS</span></span></div>
+        </a>
+        <a class="proj" href="[project-url]" target="_blank" rel="noopener">
+          <h3>[project-three]</h3>
+          <p>[One-line description of the project.]</p>
+          <div class="proj-foot"><span class="date">Created on [2022-11-26]</span><span class="langs"><span>TS</span></span></div>
+        </a>
+        <a class="proj" href="[project-url]" target="_blank" rel="noopener">
+          <h3>[project-four]</h3>
+          <p>[One-line description of the project.]</p>
+          <div class="proj-foot"><span class="date">Created on [2022-02-11]</span><span class="langs"><span>PY</span><span>JS</span></span></div>
+        </a>
+        <a class="proj" href="[project-url]" target="_blank" rel="noopener">
+          <h3>[project-five]</h3>
+          <p>[One-line description of the project.]</p>
+          <div class="proj-foot"><span class="date">Created on [2021-09-01]</span><span class="langs"><span>GO</span></span></div>
+        </a>
+        <a class="proj" href="[project-url]" target="_blank" rel="noopener">
+          <h3>[project-six]</h3>
+          <p>[One-line description of the project.]</p>
+          <div class="proj-foot"><span class="date">Created on [2021-01-01]</span><span class="langs"><span>JS</span></span></div>
+        </a>
+      </div>
+      <div class="center"><a class="btn" href="[https://github.com/your-handle]" target="_blank" rel="noopener">More Projects</a></div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="wrap contact">
+      <!-- Replace with <img src="assets/images/portrait.jpg" alt="[Your Name]"> (1:1). -->
+      <div class="photo"><div class="img-placeholder">Photo</div></div>
+      <div>
+        <h2 id="contact-title">Contact Me</h2>
+        <p>[One or two sentences inviting people to get in touch, and what you're happy to talk about.]</p>
+        <p class="addr">📍 [City, Country]<br>✉️ <a href="mailto:[you@example.com]">[you@example.com]</a></p>
+        <div class="socials">
+          <a class="social s-gh" href="[https://github.com/your-handle]" aria-label="GitHub" target="_blank" rel="noopener"><svg><use href="#i-gh"/></svg></a>
+          <a class="social s-in" href="[https://www.linkedin.com/in/your-handle]" aria-label="LinkedIn" target="_blank" rel="noopener"><svg><use href="#i-in"/></svg></a>
+          <a class="social s-mail" href="mailto:[you@example.com]" aria-label="Email"><svg><use href="#i-mail"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">© [Year] [Your Name]</footer>
+
+<script>
+  (function(){
+    var header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', function(){ header.classList.toggle('scrolled', window.scrollY > 8); }, {passive:true});
+    var btn = document.getElementById('menuBtn');
+    var menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', function(){
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
+    });
+  })();
+</script>
+</body>
+</html>

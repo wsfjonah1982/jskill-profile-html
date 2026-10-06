@@ -34,6 +34,25 @@ def load_credential(key_name: str) -> str:
     return value
 
 
+BUCKET_PLACEHOLDER = "your-bucket-name"
+
+
+def load_bucket(config: dict) -> str:
+    """The TOS bucket name. credential.json / $tos_bucket wins over config.json,
+    so the shipped config.json can carry a placeholder while the real bucket
+    stays in the gitignored credential.json."""
+    value, _ = describe_credential("tos_bucket")
+    if value == "...":  # unfilled credential_tmp.json copy
+        value = None
+    value = value or config.get("tos_bucket")
+    if not value or value == BUCKET_PLACEHOLDER:
+        raise KeyError(
+            f"No TOS bucket configured. Set `tos_bucket` in {CREDENTIAL_PATH.name} "
+            f"(or $tos_bucket, or config.json)."
+        )
+    return value
+
+
 def describe_credential(key_name: str) -> tuple[str | None, str]:
     """Non-raising counterpart to load_credential — returns (value, source)
     where source is 'credential.json', 'environment variable', or 'missing'.

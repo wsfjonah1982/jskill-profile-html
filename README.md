@@ -4,7 +4,7 @@ A library of single-page, fully responsive HTML templates, designed so a coding 
 person's or company's information — bio, résumé, services, business idea, product catalog, menu,
 or curriculum — into a finished, good-looking page automatically. Every template is one
 self-contained HTML file that adapts from a phone screen to a desktop without a separate mobile
-version. Beyond the 8 bio/portfolio templates below, the library also has three site-category
+version. Beyond the 14 bio/portfolio templates below, the library also has three site-category
 subskills under `categories/`: e-commerce stores, restaurants/cafes, and courses/coaching pages.
 
 **Publishing is the default, not an optional extra.** A finished page isn't just written to
@@ -59,11 +59,13 @@ themselves have no build step and no dependency on any of this — only the scri
 | `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers `write_content.py` imports |
 
 Copy `credential_tmp.json` to `credential.json` and fill in your own keys (`model_ark_key` for
-content writing; `tos_access_key_id` / `tos_secret_access_key` for publishing — omit whichever
-you don't need). For each key, `credential.json` is checked first; if it's missing or blank
-there, an environment variable of the **same name** is used instead (`model_ark_key`,
-`tos_access_key_id`, `tos_secret_access_key`) — handy for CI or a shared machine where you'd
-rather not put a real key in a file at all.
+content writing; `tos_access_key_id` / `tos_secret_access_key` / `tos_bucket` for publishing —
+omit whichever you don't need). For each key, `credential.json` is checked first; if it's missing
+or blank there, an environment variable of the **same name** is used instead (`model_ark_key`,
+`tos_access_key_id`, `tos_secret_access_key`, `tos_bucket`) — handy for CI or a shared machine
+where you'd rather not put a real key in a file at all. `config.json` ships with
+`"tos_bucket": "your-bucket-name"` as a placeholder, so your real bucket name stays in your own
+`credential.json` (or `$tos_bucket`).
 
 ## Get started
 
@@ -77,7 +79,7 @@ here] — or: "read _input/brief.md".
 
 ## Gallery
 
-All 8 templates, shown at desktop and mobile widths. Click any template name to open its folder.
+All 14 templates, shown at desktop and mobile widths. Click any template name to open its folder.
 
 ### [Minimal Professional](./templates/minimal-professional/)
 
@@ -160,6 +162,74 @@ All 8 templates, shown at desktop and mobile widths. Click any template name to 
 
 > Structured, serif-set CV page: timeline, publications, and a résumé-download button. Best for
 > academics, researchers, and job-seekers who need a dense, print-friendly page instead of a PDF.
+
+### [AI FDE Engineer](./templates/ai-fde-engineer/)
+
+<p>
+  <img src="./screenshots/ai-fde-engineer-desktop.png" width="70%" alt="AI FDE Engineer — desktop" />
+  <img src="./screenshots/ai-fde-engineer-mobile.png" width="24%" alt="AI FDE Engineer — mobile" />
+</p>
+
+> Carbon-and-lime engineer homepage: dark profile sidebar, glowing hero card, a numbered delivery
+> lifecycle, and chip-dense skill cards. Best for AI forward deployed engineers, solutions/field
+> engineers, and ML/infra ICs who want to show end-to-end delivery on one information-only page.
+
+### Developer portfolio styles
+
+The next five are fresh single-file rewrites of the visual style of popular templates from GitHub's
+[`portfolio-template`](https://github.com/topics/portfolio-template) topic. No code was copied;
+each `index.json` entry credits its source in `inspired_by`.
+
+### [Playful Dev Folio](./templates/playful-dev-folio/)
+
+<p>
+  <img src="./screenshots/playful-dev-folio-desktop.png" width="70%" alt="Playful Dev Folio — desktop" />
+  <img src="./screenshots/playful-dev-folio-mobile.png" width="24%" alt="Playful Dev Folio — mobile" />
+</p>
+
+> Montserrat-and-purple developer portfolio with a waving greeting, skill icons, proficiency bars,
+> brand-colored experience cards, and a light/dark toggle. Style from
+> [developerFolio](https://github.com/saadpasta/developerFolio).
+
+### [Mono Minimal Dev](./templates/mono-minimal-dev/)
+
+<p>
+  <img src="./screenshots/mono-minimal-dev-desktop.png" width="70%" alt="Mono Minimal Dev — desktop" />
+  <img src="./screenshots/mono-minimal-dev-mobile.png" width="24%" alt="Mono Minimal Dev — mobile" />
+</p>
+
+> All-monospace minimalist page with an oversized blue-name hero, titles-left section rows, numbered
+> project cards, and a dot timeline. Style from [devportfolio](https://github.com/RyanFitzgerald/devportfolio).
+
+### [Illustrated Sky Folio](./templates/illustrated-sky-folio/)
+
+<p>
+  <img src="./screenshots/illustrated-sky-folio-desktop.png" width="70%" alt="Illustrated Sky Folio — desktop" />
+  <img src="./screenshots/illustrated-sky-folio-mobile.png" width="24%" alt="Illustrated Sky Folio — mobile" />
+</p>
+
+> Pale sky-blue, navy-ink portfolio built around big illustrations, with alternating "What I Do?"
+> rows and light-blue project tiles. Style from [masterPortfolio](https://github.com/ashutosh1919/masterPortfolio).
+
+### [Bold Blue Folio](./templates/bold-blue-folio/)
+
+<p>
+  <img src="./screenshots/bold-blue-folio-desktop.png" width="70%" alt="Bold Blue Folio — desktop" />
+  <img src="./screenshots/bold-blue-folio-mobile.png" width="24%" alt="Bold Blue Folio — mobile" />
+</p>
+
+> Full-screen patterned blue hero, fixed social rail, laptop-mockup project rows, and a no-backend
+> contact form. Style from [Dopefolio](https://github.com/rammcodes/Dopefolio).
+
+### [GitHub Card Profile](./templates/github-card-profile/)
+
+<p>
+  <img src="./screenshots/github-card-profile-desktop.png" width="70%" alt="GitHub Card Profile — desktop" />
+  <img src="./screenshots/github-card-profile-mobile.png" width="24%" alt="GitHub Card Profile — mobile" />
+</p>
+
+> Dashboard-style profile with a left column of info cards and right-hand panels of repo,
+> publication, project, and article cards. Style from [gitprofile](https://github.com/arifszn/gitprofile).
 
 ## What makes these different from a slide-deck template
 

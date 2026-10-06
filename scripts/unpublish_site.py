@@ -4,7 +4,7 @@ mistake. Removes every object under the site's key prefix, via
 tos_client.py's plain-HTTP TOS4-HMAC-SHA256 signing — no vendor SDK.
 
 Usage:
-    python scripts/unpublish_site.py --slug jonah-wang-sofas
+    python scripts/unpublish_site.py --slug jane-doe-portfolio
 """
 import argparse
 import json
@@ -12,7 +12,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from credentials import load_credential
+from credentials import load_bucket, load_credential
 from tos_client import delete_object, list_objects
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -53,7 +53,7 @@ def main() -> int:
         config = load_config()
         endpoint = config["tos_endpoint"]
         region = config["tos_region"]
-        bucket = config["tos_bucket"]
+        bucket = load_bucket(config)
         key_prefix = config.get("tos_key_prefix_template", "site/manual/{slug}").replace("{slug}", args.slug)
 
         access_key = load_credential("tos_access_key_id")

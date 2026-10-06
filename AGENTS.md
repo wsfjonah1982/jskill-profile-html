@@ -310,7 +310,7 @@ same page, you succeeded. If it looks grafted on from elsewhere, redo it.
 ## 7. Output contract
 
 Write the finished page to `_output/<slug>/index.html` by default (`<slug>` = a short kebab-case
-name for this site, e.g. `jonah-wang-sofas`), with an `assets/` folder alongside it for any local
+name for this site, e.g. `jane-doe-portfolio`), with an `assets/` folder alongside it for any local
 images/videos copied in from `_input/` — unless the user has told you to put it somewhere else,
 in which case follow that instead. Hero previews (Step 6) can live in a `previews/` folder next
 to wherever you're building, they don't need to go in `_output/`.

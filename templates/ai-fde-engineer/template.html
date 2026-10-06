@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[Your Name] — AI Forward Deployed Engineer</title>
+<meta name="description" content="[One sentence: what you deploy, for whom, and the outcome — used by search engines and link previews.]">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#29db5b;
+    --green-bright:#29db5b;
+    --green-deep:#4e7c00;
+    --green-teal:#2f9e6e;
+    --green-lime:#cfe800;
+    --black:#0b0d09;
+    --carbon:#14180f;
+    --ink:#12161a;
+    --ink-soft:#4b5563;
+    --ink-muted:#6b7280;
+    --on-dark:#f3f6ee;
+    --on-dark-soft:#e6db74;
+    --surface:#ffffff;
+    --surface-2:#f4f7ef;
+    --chip:#f1f4ec;
+    --line:#e2e8d8;
+    --line-dark:#2b3322;
+    --accent-soft:rgba(41,219,91,.12);
+    --grad-nav:linear-gradient(120deg,var(--black) 0%,#1b2412 100%);
+    --grad-sidebar:linear-gradient(160deg,var(--carbon) 0%,#050704 100%);
+    --grad-hero:linear-gradient(150deg,#1c2a0c 0%,var(--carbon) 45%,#050704 100%);
+    --grad-btn:linear-gradient(135deg,var(--green),var(--green-deep));
+    --grad-bar:linear-gradient(90deg,var(--green-bright),var(--green-teal));
+    --shadow-sm:0 1px 2px rgba(11,13,9,.06),0 1px 3px rgba(11,13,9,.1);
+    --shadow-lg:0 12px 24px -6px rgba(11,13,9,.14),0 6px 12px -8px rgba(11,13,9,.1);
+    --radius:14px;
+    --radius-sm:10px;
+    --radius-lg:20px;
+    --sidebar:280px;
+    --main-max:900px;
+    --pad:clamp(16px,4vw,40px);
+    --mono:'JetBrains Mono',ui-monospace,Consolas,'Courier New',monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:72px;}
+  body{
+    margin:0;background:var(--surface-2);color:var(--ink);
+    font-family:var(--mono);
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:var(--mono);line-height:1.15;margin:0;}
+  p{margin:0;}
+  a{color:inherit;}
+  img{max-width:100%;height:auto;display:block;}
+  .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;}
+
+  /* ---------- top nav ---------- */
+  header.site{position:sticky;top:0;z-index:50;background:var(--grad-nav);border-bottom:1px solid var(--line-dark);}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1400px;margin:0 auto;padding:8px var(--pad);min-height:58px;}
+  .brand{font-family:var(--mono);font-weight:900;color:var(--green-bright);text-decoration:none;font-size:1.05rem;}
+  .nav-links{display:none;list-style:none;margin:0;padding:0;gap:6px;}
+  .nav-links a{
+    display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid transparent;
+    color:#e6ebde;text-decoration:none;font-size:.85rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+    transition:all .25s cubic-bezier(.4,0,.2,1);
+  }
+  .nav-links a:hover{color:var(--green-bright);}
+  .nav-links a.active{color:var(--green-bright);background:rgba(41,219,91,.14);border-color:rgba(41,219,91,.45);}
+  .menu-btn{width:44px;height:44px;border-radius:10px;border:1px solid var(--line-dark);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{content:"";display:block;width:18px;height:2px;background:var(--on-dark);position:relative;}
+  .menu-btn span::before{position:absolute;top:-6px;}
+  .menu-btn span::after{position:absolute;top:6px;}
+  #mobile-menu{display:none;flex-direction:column;padding:4px var(--pad) 14px;}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{color:var(--on-dark);text-decoration:none;padding:12px 4px;font-weight:600;font-size:.95rem;border-top:1px solid var(--line-dark);}
+  @media (min-width:900px){
+    .brand{display:none;}
+    .nav{justify-content:center;}
+    .nav-links{display:flex;}
+    .menu-btn{display:none;}
+    #mobile-menu{display:none !important;}
+  }
+
+  /* ---------- shell: sidebar + main ---------- */
+  .shell{margin:0;}
+  @media (min-width:1024px){
+    .shell{display:grid;grid-template-columns:var(--sidebar) 1fr;}
+    .shell > *{min-width:0;}
+  }
+
+  .sidebar{background:var(--grad-sidebar);color:var(--on-dark);text-align:center;padding:40px 20px 36px;}
+  @media (min-width:1024px){
+    .sidebar-inner{position:sticky;top:98px;}
+  }
+  .portrait{
+    width:120px;aspect-ratio:2/3;margin:0 auto 26px;border-radius:999px;overflow:hidden;
+    border:4px solid #2f3627;box-shadow:0 0 0 1px rgba(41,219,91,.25),0 12px 30px rgba(0,0,0,.45);
+    background:#1d2316;
+  }
+  .portrait img{width:100%;height:100%;object-fit:cover;}
+  .img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#5f6b52;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+  .side-name{font-size:1.8rem;font-weight:700;color:var(--green);}
+  .side-role{margin-top:10px;font-size:1.05rem;font-weight:700;color:var(--green-bright);line-height:1.45;padding-bottom:16px;border-bottom:1px solid #3a4430;}
+  .side-bio{margin-top:16px;font-size:.95rem;color:#d7ddcf;line-height:1.6;}
+  .side-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 6px;margin-top:22px;}
+  .side-tag{font-size:.74rem;font-weight:700;color:var(--green-bright);border:1px solid rgba(41,219,91,.5);background:rgba(41,219,91,.08);border-radius:999px;padding:3px 10px;}
+  .side-social{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:26px;}
+  .social-btn{
+    display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;
+    background:#23281e;border:1px solid #3a4430;color:var(--on-dark);text-decoration:none;font-weight:600;font-size:.95rem;
+    transition:all .25s cubic-bezier(.4,0,.2,1);
+  }
+  .social-btn:hover{border-color:var(--green);color:var(--green-bright);}
+  .social-btn svg{width:17px;height:17px;fill:currentColor;}
+
+  .main{background:var(--surface);padding:clamp(28px,5vw,60px) var(--pad) clamp(48px,6vw,72px);}
+  @media (min-width:1024px){
+    .main{min-height:calc(100vh - 58px);}
+  }
+  .main-inner{max-width:var(--main-max);margin:0 auto;}
+  .main-inner > section + section{margin-top:clamp(36px,5vw,48px);}
+
+  /* ---------- hero card ---------- */
+  .hero{
+    position:relative;overflow:hidden;background:var(--grad-hero);color:var(--on-dark);
+    border-radius:var(--radius-lg);border:1px solid #23301a;box-shadow:var(--shadow-lg);
+    padding:clamp(24px,4.5vw,40px) clamp(18px,4vw,38px);
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:linear-gradient(rgba(41,219,91,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(41,219,91,.05) 1px,transparent 1px);
+    background-size:48px 48px;
+    -webkit-mask-image:linear-gradient(160deg,#000 0%,transparent 70%);mask-image:linear-gradient(160deg,#000 0%,transparent 70%);
+  }
+  .hero > *{position:relative;}
+  .hero-pill{display:inline-block;color:var(--green-bright);border:1px solid rgba(41,219,91,.55);background:rgba(41,219,91,.1);border-radius:999px;padding:7px 14px;line-height:1.5;}
+  .hero h1{margin-top:18px;font-size:clamp(2.2rem,6vw,3.3rem);font-weight:700;color:var(--green-bright);letter-spacing:-.01em;}
+  .hero-lede{margin-top:18px;font-size:clamp(1.05rem,2.2vw,1.35rem);font-weight:500;color:#fff;line-height:1.5;}
+  .hero-sub{margin-top:18px;max-width:62ch;color:var(--on-dark-soft);font-size:clamp(.95rem,1.6vw,1.02rem);}
+  .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px;}
+  @media (min-width:720px){ .stats{grid-template-columns:repeat(4,minmax(0,1fr));} }
+  .stat{border:1px solid #2c3523;background:rgba(255,255,255,.025);border-radius:var(--radius-sm);padding:14px 16px;}
+  .stat b{display:block;font-family:var(--mono);font-size:clamp(.95rem,1.7vw,1.25rem);overflow-wrap:anywhere;color:var(--green-bright);line-height:1.25;}
+  .stat span{display:block;margin-top:4px;font-size:.74rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:#9aa38e;line-height:1.4;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:var(--radius-sm);
+    font-family:var(--mono);font-weight:700;font-size:1.02rem;text-decoration:none;transition:all .25s cubic-bezier(.4,0,.2,1);
+  }
+  .btn-solid{background:var(--grad-btn);color:#fff;box-shadow:0 6px 18px -6px rgba(41,219,91,.6);}
+  .btn-solid:hover{filter:brightness(1.1);}
+  .btn-ghost{border:1px solid rgba(41,219,91,.55);color:var(--green-bright);}
+  .btn-ghost:hover{background:rgba(41,219,91,.1);}
+  @media (max-width:520px){ .btn{width:100%;justify-content:flex-start;} }
+
+  /* ---------- chip panel ---------- */
+  .panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);padding:clamp(18px,3vw,26px);}
+  .panel .eyebrow{color:var(--ink-muted);}
+  .pill-row{display:flex;flex-wrap:wrap;gap:10px 8px;margin-top:14px;}
+  .pill{font-size:.9rem;font-weight:500;color:var(--green-deep);background:var(--accent-soft);border:1px solid rgba(41,219,91,.35);border-radius:999px;padding:6px 14px;}
+
+  /* ---------- section heads ---------- */
+  .section-title{font-size:clamp(1.55rem,3.4vw,1.95rem);font-weight:700;color:var(--ink);}
+  .section-title::after{content:"";display:block;width:80px;height:4px;border-radius:4px;background:var(--grad-bar);margin-top:10px;}
+  .section-intro{margin-top:16px;max-width:62ch;color:var(--ink-soft);font-size:1rem;}
+
+  /* ---------- lifecycle strip ---------- */
+  .strip{
+    margin-top:24px;background:var(--grad-sidebar);border-radius:var(--radius);padding:18px clamp(12px,3vw,28px);
+    display:flex;align-items:flex-start;gap:6px;overflow-x:auto;scrollbar-width:thin;
+  }
+  .strip-step{flex:1 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:#fff;min-width:78px;padding:2px 4px;}
+  .strip-step .n{font-size:.68rem;font-weight:700;color:var(--green);letter-spacing:.06em;}
+  .strip-step .ico{width:34px;height:34px;border-radius:50%;background:#262d1e;border:1px solid #3a4430;display:flex;align-items:center;justify-content:center;transition:all .25s;}
+  .strip-step:hover .ico{border-color:var(--green);background:#2f3a20;}
+  .strip-step .lbl{font-size:.8rem;font-weight:600;white-space:nowrap;}
+  .strip-dash{flex:0 0 14px;height:2px;background:var(--green-deep);margin-top:40px;border-radius:2px;}
+  .ico svg{width:17px;height:17px;stroke:var(--green-bright);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* ---------- lifecycle timeline ---------- */
+  .timeline{list-style:none;margin:28px 0 0;padding:0;position:relative;}
+  .stage{position:relative;display:grid;grid-template-columns:44px 1fr;gap:14px;padding-bottom:18px;}
+  .stage::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:linear-gradient(var(--green),rgba(41,219,91,.25));}
+  .stage:last-child::before{display:none;}
+  .stage-num{
+    width:44px;height:44px;border-radius:50%;border:2px solid var(--green);background:#fff;color:var(--green-deep);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;box-shadow:0 0 0 5px var(--accent-soft);
+  }
+  .stage-card{border:1px solid var(--line);border-left:3px solid var(--green);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);padding:clamp(16px,2.6vw,22px);min-width:0;}
+  .stage-head{display:flex;align-items:center;gap:10px;}
+  .stage-head .ico{width:28px;height:28px;flex:0 0 28px;border-radius:8px;background:var(--accent-soft);border:none;display:flex;align-items:center;justify-content:center;}
+  .stage-head .ico svg{stroke:var(--green-deep);width:16px;height:16px;}
+  .stage-card h3{font-size:1.12rem;font-weight:700;}
+  .stage-card .why{margin-top:6px;color:var(--ink-soft);font-size:.97rem;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px 6px;margin-top:14px;}
+  .chip{font-size:.8rem;font-weight:500;color:#2b3324;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:4px 10px;}
+  .proven{display:flex;align-items:flex-start;gap:10px;margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-size:.93rem;color:var(--ink-soft);}
+  .proven-tag{flex:0 0 auto;font-size:.66rem;font-weight:700;letter-spacing:.12em;color:var(--green-deep);background:var(--accent-soft);border:1px solid rgba(41,219,91,.45);border-radius:999px;padding:3px 9px;margin-top:2px;}
+  .loop-note{margin-top:8px;border:1px dashed rgba(41,219,91,.6);background:rgba(41,219,91,.08);border-radius:var(--radius-sm);padding:14px 16px;color:var(--green-deep);font-weight:600;font-size:.95rem;}
+
+  /* ---------- skills grid ---------- */
+  .skills{display:grid;grid-template-columns:1fr;gap:18px;margin-top:24px;}
+  @media (min-width:760px){ .skills{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  .skill{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);padding:24px 22px 22px;overflow:hidden;}
+  .skill::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--bar,var(--grad-bar));}
+  .skill:nth-child(6n+1){--bar:linear-gradient(90deg,var(--green-deep),var(--green));--chip-line:var(--green-deep);}
+  .skill:nth-child(6n+2){--bar:linear-gradient(90deg,var(--green-teal),var(--green-bright));--chip-line:var(--green-teal);}
+  .skill:nth-child(6n+3){--bar:linear-gradient(90deg,#1f8a9e,var(--green));--chip-line:#1f8a9e;}
+  .skill:nth-child(6n+4){--bar:linear-gradient(90deg,var(--green),var(--green-lime));--chip-line:var(--green-bright);}
+  .skill:nth-child(6n+5){--bar:linear-gradient(90deg,var(--green-bright),var(--green));--chip-line:var(--green);}
+  .skill:nth-child(6n+6){--bar:linear-gradient(90deg,var(--carbon),var(--green));--chip-line:var(--carbon);}
+  .skill-head{display:flex;align-items:center;gap:12px;}
+  .skill-head .ico{width:40px;height:40px;flex:0 0 40px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
+  .skill-head .ico svg{stroke:var(--green-deep);width:20px;height:20px;}
+  .skill h3{font-size:1.18rem;font-weight:700;}
+  .skill p{margin-top:14px;color:var(--ink-soft);font-size:.96rem;}
+  .skill .chip-row{margin-top:16px;}
+  .skill .chip{font-weight:600;color:#2b3324;border-bottom:2px solid var(--chip-line,var(--green));}
+
+  /* ---------- outcomes ---------- */
+  .outcomes{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
+  .outcome{display:grid;grid-template-columns:1fr;gap:10px;align-items:start;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;transition:border-color .25s;}
+  .outcome:hover{border-left-color:var(--green);}
+  @media (min-width:640px){ .outcome{grid-template-columns:120px 1fr;gap:18px;} }
+  .outcome-label{align-self:start;justify-self:start;font-weight:700;color:var(--ink);line-height:1.5;background:linear-gradient(90deg,var(--surface-2),transparent);border-radius:6px;padding:4px 10px;}
+  .outcome p{color:var(--ink-soft);font-size:.98rem;}
+
+  /* ---------- contact + footer ---------- */
+  .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin-top:22px;}
+  .contact-link{
+    display:flex;flex-direction:column;justify-content:center;min-height:64px;padding:12px 16px;border:1px solid var(--line);border-radius:var(--radius-sm);
+    text-decoration:none;color:var(--ink);background:var(--surface);transition:all .25s;overflow-wrap:anywhere;
+  }
+  .contact-link:hover{border-color:var(--green);box-shadow:var(--shadow-sm);}
+  .contact-link .eyebrow{color:var(--ink-muted);font-size:.66rem;}
+  .contact-link b{margin-top:2px;font-weight:600;font-size:.97rem;}
+  footer.site{text-align:center;color:var(--ink-muted);font-size:.85rem;padding:24px var(--pad) 32px;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="#top">[Your Name]</a>
+    <ul class="nav-links">
+      <li><a href="#top" class="active">Home</a></li>
+      <li><a href="#lifecycle">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#outcomes">Outcomes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+  </nav>
+  <div id="mobile-menu">
+    <a href="#top">Home</a>
+    <a href="#lifecycle">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#outcomes">Outcomes</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<div class="shell" id="top">
+
+  <!-- ===== Sidebar: portrait, name, role, short bio, focus tags, social ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="portrait">
+        <!-- Replace with <img src="assets/images/portrait.jpg" alt="[Your Name]"> — fit to 2:3 -->
+        <div class="img-placeholder">Photo</div>
+      </div>
+      <h2 class="side-name">[Your Name]</h2>
+      <p class="side-role">AI Forward Deployed Engineer</p>
+      <p class="side-bio">[Two or three sentences: the kind of customers you embed with, what you ship
+        for them, and where you work now — e.g. "Turning frontier models into production systems
+        inside enterprise teams. Currently at [Company]."]</p>
+      <div class="side-tags">
+        <span class="side-tag">LLM Apps</span>
+        <span class="side-tag">Agents</span>
+        <span class="side-tag">RAG</span>
+        <span class="side-tag">Evals</span>
+        <span class="side-tag">Customer Delivery</span>
+        <span class="side-tag">[Your Domain]</span>
+      </div>
+      <div class="side-social">
+        <a class="social-btn" href="[https://github.com/your-handle]" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>GitHub</a>
+        <a class="social-btn" href="[https://www.linkedin.com/in/your-handle]" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== Main column ===== -->
+  <main class="main">
+    <div class="main-inner">
+
+      <!-- Hero card -->
+      <section class="hero" aria-labelledby="hero-name">
+        <span class="hero-pill eyebrow">AI Forward Deployed Engineer · [Seniority / Focus]</span>
+        <h1 id="hero-name">[Your Name]</h1>
+        <p class="hero-lede">[One-line value proposition — e.g. "I embed with customer teams and take
+          AI from a promising demo to a system their business actually runs on."]</p>
+        <p class="hero-sub">[Two sentences of context: current role and company, the customers or
+          industries you work with, and what you did before.]</p>
+        <!-- Exactly the user's real headline facts — 2 to 4 tiles. Remove a tile rather than invent a number. -->
+        <div class="stats">
+          <div class="stat"><b>[Agents]</b><span>[What you build]</span></div>
+          <div class="stat"><b>[RAG · Evals]</b><span>[How you make it reliable]</span></div>
+          <div class="stat"><b>[N] deployments</b><span>[Real count, or remove]</span></div>
+          <div class="stat"><b>[N]+ yrs</b><span>[Shipping to customers]</span></div>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-solid" href="#contact">Get in touch</a>
+          <a class="btn btn-ghost" href="#outcomes">Selected outcomes</a>
+        </div>
+      </section>
+
+      <!-- Stack chip panel -->
+      <section class="panel" aria-label="Models and platforms">
+        <span class="eyebrow">Models &amp; Platforms</span>
+        <div class="pill-row">
+          <span class="pill">[Model family A]</span>
+          <span class="pill">[Model family B]</span>
+          <span class="pill">[Open-weight models]</span>
+          <span class="pill">[Cloud AI platform]</span>
+          <span class="pill">[Vector database]</span>
+          <span class="pill">[Agent framework]</span>
+          <span class="pill">[Orchestration / workflow]</span>
+          <span class="pill">[Observability / evals tool]</span>
+        </div>
+      </section>
+
+      <!-- Delivery lifecycle -->
+      <section id="lifecycle" aria-labelledby="lifecycle-title">
+        <h2 class="section-title" id="lifecycle-title">Projects</h2>
+        <p class="section-intro">[One or two sentences on how you work — e.g. "From the first discovery
+          call to a system the customer's own team owns. I work every stage, not just the prototype."]</p>
+
+        <nav class="strip" aria-label="Lifecycle stages">
+          <a class="strip-step" href="#stage-1"><span class="n">01</span><span class="ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><span class="lbl">Discovery</span></a>
+          <span class="strip-dash" aria-hidden="true"></span>
+          <a class="strip-step" href="#stage-2"><span class="n">02</span><span class="ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><span class="lbl">Data access</span></a>
+          <span class="strip-dash" aria-hidden="true"></span>
+          <a class="strip-step" href="#stage-3"><span class="n">03</span><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/></svg></span><span class="lbl">Prototype</span></a>
+          <span class="strip-dash" aria-hidden="true"></span>
+          <a class="strip-step" href="#stage-4"><span class="n">04</span><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span><span class="lbl">Evaluation</span></a>
+          <span class="strip-dash" aria-hidden="true"></span>
+          <a class="strip-step" href="#stage-5"><span class="n">05</span><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span class="lbl">Integration</span></a>
+          <span class="strip-dash" aria-hidden="true"></span>
+          <a class="strip-step" href="#stage-6"><span class="n">06</span><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.1 2.1 0 0 0-2.9-.1Z"/><path d="M12 15l-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2Z"/></svg></span><span class="lbl">Production</span></a>
+          <span class="strip-dash" aria-hidden="true"></span>
+          <a class="strip-step" href="#stage-7"><span class="n">07</span><span class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><span class="lbl">Handoff</span></a>
+        </nav>
+
+        <!-- One <li class="stage"> per stage. Keep the "Proven" line only for a real, specific
+             result the user gave you — delete the whole .proven div otherwise. -->
+        <ol class="timeline">
+          <li class="stage" id="stage-1">
+            <span class="stage-num">01</span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><h3>Discovery &amp; Scoping</h3></div>
+              <p class="why">Find the workflow where AI changes the outcome, and agree on what "done" means.</p>
+              <div class="chip-row">
+                <span class="chip">Stakeholder interviews</span><span class="chip">Workflow mapping</span>
+                <span class="chip">Use-case triage</span><span class="chip">Success metrics</span>
+                <span class="chip">ROI &amp; cost model</span>
+              </div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real scoping result.]</span></div>
+            </div>
+          </li>
+          <li class="stage" id="stage-2">
+            <span class="stage-num">02</span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><h3>Data Access &amp; Readiness</h3></div>
+              <p class="why">Get to the customer's real data, safely, and shape it into something a model can use.</p>
+              <div class="chip-row">
+                <span class="chip">Connectors &amp; ETL</span><span class="chip">Document parsing</span>
+                <span class="chip">Chunking &amp; embeddings</span><span class="chip">PII redaction</span>
+                <span class="chip">Access controls</span>
+              </div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real data-readiness result.]</span></div>
+            </div>
+          </li>
+          <li class="stage" id="stage-3">
+            <span class="stage-num">03</span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/></svg></span><h3>Prototype</h3></div>
+              <p class="why">Something the customer can click on within days, not a slide about it.</p>
+              <div class="chip-row">
+                <span class="chip">Prompt design</span><span class="chip">RAG pipelines</span>
+                <span class="chip">Tool use / function calling</span><span class="chip">Agent loops</span>
+                <span class="chip">Rapid UI</span>
+              </div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real prototype result.]</span></div>
+            </div>
+          </li>
+          <li class="stage" id="stage-4">
+            <span class="stage-num">04</span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span><h3>Evaluation &amp; Guardrails</h3></div>
+              <p class="why">Measure quality on the customer's own cases before anyone trusts it.</p>
+              <div class="chip-row">
+                <span class="chip">Golden datasets</span><span class="chip">LLM-as-judge</span>
+                <span class="chip">Regression evals</span><span class="chip">Red-teaming</span>
+                <span class="chip">Hallucination checks</span><span class="chip">Policy guardrails</span>
+              </div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real evaluation result.]</span></div>
+            </div>
+          </li>
+          <li class="stage" id="stage-5">
+            <span class="stage-num">05</span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><h3>Integration &amp; Security</h3></div>
+              <p class="why">Fit into the systems, identity, and compliance rules the customer already has.</p>
+              <div class="chip-row">
+                <span class="chip">APIs &amp; webhooks</span><span class="chip">SSO / RBAC</span>
+                <span class="chip">VPC / private deploy</span><span class="chip">Audit logging</span>
+                <span class="chip">Data residency</span>
+              </div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real integration result.]</span></div>
+            </div>
+          </li>
+          <li class="stage" id="stage-6">
+            <span class="stage-num">06</span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.1 2.1 0 0 0-2.9-.1Z"/><path d="M12 15l-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2Z"/></svg></span><h3>Production &amp; Scale</h3></div>
+              <p class="why">Serve real users at a latency and cost the business signs off on.</p>
+              <div class="chip-row">
+                <span class="chip">Model routing</span><span class="chip">Caching &amp; batching</span>
+                <span class="chip">Latency budgets</span><span class="chip">Cost per task</span>
+                <span class="chip">Tracing &amp; monitoring</span><span class="chip">Incident response</span>
+              </div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real production result.]</span></div>
+            </div>
+          </li>
+          <li class="stage" id="stage-7">
+            <span class="stage-num">07</span>
+            <div class="stage-card">
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><h3>Adoption &amp; Handoff</h3></div>
+              <p class="why">Leave a system the customer's team understands, owns, and extends without you.</p>
+              <div class="chip-row">
+                <span class="chip">User training</span><span class="chip">Runbooks</span>
+                <span class="chip">Feedback loops</span><span class="chip">Product feedback to R&amp;D</span>
+                <span class="chip">Reusable playbooks</span>
+              </div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real adoption result.]</span></div>
+            </div>
+          </li>
+        </ol>
+        <p class="loop-note">Field feedback flows back into the product and the next discovery — the lifecycle is a loop, not a line.</p>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills" aria-labelledby="skills-title">
+        <h2 class="section-title" id="skills-title">Skills</h2>
+        <div class="skills">
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg></span><h3>LLM Application Engineering</h3></div>
+            <p>[One or two sentences on the applications you build and the standard you hold them to.]</p>
+            <div class="chip-row">
+              <span class="chip">Prompt engineering</span><span class="chip">Structured outputs</span>
+              <span class="chip">Function calling</span><span class="chip">Context management</span>
+              <span class="chip">Streaming UX</span><span class="chip">[Your skill]</span>
+            </div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><path d="M6 7l4 3M18 7l-4 3M6 17l4-3M18 17l-4-3"/></svg></span><h3>Agents &amp; Retrieval</h3></div>
+            <p>[One or two sentences on the agentic and retrieval systems you design and run.]</p>
+            <div class="chip-row">
+              <span class="chip">Agentic workflows</span><span class="chip">Multi-agent orchestration</span>
+              <span class="chip">MCP / tool servers</span><span class="chip">Hybrid search</span>
+              <span class="chip">Re-ranking</span><span class="chip">Memory design</span>
+            </div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><h3>Evaluation &amp; Quality</h3></div>
+            <p>[One or two sentences on how you prove a system is good enough to ship.]</p>
+            <div class="chip-row">
+              <span class="chip">Eval harnesses</span><span class="chip">Golden sets</span>
+              <span class="chip">LLM-as-judge</span><span class="chip">A/B testing</span>
+              <span class="chip">Red-teaming</span><span class="chip">Fine-tuning (SFT / LoRA)</span>
+            </div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M18 10h-1.3A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10Z"/></svg></span><h3>Cloud &amp; Production Infra</h3></div>
+            <p>[One or two sentences on the infrastructure you deploy onto and operate.]</p>
+            <div class="chip-row">
+              <span class="chip">Python / TypeScript</span><span class="chip">Docker &amp; Kubernetes</span>
+              <span class="chip">Terraform</span><span class="chip">Serverless</span>
+              <span class="chip">Observability</span><span class="chip">CI/CD</span>
+            </div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></span><h3>Enterprise Security &amp; Compliance</h3></div>
+            <p>[One or two sentences on working inside regulated or security-conscious customers.]</p>
+            <div class="chip-row">
+              <span class="chip">SSO / RBAC</span><span class="chip">PII handling</span>
+              <span class="chip">Private networking</span><span class="chip">Audit trails</span>
+              <span class="chip">SOC 2 / ISO 27001</span><span class="chip">GDPR</span>
+            </div>
+          </article>
+          <article class="skill">
+            <div class="skill-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span><h3>Customer &amp; Delivery</h3></div>
+            <p>[One or two sentences on the people side — who you work with and how you keep projects moving.]</p>
+            <div class="chip-row">
+              <span class="chip">Technical discovery</span><span class="chip">Executive demos</span>
+              <span class="chip">Solution architecture</span><span class="chip">Workshops</span>
+              <span class="chip">Stakeholder management</span><span class="chip">Technical writing</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Selected outcomes: 2–5 real results only. Remove rows rather than invent one. -->
+      <section id="outcomes" aria-labelledby="outcomes-title">
+        <h2 class="section-title" id="outcomes-title">Selected outcomes</h2>
+        <div class="outcomes">
+          <div class="outcome"><span class="outcome-label">[Short label]</span><p>[A real result: what you built, for which kind of customer, and what changed because of it.]</p></div>
+          <div class="outcome"><span class="outcome-label">[Short label]</span><p>[A real result: what you built, for which kind of customer, and what changed because of it.]</p></div>
+          <div class="outcome"><span class="outcome-label">[Short label]</span><p>[A real result: what you built, for which kind of customer, and what changed because of it.]</p></div>
+          <div class="outcome"><span class="outcome-label">[Short label]</span><p>[A real result: what you built, for which kind of customer, and what changed because of it.]</p></div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" aria-labelledby="contact-title">
+        <h2 class="section-title" id="contact-title">Contact</h2>
+        <p class="section-intro">[One line on what you're open to — e.g. "Open to conversations about deploying AI with enterprise teams."]</p>
+        <div class="contact-grid">
+          <a class="contact-link" href="mailto:[you@example.com]"><span class="eyebrow">Email</span><b>[you@example.com]</b></a>
+          <a class="contact-link" href="[https://www.linkedin.com/in/your-handle]" target="_blank" rel="noopener"><span class="eyebrow">LinkedIn</span><b>[linkedin.com/in/your-handle]</b></a>
+          <a class="contact-link" href="[https://github.com/your-handle]" target="_blank" rel="noopener"><span class="eyebrow">GitHub</span><b>[github.com/your-handle]</b></a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<footer class="site">© [Year] [Your Name]</footer>
+
+<script>
+  (function(){
+    var btn = document.getElementById('menuBtn');
+    var menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', function(){
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    menu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+</body>
+</html>

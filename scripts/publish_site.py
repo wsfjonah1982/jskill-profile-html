@@ -3,7 +3,7 @@ object storage, public-read — via tos_client.py's plain-HTTP TOS4-HMAC-SHA256
 signing, no vendor SDK.
 
 Usage:
-    python scripts/publish_site.py --dir _output/jonah-wang-sofas --slug jonah-wang-sofas
+    python scripts/publish_site.py --dir _output/jane-doe-portfolio --slug jane-doe-portfolio
 
 Prints the public URL to stdout on success (the index file, per --index-name).
 """
@@ -14,7 +14,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from credentials import load_credential
+from credentials import load_bucket, load_credential
 from tos_client import put_object
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -70,7 +70,7 @@ def main() -> int:
         config = load_config()
         endpoint = config["tos_endpoint"]
         region = config["tos_region"]
-        bucket = config["tos_bucket"]
+        bucket = load_bucket(config)
         key_prefix = config.get("tos_key_prefix_template", "site/manual/{slug}").replace("{slug}", args.slug)
 
         access_key, secret_key = load_tos_credentials()

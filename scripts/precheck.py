@@ -17,7 +17,7 @@ from pathlib import Path
 
 import requests
 
-from credentials import describe_credential
+from credentials import describe_credential, load_bucket
 from tos_client import delete_object, put_object
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -64,7 +64,7 @@ def check_publish() -> bool:
 
     try:
         config = load_config()
-        endpoint, region, bucket = config["tos_endpoint"], config["tos_region"], config["tos_bucket"]
+        endpoint, region, bucket = config["tos_endpoint"], config["tos_region"], load_bucket(config)
     except Exception as exc:
         print(f"  FAILED — couldn't read TOS settings from config.json: {exc}")
         return False
