@@ -322,8 +322,9 @@ no separate mobile template, no server-side device detection. Before finishing, 
 - [ ] Text contrast: body text and button text meet ~4.5:1 against their background — check
       again after any `--accent` change, and re-run `python scripts/theme_fallbacks.py <file>` so
       older browsers get the new colours too.
-- [ ] No leftover placeholders: `grep -nE '\[[A-Z][^]<>"]{1,80}\]' _output/<slug>/index.html`
-      should print nothing. Every `[Bracketed]` demo text is replaced or its block removed.
+- [ ] No leftover placeholders: `grep -nE '\[[A-Z][^]<>"]{1,200}\]' _output/<slug>/index.html`
+      should print nothing. Every `[Bracketed]` demo text is replaced or its block removed,
+      including long ones in `<head>` such as the meta description.
 - [ ] Actually check it at a phone width (375–414px) and a desktop width (1280px+) before
       declaring the page done, using whatever preview capability this environment already
       provides (a browser tool, an IDE live preview, or manual resize in any browser). The skill
