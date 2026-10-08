@@ -1,22 +1,36 @@
-# Agent Instructions — Course / Coaching Subskill
+# Education (Courses / Coaching)
 
-You are an agent working with the **course** category of the profile-html-templates library.
-Your job is to take an online course, cohort program, or coaching offer and turn it into a
-**single, finished, responsive HTML page** with a working curriculum accordion and testimonial
-carousel — by picking one of this folder's 2 templates, cloning it, and filling in the real
-content and data.
+Pages for an online course, cohort program, or coaching offer: one finished, responsive HTML page
+with a working curriculum accordion and testimonial carousel.
 
-This document is scoped to courses/coaching. For rules that don't change per category — the
-writing copy and marking sample content, the responsive checklist, the no-fabricated-proof-points
-rule, and the output contract — defer to the root `../../AGENTS.md` §3.1, §4, §6, and §7 rather
-than re-reading them here.
+This guide covers what's specific to courses and coaching. For everything shared (precheck,
+§3.1 sample content, §4 responsive checklist, §6 no fabricated proof points, §7 output
+contract), follow the root [`../../AGENTS.md`](../../AGENTS.md).
 
 ---
 
-## 1. Intake — ask for this before picking a template
+## 1. Design
 
-Per root AGENTS.md Step 1, check `_input/brief.md`'s `## If Course / Coaching` block and
-`_input/images/` first — only ask what's missing or ambiguous from the list below:
+A course page sells a transformation, so the design leads with the outcome and makes the
+curriculum easy to scan.
+
+- **Outcome first.** The hero states what someone will be able to do after finishing, then an
+  outcomes card row backs it up.
+- **The curriculum is the product.** Modules sit in an accordion so a long syllabus stays short
+  on a phone. Keep module titles short and benefit-led.
+- **The instructor builds trust.** Give them a bio section with real credentials and a photo if
+  there is one.
+- **Social proof, but only real.** The testimonial carousel shows real quotes. With none, it
+  keeps the 2 generic placeholders and the handoff says so.
+- **One enrol path.** Price, cohort dates or deadlines, and a single Enrol button. The hero CTA
+  scrolls to that panel.
+- **Formality follows the payer.** Friendly and rounded for individuals, navy and structured
+  when an employer buys seats.
+
+## 2. Content
+
+Check `_input/brief.md`'s `## If Education (Course / Coaching)` block and `_input/images/` first (root
+Step 1). Ask only what's missing or ambiguous from the list below:
 
 > "A few questions before I build your course page:
 > 1. **Course/program name**, and the one-line outcome promise (what will someone be able to do
@@ -29,10 +43,11 @@ Per root AGENTS.md Step 1, check `_input/brief.md`'s `## If Course / Coaching` b
 >    than inventing real-sounding ones (root AGENTS.md §6).
 > 6. **Mood**: friendly/approachable, or formal/institutional?"
 
-## 2. Pick a template
+## 3. Relevant templates
 
-Read `index.json` in this folder. Match the user's stated mood and audience against each
-entry's `mood`/`tone`/`formality`/`best_for`:
+Both are in the shared `templates/` folder at the skill root. Full metadata is in
+[`templates/index.json`](../../templates/index.json). Match the user's stated mood and audience
+against each entry's `mood`/`tone`/`formality`/`best_for`:
 
 - **Friendly Coach** (`templates/friendly-coach/template.html`) — warm, playful, low formality.
   Solo coaches, creators, community courses.
@@ -43,7 +58,7 @@ entry's `mood`/`tone`/`formality`/`best_for`:
 If the audience is a business buying seats for employees, lean Professional Academy even if the
 instructor personally feels playful — `formality` should match who's paying, not who's teaching.
 
-## 3. Clone and fill in content
+## 4. Build
 
 Clone the chosen template into `_output/<slug-for-this-course>/` per root AGENTS.md §7 (or
 wherever the user directed instead). Both templates share the same structure and JavaScript,
@@ -68,7 +83,7 @@ AGENTS.md §3/§6).
   array (modules) or duplicating a `.card` block (outcomes) — same rule as root AGENTS.md's
   "adding or removing repeated items."
 
-## 4. Verify and ship
+## 5. Verify and ship
 
 Follow the root AGENTS.md exactly for these — don't skip them:
 - §4 responsive checklist (also confirm the accordion and carousel work at ~375px width, not
@@ -76,7 +91,7 @@ Follow the root AGENTS.md exactly for these — don't skip them:
 - §3.1 sample content: mark any copy you made up to fill a gap with `data-sample`, and list it
   in the handoff.
 - §6 no fabricated proof points.
-- §7 output contract — publish via `scripts/publish_site.py` and lead with the location it prints (the public
-  URL, or the local path when TOS isn't configured), plus a
-  one-line rationale for the template pick and any caveats (e.g. "kept the 2 placeholder
-  testimonials since you didn't have real ones yet").
+- §7 output contract — publish via `scripts/publish_site.py` and lead with the location it
+  prints (the public URL, or the local path when TOS isn't configured), plus a one-line
+  rationale for the template pick and any caveats (e.g. "kept the 2 placeholder testimonials
+  since you didn't have real ones yet").

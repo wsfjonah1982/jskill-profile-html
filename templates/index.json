@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-23T00:00:00.000Z",
-  "template_count": 14,
+  "generated_at": "2026-10-08T00:00:00.000Z",
+  "template_count": 20,
   "templates": [
     {
       "slug": "minimal-professional",
@@ -17,8 +17,8 @@
       "sections": ["nav", "hero", "about", "services-or-experience", "work", "testimonial", "contact", "footer"],
       "best_for": "Anyone who needs to read as competent and low-risk to hire or partner with: consultants, freelancers, advisors, B2B SaaS one-pagers, professional personal brands. Works equally well as a CV page or a lightweight company homepage.",
       "avoid_for": "Contexts that want to feel loud, experimental, or overtly creative — the restrained palette and grid intentionally stay out of the way of the content.",
-      "screenshot_desktop": "screenshots/minimal-professional-desktop.png",
-      "screenshot_mobile": "screenshots/minimal-professional-mobile.png"
+      "screenshot_desktop": "templates/minimal-professional/screenshot-desktop.png",
+      "screenshot_mobile": "templates/minimal-professional/screenshot-mobile.png"
     },
     {
       "slug": "bold-creative",
@@ -34,8 +34,8 @@
       "sections": ["nav", "hero", "about", "what-we-do-grid", "work-masonry", "cta-banner", "contact", "footer"],
       "best_for": "Indie founders, creative freelancers, and small startups who want to land as confident and memorable rather than corporate. Strong for a business-idea pitch page or a designer/developer's personal site.",
       "avoid_for": "Contexts that need institutional restraint or quiet credibility — the thick borders and neon accent commit hard to a graphic, opinionated voice.",
-      "screenshot_desktop": "screenshots/bold-creative-desktop.png",
-      "screenshot_mobile": "screenshots/bold-creative-mobile.png"
+      "screenshot_desktop": "templates/bold-creative/screenshot-desktop.png",
+      "screenshot_mobile": "templates/bold-creative/screenshot-mobile.png"
     },
     {
       "slug": "warm-editorial",
@@ -51,8 +51,8 @@
       "sections": ["nav", "hero", "story", "values-or-approach", "work-editorial", "quote", "contact", "footer"],
       "best_for": "People and small studios whose story is the pitch: writers, coaches, therapists, consultants with a point of view, boutique studios. Leads with narrative before it leads with credentials.",
       "avoid_for": "Contexts that need to feel fast, technical, or heavily data-driven — the serif/paper treatment is intentionally slow and personal.",
-      "screenshot_desktop": "screenshots/warm-editorial-desktop.png",
-      "screenshot_mobile": "screenshots/warm-editorial-mobile.png"
+      "screenshot_desktop": "templates/warm-editorial/screenshot-desktop.png",
+      "screenshot_mobile": "templates/warm-editorial/screenshot-mobile.png"
     },
     {
       "slug": "dark-tech-modern",
@@ -68,8 +68,8 @@
       "sections": ["nav", "hero", "problem-solution", "features-grid", "metrics", "cta", "contact", "footer"],
       "best_for": "Tech founders and developers pitching a product, a company, or themselves with a technical edge. The problem → solution → features structure is built for a business-idea pitch, not just a bio.",
       "avoid_for": "Warm, personal, or traditional contexts — the dark gradient canvas reads as startup-technical, not intimate or institutional.",
-      "screenshot_desktop": "screenshots/dark-tech-modern-desktop.png",
-      "screenshot_mobile": "screenshots/dark-tech-modern-mobile.png"
+      "screenshot_desktop": "templates/dark-tech-modern/screenshot-desktop.png",
+      "screenshot_mobile": "templates/dark-tech-modern/screenshot-mobile.png"
     },
     {
       "slug": "corporate-pitch",
@@ -85,8 +85,8 @@
       "sections": ["nav", "hero", "trusted-by", "about-or-mission", "products-or-services-grid", "leadership-grid", "metrics", "cta", "contact", "footer"],
       "best_for": "Companies and executives who need to read as established and low-risk: enterprise sales pages, investor one-pagers, agency capabilities pages, executive bios. The trusted-by strip and leadership grid are built for institutional credibility.",
       "avoid_for": "Contexts that want to feel indie, experimental, or personal — the navy palette and grid structure read as corporate by design.",
-      "screenshot_desktop": "screenshots/corporate-pitch-desktop.png",
-      "screenshot_mobile": "screenshots/corporate-pitch-mobile.png"
+      "screenshot_desktop": "templates/corporate-pitch/screenshot-desktop.png",
+      "screenshot_mobile": "templates/corporate-pitch/screenshot-mobile.png"
     },
     {
       "slug": "playful-personal",
@@ -102,8 +102,8 @@
       "sections": ["nav", "hero", "about", "highlights-grid", "gallery", "testimonial", "contact", "footer"],
       "best_for": "Creators, coaches, small-business owners, and community brands who want to feel warm and human rather than corporate. Great for a first personal site or a hobby turning into a small business.",
       "avoid_for": "Contexts that need institutional gravitas — the rounded shapes and bright palette are intentionally informal.",
-      "screenshot_desktop": "screenshots/playful-personal-desktop.png",
-      "screenshot_mobile": "screenshots/playful-personal-mobile.png"
+      "screenshot_desktop": "templates/playful-personal/screenshot-desktop.png",
+      "screenshot_mobile": "templates/playful-personal/screenshot-mobile.png"
     },
     {
       "slug": "luxury-portfolio",
@@ -119,8 +119,8 @@
       "sections": ["nav", "hero-fullbleed", "about", "portfolio-gallery", "press-or-recognition", "contact", "footer"],
       "best_for": "Photographers, architects, designers, and luxury brands where the visuals are the pitch. Generous whitespace and a large image gallery let the work carry the page.",
       "avoid_for": "Content-heavy pages or contexts needing lots of text per screen — the layout is built around large images and short, considered copy.",
-      "screenshot_desktop": "screenshots/luxury-portfolio-desktop.png",
-      "screenshot_mobile": "screenshots/luxury-portfolio-mobile.png"
+      "screenshot_desktop": "templates/luxury-portfolio/screenshot-desktop.png",
+      "screenshot_mobile": "templates/luxury-portfolio/screenshot-mobile.png"
     },
     {
       "slug": "academic-cv",
@@ -136,8 +136,8 @@
       "sections": ["nav", "header-with-contact", "summary", "experience-timeline", "education", "publications-or-projects", "skills", "contact", "footer"],
       "best_for": "Academics, researchers, and job-seekers who need a dense, structured, print-friendly alternative to a PDF résumé — timeline-based experience, a publications list, and a résumé-download CTA.",
       "avoid_for": "Brand or business pages where visual personality matters more than information density — this template is built to be read, not browsed.",
-      "screenshot_desktop": "screenshots/academic-cv-desktop.png",
-      "screenshot_mobile": "screenshots/academic-cv-mobile.png"
+      "screenshot_desktop": "templates/academic-cv/screenshot-desktop.png",
+      "screenshot_mobile": "templates/academic-cv/screenshot-mobile.png"
     },
     {
       "slug": "technical-sidebar-profile",
@@ -153,8 +153,8 @@
       "sections": ["nav", "profile-sidebar", "hero-card-with-stats", "stack-chips", "projects-or-stages", "experience-timeline", "skills-grid", "outcomes", "education-certifications", "awards", "contact", "footer"],
       "best_for": "Hands-on technical ICs (AI forward deployed engineers, solution and pre-sales architects, field engineers, ML and platform engineers) who want to show end-to-end delivery, work history, and a specific skill stack on one information-only page. Stage names, skill cards, and social/contact channels are all placeholders that adapt to any technical specialty; recolour by changing --accent (use a bright accent, and set --on-accent to white for dark ones).",
       "avoid_for": "Non-technical, warm, or brand-led pages: the monospace type and dense chip lists read as an engineer's spec sheet. Also a poor fit for anyone with few concrete proof points, since the stages and outcomes lean on real results.",
-      "screenshot_desktop": "screenshots/technical-sidebar-profile-desktop.png",
-      "screenshot_mobile": "screenshots/technical-sidebar-profile-mobile.png"
+      "screenshot_desktop": "templates/technical-sidebar-profile/screenshot-desktop.png",
+      "screenshot_mobile": "templates/technical-sidebar-profile/screenshot-mobile.png"
     },
     {
       "slug": "playful-dev-folio",
@@ -171,8 +171,8 @@
       "best_for": "Developers who want a warm, personality-forward portfolio covering a lot of ground: skills, experience, open source, certifications, writing, and talks on one page. Ships with a light/dark toggle.",
       "avoid_for": "Senior, executive, or formal contexts, and anyone with little to put in its many sections. The proficiency bars are self-assessed, so drop them if the user has no estimate of their own.",
       "inspired_by": "https://github.com/saadpasta/developerFolio (style only; rewritten from scratch)",
-      "screenshot_desktop": "screenshots/playful-dev-folio-desktop.png",
-      "screenshot_mobile": "screenshots/playful-dev-folio-mobile.png"
+      "screenshot_desktop": "templates/playful-dev-folio/screenshot-desktop.png",
+      "screenshot_mobile": "templates/playful-dev-folio/screenshot-mobile.png"
     },
     {
       "slug": "mono-minimal-dev",
@@ -189,8 +189,8 @@
       "best_for": "Engineers who want a quiet, typographic page where the work speaks: IBM Plex Mono throughout, lots of whitespace, one blue accent, and a clean projects → experience → education flow.",
       "avoid_for": "Visual or creative portfolios that need imagery (there are no image slots), and non-technical audiences, for whom the all-monospace type can read as cold.",
       "inspired_by": "https://github.com/RyanFitzgerald/devportfolio (style only; rewritten from scratch)",
-      "screenshot_desktop": "screenshots/mono-minimal-dev-desktop.png",
-      "screenshot_mobile": "screenshots/mono-minimal-dev-mobile.png"
+      "screenshot_desktop": "templates/mono-minimal-dev/screenshot-desktop.png",
+      "screenshot_mobile": "templates/mono-minimal-dev/screenshot-mobile.png"
     },
     {
       "slug": "illustrated-sky-folio",
@@ -207,8 +207,8 @@
       "best_for": "Developers who work across several areas (e.g. AI, full-stack, cloud, design) and want each one to get its own illustrated row. It looks best when the user supplies flat illustrations or photos for the large 4:3 image slots.",
       "avoid_for": "Users with no images at all: the layout leans on its illustration slots, which stay as placeholders otherwise. Also a poor fit for formal or senior positioning.",
       "inspired_by": "https://github.com/ashutosh1919/masterPortfolio (style only; rewritten from scratch)",
-      "screenshot_desktop": "screenshots/illustrated-sky-folio-desktop.png",
-      "screenshot_mobile": "screenshots/illustrated-sky-folio-mobile.png"
+      "screenshot_desktop": "templates/illustrated-sky-folio/screenshot-desktop.png",
+      "screenshot_mobile": "templates/illustrated-sky-folio/screenshot-mobile.png"
     },
     {
       "slug": "bold-blue-folio",
@@ -225,8 +225,8 @@
       "best_for": "Freelancers and frontend developers selling to clients: a big first impression, a short about, three or so projects shown as screenshots in laptop frames with case-study links, and a contact form. The form needs no backend; it opens the visitor's email app with the message filled in.",
       "avoid_for": "Content-heavy profiles (many roles, publications, certifications), since it's deliberately sparse. Also a poor fit when there are no project screenshots for the laptop frames.",
       "inspired_by": "https://github.com/rammcodes/Dopefolio (style only; rewritten from scratch)",
-      "screenshot_desktop": "screenshots/bold-blue-folio-desktop.png",
-      "screenshot_mobile": "screenshots/bold-blue-folio-mobile.png"
+      "screenshot_desktop": "templates/bold-blue-folio/screenshot-desktop.png",
+      "screenshot_mobile": "templates/bold-blue-folio/screenshot-mobile.png"
     },
     {
       "slug": "github-card-profile",
@@ -243,8 +243,104 @@
       "best_for": "Developers whose best proof is their repositories, papers, and posts, who want everything visible at a glance with no scrolling story. The repo cards are static HTML: fill them with the user's real repo names, descriptions, star counts, and languages.",
       "avoid_for": "Visual, brand-led, or non-technical pages, and anyone without public repos or writing to show. It has no hero or narrative section.",
       "inspired_by": "https://github.com/arifszn/gitprofile (style only; rewritten from scratch)",
-      "screenshot_desktop": "screenshots/github-card-profile-desktop.png",
-      "screenshot_mobile": "screenshots/github-card-profile-mobile.png"
+      "screenshot_desktop": "templates/github-card-profile/screenshot-desktop.png",
+      "screenshot_mobile": "templates/github-card-profile/screenshot-mobile.png"
+    },
+    {
+      "slug": "minimal-studio-shop",
+      "name": "Minimal Studio Shop",
+      "tagline": "Ink-on-cream storefront with a sticky nav, restrained cards, and a calm product grid.",
+      "mood": ["clean", "calm", "considered", "trustworthy"],
+      "occasion": ["small-batch or handmade goods shop", "design studio storefront", "minimalist fashion or homeware brand", "single-founder online shop"],
+      "tone": ["polished", "quiet", "confident", "understated"],
+      "formality": "medium",
+      "density": "medium",
+      "scheme": "light",
+      "sections": ["nav", "hero", "product-grid", "quick-view-modal", "cart-drawer", "about", "contact", "footer"],
+      "best_for": "Small-batch, handmade, or design-led shops that want to read as considered and trustworthy rather than loud. Works well for a solo founder or small studio's store.",
+      "avoid_for": "Streetwear, drop-culture, or hype-driven brands — the restrained palette undersells urgency.",
+      "screenshot_desktop": null,
+      "screenshot_mobile": null
+    },
+    {
+      "slug": "bold-streetwear-shop",
+      "name": "Bold Streetwear Shop",
+      "tagline": "Neo-brutalist storefront: thick borders, offset shadows, and a neon-lime accent on off-white.",
+      "mood": ["bold", "punchy", "confident", "graphic"],
+      "occasion": ["streetwear or apparel drop", "indie brand storefront", "sneaker or accessory shop", "product launch storefront"],
+      "tone": ["direct", "energetic", "design-led", "no-nonsense"],
+      "formality": "low",
+      "density": "medium-high",
+      "scheme": "light",
+      "sections": ["nav", "hero", "product-grid", "quick-view-modal", "cart-drawer", "about", "contact", "footer"],
+      "best_for": "Streetwear, drop-culture, and indie brands that want to land as confident and memorable — the graphic border/shadow system reads as hype-ready.",
+      "avoid_for": "Contexts that need quiet institutional credibility — the thick borders and neon accent commit hard to a loud, opinionated voice.",
+      "screenshot_desktop": null,
+      "screenshot_mobile": null
+    },
+    {
+      "slug": "warm-bistro",
+      "name": "Warm Bistro",
+      "tagline": "Serif-led magazine warmth on paper tones, with a working menu, hours, and reservation form.",
+      "mood": ["warm", "inviting", "unhurried", "personal"],
+      "occasion": ["neighborhood bistro / trattoria", "cafe or brunch spot", "wine bar", "family-run restaurant"],
+      "tone": ["warm", "story-first", "human", "considered"],
+      "formality": "medium",
+      "density": "medium",
+      "scheme": "light",
+      "sections": ["nav", "hero", "menu-tabs", "hours-location", "reservation-form", "footer"],
+      "best_for": "Neighborhood restaurants, cafes, and bistros that want to feel personal and inviting rather than corporate. The warm paper tones and serif type suit a place with a story to tell.",
+      "avoid_for": "Fine-dining rooms that want to feel exclusive or nightlife-driven venues — the warm/casual register undersells a high-end tasting-menu experience.",
+      "screenshot_desktop": "",
+      "screenshot_mobile": ""
+    },
+    {
+      "slug": "modern-dark-dining",
+      "name": "Modern Dark Dining",
+      "tagline": "Near-black canvas with gold hairlines and italic serif type, for a restaurant whose room is part of the pitch.",
+      "mood": ["moody", "elegant", "exclusive", "refined"],
+      "occasion": ["fine dining", "tasting-menu restaurant", "cocktail/wine lounge", "upscale steakhouse"],
+      "tone": ["refined", "confident", "quiet", "editorial"],
+      "formality": "high",
+      "density": "low-medium",
+      "scheme": "dark",
+      "sections": ["nav", "hero", "menu-tabs", "hours-location", "reservation-form", "footer"],
+      "best_for": "Fine-dining and upscale restaurants where atmosphere and craft are the pitch — the dark canvas and gold accents read as exclusive and considered.",
+      "avoid_for": "Casual, family-friendly, or budget-focused spots — the luxury register would feel mismatched with a low-price, high-turnover concept.",
+      "screenshot_desktop": "",
+      "screenshot_mobile": ""
+    },
+    {
+      "slug": "friendly-coach",
+      "name": "Friendly Coach",
+      "tagline": "Rounded pastel blobs, bouncy display type, and a friendly, human voice — for a course that feels like coaching, not a syllabus.",
+      "mood": ["playful", "friendly", "warm", "approachable"],
+      "occasion": ["cohort-based course", "coaching program", "creator/community course", "hobby-to-skill workshop"],
+      "tone": ["upbeat", "casual", "welcoming", "human"],
+      "formality": "low",
+      "density": "medium",
+      "scheme": "light",
+      "sections": ["nav", "hero", "outcomes", "curriculum-accordion", "instructor-bio", "testimonial-carousel", "pricing-cta", "footer"],
+      "best_for": "Solo coaches, creators, and community-run courses that want to feel warm and human rather than institutional. Great for a first cohort or a hobby turning into a teaching business.",
+      "avoid_for": "Contexts that need institutional gravitas — the rounded shapes and bright palette are intentionally informal.",
+      "screenshot_desktop": null,
+      "screenshot_mobile": null
+    },
+    {
+      "slug": "professional-academy",
+      "name": "Professional Academy",
+      "tagline": "Navy-and-white, structured and credible — for a program that needs to read as a serious professional credential.",
+      "mood": ["formal", "credible", "institutional", "polished"],
+      "occasion": ["corporate training program", "certification course", "bootcamp", "professional upskilling program"],
+      "tone": ["authoritative", "buttoned-up", "reassuring", "structured"],
+      "formality": "high",
+      "density": "medium-high",
+      "scheme": "light",
+      "sections": ["nav", "hero", "outcomes", "curriculum-accordion", "instructor-bio", "testimonial-carousel", "pricing-cta", "footer"],
+      "best_for": "Programs that need to read as established and low-risk to invest in: corporate training, certifications, bootcamps, professional upskilling sold to employers or serious career-changers.",
+      "avoid_for": "Contexts that want to feel indie, playful, or personal — the navy palette and grid structure read as institutional by design.",
+      "screenshot_desktop": null,
+      "screenshot_mobile": null
     }
   ]
 }

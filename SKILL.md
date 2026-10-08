@@ -7,5 +7,5 @@ See [`AGENTS.md`](./AGENTS.md) — the full, harness-agnostic operating manual (
 Claude Code, Cursor, Codex CLI, or any other coding agent). This file exists only for Claude
 Code's Skill-tool discovery and adds no instructions beyond pointing there.
 
-Start with `AGENTS.md`'s Step 0 (site category) and Step 1 (precheck + `_input/` check), every
+Start with `AGENTS.md`'s Step 0 (site industry) and Step 1 (precheck + `_input/` check), every
 time.

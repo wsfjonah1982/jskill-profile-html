@@ -4,8 +4,11 @@ A library of single-page, fully responsive HTML templates, designed so a coding 
 person's or company's information — bio, résumé, services, business idea, product catalog, menu,
 or curriculum — into a finished, good-looking page automatically. Every template is one
 self-contained HTML file that adapts from a phone screen to a desktop without a separate mobile
-version. Beyond the 14 bio/portfolio templates below, the library also has three site-category
-subskills under `categories/`: e-commerce stores, restaurants/cafes, and courses/coaching pages.
+version. The library covers four industries under `industries/`: OPC (one-person company:
+bio/portfolio/pitch, the 14 templates below), e-commerce stores, restaurants/cafes, and
+education (courses/coaching) pages. All 20 templates share one `templates/` folder, with their metadata in
+`templates/index.json`. Each industry has one `industries/<industry>/Industry.md` that describes
+its design and content and names the templates that suit it.
 
 **Publishing is the default, not an optional extra.** The standard last step is
 `scripts/publish_site.py`. With BytePlus TOS configured, it uploads the page and hands back a
@@ -14,20 +17,20 @@ in `_output/<slug>/` or a folder you choose (`local_publish_dir`). See "Scripts 
 below.
 
 Agents using the library should read [`AGENTS.md`](./AGENTS.md). It's the operating manual: how
-to read `index.json`, match the user's brief to a template, clone it, and adapt the content.
+to pick the industry, read its `Industry.md`, match the user's brief to a template, clone it, and adapt the content.
 
 ## Using this as a portable skill
 
 This works as a **skill for any coding agent** — Claude Code, Cursor, Codex CLI, or anything else
-that can read files and follow instructions. `AGENTS.md` (and each category's own `AGENTS.md`
-under `categories/`) is plain markdown with no dependency on a specific tool ecosystem; a
+that can read files and follow instructions. `AGENTS.md` (and each `Industry.md`
+under `industries/`) is plain markdown with no dependency on a specific tool ecosystem; a
 `SKILL.md` is included only so Claude Code's Skill tool can also discover this folder directly —
 every other agent should just be pointed at `AGENTS.md`.
 
 By default the skill reads prepared content instead of only asking questions interactively:
 
 - **`_input/brief.md`** — copy `_input/brief.template.md` to `_input/brief.md` and fill in the
-  category you need (profile/bio, e-commerce, restaurant, or course) before running the agent.
+  industry you need (OPC/profile, e-commerce, restaurant, or education) before running the agent.
   Anything left blank gets asked about interactively instead — nothing is invented.
 - **`_input/images/`** and **`_input/videos/`** — drop in any photos, logos, or video you already
   have; reference their filenames from `brief.md` so the agent knows which slot each one fills.
@@ -97,8 +100,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Minimal Professional](./templates/minimal-professional/)
 
 <p>
-  <img src="./screenshots/minimal-professional-desktop.png" width="70%" alt="Minimal Professional — desktop" />
-  <img src="./screenshots/minimal-professional-mobile.png" width="24%" alt="Minimal Professional — mobile" />
+  <img src="./templates/minimal-professional/screenshot-desktop.png" width="70%" alt="Minimal Professional — desktop" />
+  <img src="./templates/minimal-professional/screenshot-mobile.png" width="24%" alt="Minimal Professional — mobile" />
 </p>
 
 > Clean ink-on-cream one-pager with a sticky nav and a calm, trustworthy voice. Best for
@@ -107,8 +110,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Bold Creative](./templates/bold-creative/)
 
 <p>
-  <img src="./screenshots/bold-creative-desktop.png" width="70%" alt="Bold Creative — desktop" />
-  <img src="./screenshots/bold-creative-mobile.png" width="24%" alt="Bold Creative — mobile" />
+  <img src="./templates/bold-creative/screenshot-desktop.png" width="70%" alt="Bold Creative — desktop" />
+  <img src="./templates/bold-creative/screenshot-mobile.png" width="24%" alt="Bold Creative — mobile" />
 </p>
 
 > Neo-brutalist one-pager: thick borders, offset shadows, one neon-lime accent on off-white. Best
@@ -118,8 +121,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Warm Editorial](./templates/warm-editorial/)
 
 <p>
-  <img src="./screenshots/warm-editorial-desktop.png" width="70%" alt="Warm Editorial — desktop" />
-  <img src="./screenshots/warm-editorial-mobile.png" width="24%" alt="Warm Editorial — mobile" />
+  <img src="./templates/warm-editorial/screenshot-desktop.png" width="70%" alt="Warm Editorial — desktop" />
+  <img src="./templates/warm-editorial/screenshot-mobile.png" width="24%" alt="Warm Editorial — mobile" />
 </p>
 
 > Serif-led magazine feel on warm paper, sage and rust accents, story-first structure. Best for
@@ -128,8 +131,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Dark Tech Modern](./templates/dark-tech-modern/)
 
 <p>
-  <img src="./screenshots/dark-tech-modern-desktop.png" width="70%" alt="Dark Tech Modern — desktop" />
-  <img src="./screenshots/dark-tech-modern-mobile.png" width="24%" alt="Dark Tech Modern — mobile" />
+  <img src="./templates/dark-tech-modern/screenshot-desktop.png" width="70%" alt="Dark Tech Modern — desktop" />
+  <img src="./templates/dark-tech-modern/screenshot-mobile.png" width="24%" alt="Dark Tech Modern — mobile" />
 </p>
 
 > Dark canvas with a violet-to-cyan glow, built to pitch a product or business idea. Best for tech
@@ -139,8 +142,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Corporate Pitch](./templates/corporate-pitch/)
 
 <p>
-  <img src="./screenshots/corporate-pitch-desktop.png" width="70%" alt="Corporate Pitch — desktop" />
-  <img src="./screenshots/corporate-pitch-mobile.png" width="24%" alt="Corporate Pitch — mobile" />
+  <img src="./templates/corporate-pitch/screenshot-desktop.png" width="70%" alt="Corporate Pitch — desktop" />
+  <img src="./templates/corporate-pitch/screenshot-mobile.png" width="24%" alt="Corporate Pitch — mobile" />
 </p>
 
 > Navy-and-white corporate one-pager with a trusted-by strip and a leadership grid. Best for
@@ -149,8 +152,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Playful Personal](./templates/playful-personal/)
 
 <p>
-  <img src="./screenshots/playful-personal-desktop.png" width="70%" alt="Playful Personal — desktop" />
-  <img src="./screenshots/playful-personal-mobile.png" width="24%" alt="Playful Personal — mobile" />
+  <img src="./templates/playful-personal/screenshot-desktop.png" width="70%" alt="Playful Personal — desktop" />
+  <img src="./templates/playful-personal/screenshot-mobile.png" width="24%" alt="Playful Personal — mobile" />
 </p>
 
 > Rounded pastel blobs, bouncy display type, and a friendly, human voice. Best for creators,
@@ -159,8 +162,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Luxury Portfolio](./templates/luxury-portfolio/)
 
 <p>
-  <img src="./screenshots/luxury-portfolio-desktop.png" width="70%" alt="Luxury Portfolio — desktop" />
-  <img src="./screenshots/luxury-portfolio-mobile.png" width="24%" alt="Luxury Portfolio — mobile" />
+  <img src="./templates/luxury-portfolio/screenshot-desktop.png" width="70%" alt="Luxury Portfolio — desktop" />
+  <img src="./templates/luxury-portfolio/screenshot-mobile.png" width="24%" alt="Luxury Portfolio — mobile" />
 </p>
 
 > Near-black canvas, gold hairlines, italic serif display — a gallery-quality portfolio page. Best
@@ -169,8 +172,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Academic CV](./templates/academic-cv/)
 
 <p>
-  <img src="./screenshots/academic-cv-desktop.png" width="70%" alt="Academic CV — desktop" />
-  <img src="./screenshots/academic-cv-mobile.png" width="24%" alt="Academic CV — mobile" />
+  <img src="./templates/academic-cv/screenshot-desktop.png" width="70%" alt="Academic CV — desktop" />
+  <img src="./templates/academic-cv/screenshot-mobile.png" width="24%" alt="Academic CV — mobile" />
 </p>
 
 > Structured, serif-set CV page: timeline, publications, and a résumé-download button. Best for
@@ -179,8 +182,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 ### [Technical Sidebar Profile](./templates/technical-sidebar-profile/)
 
 <p>
-  <img src="./screenshots/technical-sidebar-profile-desktop.png" width="70%" alt="Technical Sidebar Profile — desktop" />
-  <img src="./screenshots/technical-sidebar-profile-mobile.png" width="24%" alt="Technical Sidebar Profile — mobile" />
+  <img src="./templates/technical-sidebar-profile/screenshot-desktop.png" width="70%" alt="Technical Sidebar Profile — desktop" />
+  <img src="./templates/technical-sidebar-profile/screenshot-mobile.png" width="24%" alt="Technical Sidebar Profile — mobile" />
 </p>
 
 > Monospace engineer homepage: dark profile sidebar, hero card with stats, a numbered delivery-stage
@@ -192,13 +195,13 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
 
 The next five are fresh single-file rewrites of the visual style of popular templates from GitHub's
 [`portfolio-template`](https://github.com/topics/portfolio-template) topic. No code was copied;
-each `index.json` entry credits its source in `inspired_by`.
+each `templates/index.json` entry credits its source in `inspired_by`.
 
 ### [Playful Dev Folio](./templates/playful-dev-folio/)
 
 <p>
-  <img src="./screenshots/playful-dev-folio-desktop.png" width="70%" alt="Playful Dev Folio — desktop" />
-  <img src="./screenshots/playful-dev-folio-mobile.png" width="24%" alt="Playful Dev Folio — mobile" />
+  <img src="./templates/playful-dev-folio/screenshot-desktop.png" width="70%" alt="Playful Dev Folio — desktop" />
+  <img src="./templates/playful-dev-folio/screenshot-mobile.png" width="24%" alt="Playful Dev Folio — mobile" />
 </p>
 
 > Montserrat-and-purple developer portfolio with a waving greeting, skill icons, proficiency bars,
@@ -208,8 +211,8 @@ each `index.json` entry credits its source in `inspired_by`.
 ### [Mono Minimal Dev](./templates/mono-minimal-dev/)
 
 <p>
-  <img src="./screenshots/mono-minimal-dev-desktop.png" width="70%" alt="Mono Minimal Dev — desktop" />
-  <img src="./screenshots/mono-minimal-dev-mobile.png" width="24%" alt="Mono Minimal Dev — mobile" />
+  <img src="./templates/mono-minimal-dev/screenshot-desktop.png" width="70%" alt="Mono Minimal Dev — desktop" />
+  <img src="./templates/mono-minimal-dev/screenshot-mobile.png" width="24%" alt="Mono Minimal Dev — mobile" />
 </p>
 
 > All-monospace minimalist page with an oversized blue-name hero, titles-left section rows, numbered
@@ -218,8 +221,8 @@ each `index.json` entry credits its source in `inspired_by`.
 ### [Illustrated Sky Folio](./templates/illustrated-sky-folio/)
 
 <p>
-  <img src="./screenshots/illustrated-sky-folio-desktop.png" width="70%" alt="Illustrated Sky Folio — desktop" />
-  <img src="./screenshots/illustrated-sky-folio-mobile.png" width="24%" alt="Illustrated Sky Folio — mobile" />
+  <img src="./templates/illustrated-sky-folio/screenshot-desktop.png" width="70%" alt="Illustrated Sky Folio — desktop" />
+  <img src="./templates/illustrated-sky-folio/screenshot-mobile.png" width="24%" alt="Illustrated Sky Folio — mobile" />
 </p>
 
 > Pale sky-blue, navy-ink portfolio built around big illustrations, with alternating "What I Do?"
@@ -228,8 +231,8 @@ each `index.json` entry credits its source in `inspired_by`.
 ### [Bold Blue Folio](./templates/bold-blue-folio/)
 
 <p>
-  <img src="./screenshots/bold-blue-folio-desktop.png" width="70%" alt="Bold Blue Folio — desktop" />
-  <img src="./screenshots/bold-blue-folio-mobile.png" width="24%" alt="Bold Blue Folio — mobile" />
+  <img src="./templates/bold-blue-folio/screenshot-desktop.png" width="70%" alt="Bold Blue Folio — desktop" />
+  <img src="./templates/bold-blue-folio/screenshot-mobile.png" width="24%" alt="Bold Blue Folio — mobile" />
 </p>
 
 > Full-screen patterned blue hero, fixed social rail, laptop-mockup project rows, and a no-backend
@@ -238,8 +241,8 @@ each `index.json` entry credits its source in `inspired_by`.
 ### [GitHub Card Profile](./templates/github-card-profile/)
 
 <p>
-  <img src="./screenshots/github-card-profile-desktop.png" width="70%" alt="GitHub Card Profile — desktop" />
-  <img src="./screenshots/github-card-profile-mobile.png" width="24%" alt="GitHub Card Profile — mobile" />
+  <img src="./templates/github-card-profile/screenshot-desktop.png" width="70%" alt="GitHub Card Profile — desktop" />
+  <img src="./templates/github-card-profile/screenshot-mobile.png" width="24%" alt="GitHub Card Profile — mobile" />
 </p>
 
 > Dashboard-style profile with a left column of info cards and right-hand panels of repo,
@@ -261,8 +264,9 @@ Each template is **one HTML page**, not a series of slides:
 - Print-ready: every template has a print stylesheet (black on white, no nav or buttons, no
   cards split across pages) and a "Save as PDF" button in the footer.
 
-See `index.json` for each template's mood/tone/formality metadata, and `AGENTS.md` for the full
-matching-and-build workflow.
+See `templates/index.json` for each template's mood/tone/formality metadata,
+`industries/<industry>/Industry.md` for each industry's design, content and templates, and
+`AGENTS.md` for the full matching-and-build workflow.
 
 ## Skill Version
 v 0.1.100601

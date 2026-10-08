@@ -2,7 +2,7 @@
   profile-html — content brief template
 
   How to use: copy this file to `_input/brief.md` and fill it in. Delete any section that
-  doesn't apply to your category (only fill in ONE of the "If ..." blocks below). Drop any
+  doesn't apply to your industry (only fill in ONE of the "If ..." blocks below). Drop any
   photos/logos into `_input/images/` and any video files into `_input/videos/` — reference
   them by filename in the relevant field below so the building agent knows which is which.
 
@@ -16,7 +16,7 @@
 
 # Site brief
 
-**Category:** <!-- one of: profile/bio, e-commerce, restaurant/cafe, course/coaching -->
+**Industry:** <!-- one of: opc (one-person company: profile/bio), e-commerce, restaurant/cafe, education (course/coaching) -->
 
 **Name / business name:**
 
@@ -32,7 +32,7 @@
 
 ---
 
-## If Profile/Bio
+## If OPC (Profile/Bio)
 
 **Person or company:**
 
@@ -91,7 +91,7 @@
 
 ---
 
-## If Course / Coaching
+## If Education (Course / Coaching)
 
 **One-line outcome promise:** <!-- what will someone be able to do after finishing? -->
 

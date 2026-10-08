@@ -6,44 +6,51 @@ HTML page** — by picking the right template, cloning it, and replacing the pla
 with the real content. The page must look right on both a phone and a desktop; there is no
 separate "mobile version," it's one file that adapts.
 
-This document is your operating manual for **bio/portfolio/pitch pages** — the original,
-person/company-profile use case (résumé, business idea, services, portfolio, contact info).
-Some requests are for a structurally different kind of site; those live in their own subskill
-folders under `categories/`. Read Step 0 first, every time, before assuming this document's
-Step 1 applies.
+This document is the shared operating manual: the workflow, the build rules, and the output
+contract that every page follows. What changes by industry (its design, the content it needs,
+and which templates suit it) lives in one `Industry.md` per industry under `industries/`. Read
+Step 0 first, every time.
 
 ---
 
-## Step 0 — Pick the site category
+## Step 0 — Pick the site's industry
 
 Before anything else, work out what kind of site this is:
 
-| The user wants... | Category | Go to |
+| The user wants... | Industry | Go to |
 |---|---|---|
-| A bio, résumé/CV, portfolio, startup pitch one-pager, agency/company homepage, or personal brand page | **Profile/bio page** | Continue with Step 1 below — this is the rest of this document. |
-| An online store / product catalog with a cart | **E-commerce** | `categories/ecommerce/AGENTS.md` |
-| A restaurant, cafe, or similar food-service site with a menu | **Restaurant/cafe** | `categories/restaurant/AGENTS.md` |
-| An online course, cohort program, or coaching offer | **Course/coaching** | `categories/course/AGENTS.md` |
+| A bio, résumé/CV, portfolio, startup pitch one-pager, agency/company homepage, or personal brand page | **OPC (one-person company)** | `industries/opc/Industry.md` |
+| An online store / product catalog with a cart | **E-commerce** | `industries/ecommerce/Industry.md` |
+| A restaurant, cafe, or similar food-service site with a menu | **Restaurant/cafe** | `industries/restaurant/Industry.md` |
+| An online course, cohort program, or coaching offer | **Education** (courses/coaching) | `industries/education/Industry.md` |
 
 If it's ambiguous which of these four it is, ask the user rather than guessing — the whole
-downstream flow (intake questions, template index, section structure) differs by category.
+downstream flow (design, intake questions, relevant templates) differs by industry.
 
 **If the request clearly doesn't fit any of the four at all** (e.g. a blog/magazine, a real
 estate listing site, a nonprofit/donation page, an event/conference page, a wedding site, or any
-other site type with no subskill here) — **this skill is out of scope for it. Say so plainly
-("No — this skill only builds profile/bio, e-commerce, restaurant/cafe, and course/coaching
-pages") and stop.** Don't ask clarifying questions to try to fit it into one of the four, don't
-improvise a new category from scratch, and don't build a best-effort page outside this list.
+other site type with no `Industry.md` here) — **this skill is out of scope for it. Say so plainly
+("No — this skill only builds OPC/profile, e-commerce, restaurant/cafe, and education
+(course/coaching) pages") and stop.** Don't ask clarifying questions to try to fit it into one of the four, don't
+improvise a new industry from scratch, and don't build a best-effort page outside this list.
 
-Each category subskill is self-contained (its own intake questions, its own `index.json`, its
-own `templates/`), but all of them **defer back to this document** for the parts that don't
-change by category: Step 1 (precheck), §3.1 (writing copy and marking sample content), §4
-(responsive checklist), §6 (no fabricated proof points), and §7 (output contract). Don't duplicate those sections inside a category's own doc —
-reference them.
+Read the chosen industry's `Industry.md` once Step 0 has routed you. Each one has the same
+parts:
 
-The rest of this document (Steps 1–8) is the **profile/bio page** flow specifically — but Step 1
-(the precheck and `_input/` check) is shared verbatim by every category, including the three
-subskills above.
+1. **Design**: how pages in this industry should look and feel, and what they lead with.
+2. **Content**: the intake questions and the content a page needs.
+3. **Relevant templates**: which shared templates suit this industry, and when to pick each.
+4. **Build** notes, limits and finish checks specific to the industry (data arrays, demo
+   carts or forms, extra interactions to test).
+
+Everything that doesn't change by industry stays in this document: Step 1 (precheck), Steps 5–8
+(previews, build, publish), §3 (adapting a template), §3.1 (writing copy and marking sample
+content), §4 (responsive checklist), §5 (designing a missing section), §6 (no fabricated proof
+points), and §7 (output contract). Don't duplicate those inside an `Industry.md`; reference them.
+
+**Templates are shared.** All templates live in one `templates/<slug>/` folder at the skill
+root, with their metadata in `templates/index.json`. An `Industry.md` names the templates that
+suit it, and the same template can be named by more than one industry.
 
 ---
 
@@ -70,62 +77,47 @@ If it reports a failure, fix that first. Don't start building against a setup yo
 confirmed works.
 
 This skill defaults to reading prepared content rather than always starting from a live Q&A.
-Before asking the user anything (Step 2 below, or a category subskill's own intake section):
+Before asking the user anything (Step 2 below):
 
-1. Look for `_input/brief.md`. If it exists, read it — it already answers the category, mood,
-   name, and the content fields for whichever category block is filled in. Copy `_input/brief.template.md`
+1. Look for `_input/brief.md`. If it exists, read it — it already answers the industry, mood,
+   name, and the content fields for whichever industry block is filled in. Copy `_input/brief.template.md`
    to `_input/brief.md` first if only the template is present and unfilled.
 2. Look in `_input/images/` (and `_input/videos/` if relevant) for photos/logos/video the brief
    references by filename.
 3. Only ask the user about fields that are **missing, blank, or ambiguous** in `_input/brief.md`
    — don't re-ask what it already answered.
 4. If `_input/brief.md` doesn't exist at all, fall back to the fully interactive flow exactly as
-   written below (and in each category's own doc) — nothing changes in that case.
+   written below and in the industry's `Industry.md` — nothing changes in that case.
 
-This step applies identically whichever category Step 0 routed to.
+This step applies identically whichever industry Step 0 routed to.
 
-### Step 2 — Ask about subject, purpose, and mood
+### Step 2 — Ask about purpose and mood
 
-Per Step 1, check `_input/brief.md` first. Ask the user only what it didn't already answer:
-
-> "A few quick questions before I pick a template:
-> 1. **Is this for a person or a company?**
-> 2. **What's the page for?** (e.g. freelance portfolio, résumé/CV, startup landing page,
->    consultant bio, product pitch, personal brand homepage)
-> 3. **What mood do you want?** (e.g. clean & professional, bold & confident, warm & personal,
->    dark & technical)"
-
-Wait for the answers. If the brief's **Mood** field is filled in, use it — don't re-ask. If it's
-blank or vague (e.g. "nice"), ask; don't guess the mood from the rest of the brief.
+Ask the questions in the **Content** section of the industry's `Industry.md`, per Step 1: only
+what `_input/brief.md` didn't already answer. Wait for the answers. If the brief's **Mood**
+field is filled in, use it — don't re-ask. If it's blank or vague (e.g. "nice"), ask; don't
+guess the mood from the rest of the brief.
 
 ### Step 3 — Gather the actual content
 
 Read from `_input/brief.md` (per Step 1) first; ask for (or read from a file/résumé/notes the
-user provides directly) whatever it didn't cover. At minimum:
-
-- Name (person) or company name
-- One-line tagline / value proposition
-- Short bio or "about" paragraph
-- The core offer: services, experience, or **the business idea** (problem it solves, what it
-  does, why it matters)
-- 2–5 proof points: work samples, case studies, past roles, metrics, or testimonials
-- Contact info: email, and any social/portfolio links
-- Any images (headshot, logo, product shots) — check `_input/images/` first; note filenames/paths;
-  if none exist, keep the template's placeholder blocks
-
-If the user gives you a raw document (resume PDF, LinkedIn export, company one-pager), extract
-these from it instead of re-asking for everything.
+user provides directly) whatever it didn't cover. The industry's `Industry.md` lists the content
+a page needs. If the user gives you a raw document (résumé PDF, LinkedIn export, company
+one-pager, menu), extract it from that instead of re-asking for everything.
 
 **You write any copy the user doesn't, yourself.** No script or third-party model API does
 this. If the user would rather not write the copy, or says to "just fill in" what's missing, you
 draft it from what they gave you. If they give only part of the content, you write sample copy
 for the gaps. Either way, follow §3.1: never invent proof points, and mark every sample line.
 
-### Step 4 — Read `index.json` and pick 3 candidates
+### Step 4 — Pick candidates from the industry's relevant templates
 
-Match `profile_type` (personal / company / both) and the stated mood against each template's
-`mood`, `tone`, `best_for`, `formality`. **Pick three templates** that are genuinely different
-from each other — not three variations on the same look.
+Start from the **Relevant templates** in the industry's `Industry.md`, and read their entries in
+`templates/index.json`. Match the stated mood (and, for OPC, `profile_type`: personal / company /
+both) against each template's `mood`, `tone`, `best_for`, `formality`. **Pick three templates**
+that are genuinely different from each other — not three variations on the same look. If the
+industry lists fewer than three, or its `Industry.md` says a preview round isn't needed, follow
+that.
 
 ### Step 5 — Build a hero-section preview of each candidate
 
@@ -191,7 +183,10 @@ published, and handed off by the location `publish_site.py` prints.
 
 ---
 
-## 2. What's in `index.json`
+## 2. What's in `templates/index.json`
+
+One entry per template, for every industry. All paths in it are relative to the skill root.
+Which industry a template suits is in the `Industry.md` files, not here.
 
 ```jsonc
 {
@@ -223,7 +218,7 @@ published, and handed off by the location `publish_site.py` prints.
 | `sections` | the section blocks the template ships with — tells you what's already there vs. what you'd need to design per §5. |
 | `best_for` / `avoid_for` | lead with `best_for` when narrating your pick; treat `avoid_for` as a soft warning. |
 | `inspired_by` | (some templates) the open-source template whose visual style it was rewritten from. Credit only — no code was copied; don't treat it as a matching signal. |
-| `screenshot_desktop` / `screenshot_mobile` | paths under `screenshots/` — glance at them to compare candidates before building previews. |
+| `screenshot_desktop` / `screenshot_mobile` | paths to `screenshot-desktop.png` / `screenshot-mobile.png` inside each template's folder (`null` or empty if the template has none yet) — glance at them to compare candidates before building previews. |
 
 ---
 
@@ -332,8 +327,8 @@ no separate mobile template, no server-side device detection. Before finishing, 
       _output/<slug>/index.html` runs every check in this list in one go (fix all FAILs; review
       WARNs). Otherwise use whatever browser-preview/screenshot capability this
       environment provides (Playwright, a headless-browser CLI, an IDE live preview, or manual
-      resize in any browser). If a template has interactive JS (a category subskill's cart,
-      tabs, accordion, etc.), exercise it at both widths, not just render it.
+      resize in any browser). If a template has interactive JS (an e-commerce cart, restaurant
+      menu tabs, a course accordion, etc.), exercise it at both widths, not just render it.
 - [ ] If no such capability exists in this environment, do a careful manual review of the CSS
       breakpoints and JS logic instead, and say plainly in your output (§7) that visual
       verification wasn't performed — don't claim it passed a check you couldn't run.

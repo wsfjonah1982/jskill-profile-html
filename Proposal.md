@@ -1,7 +1,7 @@
 # Proposal: Fill missing content so the customer always gets a page
 
 **Status:** draft for review · **Date:** 2026-10-08 · **Affects:** `AGENTS.md` §3.1, §6, §7,
-the three category docs, `_input/brief.template.md`, `check_page.py`, `publish_site.py`
+the three industry docs, `_input/brief.template.md`, `check_page.py`, `publish_site.py`
 
 ## 1. Problem
 
@@ -56,7 +56,7 @@ The agent uses neutral wording in the page's mood. It doesn't add any other phas
 Pilot, Build or Training, and it doesn't state durations, deliverables or results. The
 customer adds those, or confirms the two phases as they are.
 
-This fits a forward-deployed engineer, consultant or agency page. For categories with no
+This fits a forward-deployed engineer, consultant or agency page. For industries with no
 process section (e-commerce, restaurant), nothing is guessed.
 
 ### Tier D: left out for now
@@ -75,15 +75,15 @@ outcomes, experience and education are all left out until the customer provides 
 
 ## 4. How much to ask, by how complete the brief is
 
-The agent scores the brief before it asks anything. It checks name, category, role or concept,
-mood, and the category's core fields (the bulleted list in Step 3 or the category's intake).
+The agent scores the brief before it asks anything. It checks name, industry, role or concept,
+mood, and the industry's core fields (the bulleted list in Step 3 or the industry's intake).
 
 | Brief coverage | Example | Ask | Then |
 |---|---|---|---|
 | **Full**: core fields all present | a filled `brief.md` | nothing new | build; Tier B only where wording is thin |
 | **Partial**: about half | name, role, mood and contact, but no projects or about text | at most **3 questions**, only for facts that block publishing (usually contact) | fill Tier B/C, leave out the rest, build |
-| **Sparse**: name + category, maybe a role | "Alex Rivera, forward deployed engineer" | **one** combined question: mood + contact, and an offer to "just build what you can" | build a short draft (§5) |
-| **Bare**: category only | "make me a profile page" | the name, plus the same one combined question | short draft |
+| **Sparse**: name + industry, maybe a role | "Alex Rivera, forward deployed engineer" | **one** combined question: mood + contact, and an offer to "just build what you can" | build a short draft (§5) |
+| **Bare**: industry only | "make me a profile page" | the name, plus the same one combined question | short draft |
 
 Rules for asking:
 - **One round only.** Batch the questions, and give a sensible default in each one ("Mood: I'd
@@ -180,12 +180,12 @@ Behind that message:
 | # | Change | Files |
 |---|---|---|
 | 1 | Replace §3.1 with the tier table, the Discovery/Rollout rule, "left out for now", coverage levels, the one-round asking rule and the handoff format; update §6 and §7 to match | `AGENTS.md` |
-| 2 | Point each category's intake to the coverage levels; say that e-commerce, restaurant and course pages have no Tier C guess | `categories/*/AGENTS.md` |
+| 2 | Point each industry's intake to the coverage levels; say that e-commerce, restaurant and course pages have no Tier C guess | `industries/*/Industry.md` |
 | 3 | `data-guess` WARN, plus a `--final` mode that FAILs on it | `scripts/check_page.py` |
 | 4 | `--draft` (suffixed slug, noindex, ribbon); final publish refuses guesses or placeholders | `scripts/publish_site.py` |
 | 5 | `content-status.md` format; excluded from publishing | `AGENTS.md` §7, `publish_site.py` |
 | 6 | Brief template: explain the `(sample)`/`(guess)` tags and "just build what you can" | `_input/brief.template.md` |
-| 7 | Try a bare, a sparse and a partial FDE brief, and one per category, and check that the questions, marks, left-out list and handoff come out as described | manual test run |
+| 7 | Try a bare, a sparse and a partial FDE brief, and one per industry, and check that the questions, marks, left-out list and handoff come out as described | manual test run |
 
 Items 1, 2 and 6 are doc-only and could ship first. Items 3–5 are what make the guardrails real.
 
