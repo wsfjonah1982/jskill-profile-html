@@ -24,6 +24,8 @@ Usage:
     python scripts/check_page.py page.html --widths 1280,390 --pdf out.pdf
 
 Needs Playwright (`pip install playwright && playwright install chromium`).
+Disabled in the default workflow for now: Playwright isn't in requirements.txt and
+AGENTS.md §4 doesn't call this script. See PostTask.md to turn it back on.
 """
 import argparse
 import io

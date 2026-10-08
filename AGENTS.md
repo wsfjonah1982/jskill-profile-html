@@ -291,8 +291,8 @@ ask for them.
 
 **How to mark it:** put `data-sample="<what it stands in for>"` on the smallest element that
 holds the sample text, e.g. `<p class="bio" data-sample="about paragraph">…</p>`. The page
-still looks finished, and the marks don't show on screen. They're what lets you, the user and
-`scripts/check_page.py` (it lists them as WARNs) find every stand-in later. Then:
+still looks finished, and the marks don't show on screen. They're what lets you and the user find every stand-in later
+(`grep -n 'data-sample' _output/<slug>/index.html`). Then:
 
 1. When you send the hero previews (Step 6), say if the tagline shown is a sample.
 2. In the final handoff (§7), list every sample item under its own **"Sample content to
@@ -318,16 +318,16 @@ no separate mobile template, no server-side device detection. Before finishing, 
 - [ ] Images use `max-width: 100%; height: auto;` so they scale down instead of overflowing.
 - [ ] Print / Save as PDF still works: every template ships a print stylesheet and a footer
       "Save as PDF" button. If you added a section (§5) or a dark block, check print preview
-      (or a headless `page.pdf()`) — black on white, no nav/buttons, no card split across pages.
+      if the environment has a browser — black on white, no nav/buttons, no card split across pages.
 - [ ] Text contrast: body text and button text meet ~4.5:1 against their background — check
       again after any `--accent` change, and re-run `python scripts/theme_fallbacks.py <file>` so
       older browsers get the new colours too.
+- [ ] No leftover placeholders: `grep -nE '\[[A-Z][^]<>"]{1,80}\]' _output/<slug>/index.html`
+      should print nothing. Every `[Bracketed]` demo text is replaced or its block removed.
 - [ ] Actually check it at a phone width (375–414px) and a desktop width (1280px+) before
-      declaring the page done. If Playwright is available, `python scripts/check_page.py
-      _output/<slug>/index.html` runs every check in this list in one go (fix all FAILs; review
-      WARNs). Otherwise use whatever browser-preview/screenshot capability this
-      environment provides (Playwright, a headless-browser CLI, an IDE live preview, or manual
-      resize in any browser). If a template has interactive JS (an e-commerce cart, restaurant
+      declaring the page done, using whatever preview capability this environment already
+      provides (a browser tool, an IDE live preview, or manual resize in any browser). The skill
+      doesn't install or require a headless browser. If a template has interactive JS (an e-commerce cart, restaurant
       menu tabs, a course accordion, etc.), exercise it at both widths, not just render it.
 - [ ] If no such capability exists in this environment, do a careful manual review of the CSS
       breakpoints and JS logic instead, and say plainly in your output (§7) that visual

@@ -53,7 +53,33 @@ defaults.
 **Prerequisites:** Python 3.10+, and `pip install -r requirements.txt` (`requests` for
 `tos_client.py`'s hand-signed TOS calls, needed only when TOS is configured; `Pillow` for
 `fit_image.py`'s crop/resize — no vendor SDK for TOS; see `tos_client.py`). The HTML templates
-themselves have no build step and no dependency on any of this — only the scripts do.
+themselves have no build step and no dependency on any of this — only the scripts do. The
+skill doesn't need a headless browser (see [`PostTask.md`](./PostTask.md) for the optional
+Playwright page checks).
+
+### Installing on Ubuntu
+
+```bash
+# 1. Python + venv (skip if you already have them)
+sudo apt update
+sudo apt install -y python3 python3-pip python3-venv
+
+# 2. A virtual environment in the skill folder
+cd profile-html
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 3. The skill's Python packages
+pip install -r requirements.txt
+
+# 4. Check that it works
+python scripts/precheck.py
+```
+
+Ubuntu 23.04 and later reject `pip install` outside a virtual environment
+("externally-managed-environment"); to skip the venv anyway, use
+`pip install --user --break-system-packages -r requirements.txt`.
+Run `source .venv/bin/activate` again in each new terminal before using the scripts.
 
 | Script | Does |
 |---|---|
@@ -62,7 +88,7 @@ themselves have no build step and no dependency on any of this — only the scri
 | `publish_site.py` | **The default way a finished page ships.** Publishes `_output/<slug>/` to BytePlus TOS object storage, public-read, and prints the live URL. Without TOS, it copies the site to `<local_publish_dir>/<slug>/` (or leaves it in `_output/<slug>/`) and prints its `file://` location. `--local-dir DIR` delivers to any folder instead (a network drive, synced folder, web root). This is the standard last step for every build, not something only done on request |
 | `unpublish_site.py` | Takes a published site down by slug: the TOS copy, or the `local_publish_dir` copy. Never touches the build in `_output/` (republishing doesn't need it — `publish_site.py` already removes stale files) |
 | `list_sites.py` | Lists every site currently public in the bucket — files, size, last update, whether a local build still exists — so old test builds don't stay online unnoticed. Without TOS, it lists the sites in `local_publish_dir`. Read-only |
-| `check_page.py` | Automated §4 checklist for any page or template: overflow, clipped text, tap targets, JS errors, mobile menu, leftover `[placeholders]`, agent-written `data-sample` copy (listed as warnings), text contrast, print mode; `--compare` pixel-diffs against another version. Needs Playwright |
+| `check_page.py` | **Disabled for now.** Automated §4 checks in a headless browser. It needs Playwright, which the skill no longer installs; see [`PostTask.md`](./PostTask.md) |
 | `theme_fallbacks.py` | Adds plain-colour fallbacks for browsers without `color-mix()` / relative `oklch()` — re-run after changing `--accent` |
 | `site_paths.py` | Shared slug validation, bucket-prefix building and local publish paths for publish/unpublish/list |
 | `tos_client.py` | Shared TOS client both scripts above import — plain `requests` calls hand-signed with TOS's own TOS4-HMAC-SHA256 scheme, not the `tos` vendor SDK (see its docstring for why literal AWS S3 signing doesn't work against TOS despite its S3-like REST surface, discovered by hitting the real API) |
