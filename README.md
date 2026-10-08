@@ -212,8 +212,8 @@ All 14 templates, shown at desktop and mobile widths. Click any template name to
   <img src="./templates/technical-sidebar-profile/screenshot-mobile.png" width="24%" alt="Technical Sidebar Profile — mobile" />
 </p>
 
-> Monospace engineer homepage: dark profile sidebar, hero card with stats, a numbered delivery-stage
-> timeline, work history, chip-dense skill cards, and education. Recolour it with one `--accent`
+> Monospace engineer homepage: dark profile sidebar, hero card with stats, a numbered timeline of
+> recent projects, work history, chip-dense skill cards, and education. Recolour it with one `--accent`
 > variable, switch mono/sans with `--font`, and print it as a PDF résumé. Best for AI forward deployed engineers, solution/pre-sales architects,
 > field engineers, and ML/platform ICs.
 

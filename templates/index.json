@@ -142,7 +142,7 @@
     {
       "slug": "technical-sidebar-profile",
       "name": "Technical Sidebar Profile",
-      "tagline": "Monospace, carbon-and-accent engineer homepage: dark profile sidebar, hero card with stats, a numbered delivery-stage timeline, work history, chip-dense skill cards, and education. One --accent variable recolours it, --font switches mono/sans, and it prints as a clean PDF résumé.",
+      "tagline": "Monospace, carbon-and-accent engineer homepage: dark profile sidebar, hero card with stats, a numbered timeline of recent projects, work history, chip-dense skill cards, and education. One --accent variable recolours it, --font switches mono/sans, and it prints as a clean PDF résumé.",
       "profile_type": ["personal"],
       "mood": ["technical", "confident", "credible", "hands-on"],
       "occasion": ["AI forward deployed engineer homepage", "solutions / pre-sales architect profile", "field or customer engineer profile", "ML or platform engineer personal site", "senior IC job-search page"],
@@ -150,9 +150,9 @@
       "formality": "medium",
       "density": "high",
       "scheme": "light",
-      "sections": ["nav", "profile-sidebar", "hero-card-with-stats", "stack-chips", "projects-or-stages", "experience-timeline", "skills-grid", "outcomes", "education-certifications", "awards", "contact", "footer"],
-      "best_for": "Hands-on technical ICs (AI forward deployed engineers, solution and pre-sales architects, field engineers, ML and platform engineers) who want to show end-to-end delivery, work history, and a specific skill stack on one information-only page. Stage names, skill cards, and social/contact channels are all placeholders that adapt to any technical specialty; recolour by changing --accent (use a bright accent, and set --on-accent to white for dark ones).",
-      "avoid_for": "Non-technical, warm, or brand-led pages: the monospace type and dense chip lists read as an engineer's spec sheet. Also a poor fit for anyone with few concrete proof points, since the stages and outcomes lean on real results.",
+      "sections": ["nav", "profile-sidebar", "hero-card-with-stats", "stack-chips", "projects", "experience-timeline", "skills-grid", "outcomes", "education-certifications", "awards", "contact", "footer"],
+      "best_for": "Hands-on technical ICs (AI forward deployed engineers, solution and pre-sales architects, field engineers, ML and platform engineers) who want to show their most recent projects, work history, and a specific skill stack on one information-only page. Project cards, skill cards, and social/contact channels are all placeholders that adapt to any technical specialty; recolour by changing --accent (use a bright accent, and set --on-accent to white for dark ones).",
+      "avoid_for": "Non-technical, warm, or brand-led pages: the monospace type and dense chip lists read as an engineer's spec sheet. Also a poor fit for anyone with few concrete proof points, since the project cards and outcomes lean on real results.",
       "screenshot_desktop": "templates/technical-sidebar-profile/screenshot-desktop.png",
       "screenshot_mobile": "templates/technical-sidebar-profile/screenshot-mobile.png"
     },

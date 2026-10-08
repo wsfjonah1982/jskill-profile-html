@@ -82,7 +82,7 @@ then match mood and formality. **Pick three that look genuinely different** for 
 | `playful-personal` | light | person or company | Creators, coaches and small-business owners who want to feel warm and human. |
 | `luxury-portfolio` | dark | person or company | Photographers, architects, designers: the visuals are the pitch. |
 | `academic-cv` | light | person | Academics, researchers and job-seekers who need a dense, print-friendly CV. |
-| `technical-sidebar-profile` | light | person | Hands-on technical ICs (FDEs, solution and pre-sales architects, ML/platform engineers) showing end-to-end delivery. |
+| `technical-sidebar-profile` | light | person | Hands-on technical ICs (FDEs, solution and pre-sales architects, ML/platform engineers) showing their most recent projects. |
 | `playful-dev-folio` | light | person | Developers covering a lot of ground: skills, experience, open source, talks. |
 | `mono-minimal-dev` | light | person | Engineers who want a quiet, typographic page where the work speaks. |
 | `illustrated-sky-folio` | light | person | Developers working across several areas, each with its own illustrated row. |
@@ -91,7 +91,7 @@ then match mood and formality. **Pick three that look genuinely different** for 
 
 ## 4. Build notes
 
-- No industry-specific JavaScript beyond the mobile menu (and the stage strip in Technical
-  Sidebar Profile), so the root §3 rules cover the build.
+- No industry-specific JavaScript beyond the mobile menu (and the project strip in Technical
+  Sidebar Profile, which keeps to the 5 most recent projects), so the root §3 rules cover the build.
 - Sample copy (root §3.1) can cover the tagline, about paragraph and service descriptions.
   Never metrics, employers, clients, credentials or contact details.

@@ -454,87 +454,69 @@
         </div>
       </section>
 
-      <!-- Projects / delivery stages. Each card can be a stage of how the person works (the default
-           FDE lifecycle below) or one project per card — rename, add, or remove cards freely (3–8
-           works). Numbers, ids and the icon strip above are generated from the cards: just set a
-           short strip label in data-short and pick an icon. -->
+      <!-- Projects: one card per real project the user did, most recent first. Show the 5 most
+           recent at most (fewer is fine); older work belongs in Experience. Don't turn this into a
+           generic "how I work" process or lifecycle, and don't invent projects to fill the cards —
+           delete the extra ones. Numbers, ids and the icon strip above are generated from the
+           cards: just set a short strip label in data-short and pick an icon. -->
       <section id="projects" aria-labelledby="projects-title">
         <h2 class="section-title" id="projects-title">Projects</h2>
-        <p class="section-intro">[One or two sentences on how you work across these stages — e.g. "From the
-          first discovery call to a system the customer's own team owns."]</p>
+        <p class="section-intro">[One or two sentences on what these projects have in common — e.g. "My
+          five most recent projects, newest first."]</p>
 
-        <!-- Built automatically from the stages below (number, icon, data-short label).
+        <!-- Built automatically from the project cards below (number, icon, data-short label).
              Leave it empty; it hides itself if JavaScript is off. -->
-        <nav class="strip" aria-label="Stages"></nav>
+        <nav class="strip" aria-label="Projects"></nav>
 
-        <!-- One <li class="stage"> per stage. Chips are the user's own tools/methods for that stage.
+        <!-- One <li class="stage"> per project. Chips are the tools/platforms used on it.
              Keep the "PROVEN" line only for a real, specific result — delete the .proven div otherwise. -->
         <ol class="timeline">
-          <li class="stage" data-short="Discovery">
+          <li class="stage" data-short="[Short label]">
             <span class="stage-num"></span>
             <div class="stage-card">
-              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><h3>Discovery &amp; Scoping</h3></div>
-              <p class="why">[One line: what this stage is for.]</p>
-              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
-              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><h3>[Project name]</h3></div>
+              <p class="why">[Company or client · one line: what the project was and why it mattered.]</p>
+              <div class="chip-row"><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result from this project.]</span></div>
             </div>
           </li>
-          <li class="stage" data-short="Data">
+          <li class="stage" data-short="[Short label]">
             <span class="stage-num"></span>
             <div class="stage-card">
-              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><h3>Data Access &amp; Readiness</h3></div>
-              <p class="why">[One line: what this stage is for.]</p>
-              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
-              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><h3>[Project name]</h3></div>
+              <p class="why">[Company or client · one line: what the project was and why it mattered.]</p>
+              <div class="chip-row"><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result from this project.]</span></div>
             </div>
           </li>
-          <li class="stage" data-short="Prototype">
+          <li class="stage" data-short="[Short label]">
             <span class="stage-num"></span>
             <div class="stage-card">
-              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/></svg></span><h3>Prototype</h3></div>
-              <p class="why">[One line: what this stage is for.]</p>
-              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
-              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/></svg></span><h3>[Project name]</h3></div>
+              <p class="why">[Company or client · one line: what the project was and why it mattered.]</p>
+              <div class="chip-row"><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result from this project.]</span></div>
             </div>
           </li>
-          <li class="stage" data-short="Evaluation">
+          <li class="stage" data-short="[Short label]">
             <span class="stage-num"></span>
             <div class="stage-card">
-              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span><h3>Evaluation &amp; Guardrails</h3></div>
-              <p class="why">[One line: what this stage is for.]</p>
-              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
-              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.1 2.1 0 0 0-2.9-.1Z"/><path d="M12 15l-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2Z"/></svg></span><h3>[Project name]</h3></div>
+              <p class="why">[Company or client · one line: what the project was and why it mattered.]</p>
+              <div class="chip-row"><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result from this project.]</span></div>
             </div>
           </li>
-          <li class="stage" data-short="Integration">
+          <li class="stage" data-short="[Short label]">
             <span class="stage-num"></span>
             <div class="stage-card">
-              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><h3>Integration &amp; Security</h3></div>
-              <p class="why">[One line: what this stage is for.]</p>
-              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
-              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
-            </div>
-          </li>
-          <li class="stage" data-short="Production">
-            <span class="stage-num"></span>
-            <div class="stage-card">
-              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.1 2.1 0 0 0-2.9-.1Z"/><path d="M12 15l-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2Z"/></svg></span><h3>Production &amp; Scale</h3></div>
-              <p class="why">[One line: what this stage is for.]</p>
-              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
-              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
-            </div>
-          </li>
-          <li class="stage" data-short="Handoff">
-            <span class="stage-num"></span>
-            <div class="stage-card">
-              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><h3>Adoption &amp; Handoff</h3></div>
-              <p class="why">[One line: what this stage is for.]</p>
-              <div class="chip-row"><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span><span class="chip">[Method]</span></div>
-              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result at this stage.]</span></div>
+              <div class="stage-head"><span class="ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><h3>[Project name]</h3></div>
+              <p class="why">[Company or client · one line: what the project was and why it mattered.]</p>
+              <div class="chip-row"><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span><span class="chip">[Tool]</span></div>
+              <div class="proven"><span class="proven-tag">PROVEN</span><span>[A specific, real result from this project.]</span></div>
             </div>
           </li>
         </ol>
-        <p class="loop-note">[Optional one-line takeaway about how the stages connect — or delete this line.]</p>
       </section>
 
       <!-- Work history, most recent first. One <li class="job"> per role; 1–3 bullets each. -->
