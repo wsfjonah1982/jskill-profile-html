@@ -8,6 +8,7 @@ Checks, at each width (default 1440, 1024, 768, 375, 320):
   - JavaScript errors
   - the mobile menu (#menuBtn / #mobile-menu) opens and closes, if present
   - unfilled [placeholders] still in the visible page (skipped with --template)
+  - agent-written sample content marked data-sample (a warning, not a failure)
 Once:
   - text contrast (WCAG: 4.5:1 normal text, 3:1 large text) against the nearest
     solid background — elements over images/gradients are skipped
@@ -176,6 +177,11 @@ def main():
                 ph = sorted(set(re.findall(r"\[[A-Za-z][^\]\n]{0,50}\]", text)))
                 if ph:
                     fails.append(f"unfilled placeholders: {', '.join(ph[:10])}{' …' if len(ph) > 10 else ''}")
+                samples = pg.evaluate("""() => [...document.querySelectorAll('[data-sample]')].map(e =>
+                    e.getAttribute('data-sample') || e.textContent.trim().replace(/\\s+/g, ' ').slice(0, 40))""")
+                if samples:
+                    warns.append(f"{len(samples)} agent-written sample item(s) (data-sample) — confirm with the user: "
+                                 f"{'; '.join(samples[:10])}{' …' if len(samples) > 10 else ''}")
             say(f"  {w:>5}px  {'; '.join(line) if line else 'ok'}")
             pg.close()
 

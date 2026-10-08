@@ -23,7 +23,7 @@ def _load_credential_file() -> dict:
 def load_credential(key_name: str) -> str:
     """Look up `key_name` in credential.json; if it's missing, blank, or the
     file doesn't exist, fall back to the environment variable of the same
-    name (e.g. `model_ark_key` -> $model_ark_key). Raises KeyError if neither
+    name (e.g. `tos_bucket` -> $tos_bucket). Raises KeyError if neither
     source has it."""
     value, source = describe_credential(key_name)
     if source == "missing":
@@ -51,6 +51,31 @@ def load_bucket(config: dict) -> str:
             f"(or $tos_bucket, or config.json)."
         )
     return value
+
+
+TOS_SETTINGS = ("tos_access_key_id", "tos_secret_access_key", "tos_bucket")
+
+
+def tos_status(config: dict) -> tuple[str, list[str]]:
+    """Whether TOS publishing is set up: ('on', []) if every setting is
+    present, ('off', [...]) if none is, ('partial', [missing...]) otherwise.
+    TOS is optional — when it's off, publish_site.py keeps the page on the
+    local file system instead. "..." (an unfilled credential_tmp.json copy)
+    and the config.json bucket placeholder count as missing."""
+    missing = []
+    for key in TOS_SETTINGS:
+        value, _ = describe_credential(key)
+        if value == "...":
+            value = None
+        if key == "tos_bucket" and not value:
+            value = config.get("tos_bucket")
+            if value == BUCKET_PLACEHOLDER:
+                value = None
+        if not value:
+            missing.append(key)
+    if not missing:
+        return "on", []
+    return ("off" if len(missing) == len(TOS_SETTINGS) else "partial"), missing
 
 
 def describe_credential(key_name: str) -> tuple[str | None, str]:

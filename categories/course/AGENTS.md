@@ -7,8 +7,9 @@ carousel — by picking one of this folder's 2 templates, cloning it, and fillin
 content and data.
 
 This document is scoped to courses/coaching. For rules that don't change per category — the
-responsive checklist, the no-fabricated-proof-points rule, and the output contract — defer to
-the root `../../AGENTS.md` §4, §6, and §7 rather than re-reading them here.
+writing copy and marking sample content, the responsive checklist, the no-fabricated-proof-points
+rule, and the output contract — defer to the root `../../AGENTS.md` §3.1, §4, §6, and §7 rather
+than re-reading them here.
 
 ---
 
@@ -72,7 +73,10 @@ AGENTS.md §3/§6).
 Follow the root AGENTS.md exactly for these — don't skip them:
 - §4 responsive checklist (also confirm the accordion and carousel work at ~375px width, not
   just desktop).
+- §3.1 sample content: mark any copy you made up to fill a gap with `data-sample`, and list it
+  in the handoff.
 - §6 no fabricated proof points.
-- §7 output contract — publish via `scripts/publish_site.py` and lead with the public URL, plus a
+- §7 output contract — publish via `scripts/publish_site.py` and lead with the location it prints (the public
+  URL, or the local path when TOS isn't configured), plus a
   one-line rationale for the template pick and any caveats (e.g. "kept the 2 placeholder
   testimonials since you didn't have real ones yet").

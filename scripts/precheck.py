@@ -1,5 +1,7 @@
 """Pre-flight check: confirm credentials load correctly and that publishing
 to TOS actually works end-to-end, before doing any real page-building work.
+TOS is optional: if none of its settings are configured, this checks the local
+publish folder instead (config.json's `local_publish_dir`, if set).
 Run this first when setting up the skill somewhere new, after changing
 credential.json, or whenever a build's publish step seems off.
 
@@ -15,10 +17,9 @@ import time
 import uuid
 from pathlib import Path
 
-import requests
 
-from credentials import describe_credential, load_bucket
-from tos_client import delete_object, put_object
+from credentials import describe_credential, load_bucket, tos_status
+from site_paths import local_publish_root
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -27,7 +28,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 CONFIG_PATH = BASE_DIR / "config.json"
 
 CREDENTIAL_CHECKS = [
-    ("model_ark_key", "write_content.py"),
     ("tos_access_key_id", "publish_site.py / unpublish_site.py"),
     ("tos_secret_access_key", "publish_site.py / unpublish_site.py"),
 ]
@@ -60,6 +60,9 @@ def check_credentials() -> bool:
 
 
 def check_publish() -> bool:
+    import requests  # TOS only — not needed when sites are kept locally
+    from tos_client import delete_object, put_object
+
     print("\nChecking site publish (live TOS round-trip)...")
 
     try:
@@ -108,7 +111,39 @@ def check_publish() -> bool:
     return fetch_ok and cleanup_ok
 
 
+def check_local(config: dict) -> bool:
+    root = local_publish_root(config)
+    if root is None:
+        print("  Finished pages stay in _output/<slug>/ (no local_publish_dir set in config.json).")
+        return True
+    probe = root / f".precheck-{uuid.uuid4().hex}"
+    try:
+        probe.write_text("precheck", encoding="utf-8")
+        probe.unlink()
+    except OSError as exc:
+        print(f"  local_publish_dir {root} ... FAILED: not writable ({exc})")
+        return False
+    print(f"  Finished pages are copied to {root}/<slug>/ ... OK (writable)")
+    return True
+
+
 def main() -> int:
+    try:
+        config = load_config()
+    except Exception as exc:
+        print(f"FAILED — couldn't read config.json: {exc}")
+        return 1
+    state, missing = tos_status(config)
+    if state == "off":
+        print("TOS publishing isn't configured (optional) — sites are kept locally.")
+        ok = check_local(config)
+        print("\nAll checks passed — safe to proceed." if ok else "\nFix the issue above before proceeding.")
+        return 0 if ok else 1
+    if state == "partial":
+        print(f"TOS is only partly configured — missing: {', '.join(missing)}.\n"
+              f"Fill those in to publish to TOS, or remove the other TOS settings to keep sites local.")
+        return 1
+
     creds_ok = check_credentials()
 
     tos_creds_present = bool(describe_credential("tos_access_key_id")[0]) and \

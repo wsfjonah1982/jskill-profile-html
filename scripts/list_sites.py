@@ -6,6 +6,9 @@ file count, total size, last update, whether a local build exists in
 _output/<slug>/, and the public URL. Objects directly under the prefix that
 don't belong to any slug are listed separately.
 
+When TOS isn't configured, it lists the site folders in config.json's
+`local_publish_dir` instead (or says where builds stay if that isn't set).
+
 Read-only: it never deletes anything. To take a site down:
     python scripts/unpublish_site.py --slug <slug>
 
@@ -18,9 +21,8 @@ import json
 import sys
 from pathlib import Path
 
-from credentials import load_bucket, load_credential
-from site_paths import DEFAULT_PREFIX_TEMPLATE
-from tos_client import list_object_entries
+from credentials import load_bucket, load_credential, tos_status
+from site_paths import DEFAULT_PREFIX_TEMPLATE, local_publish_root
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -37,12 +39,41 @@ def human(n: int) -> str:
         n /= 1024
 
 
+def list_local(config: dict, as_json: bool) -> int:
+    root = local_publish_root(config)
+    rows = []
+    if root and root.is_dir():
+        for d in sorted(p for p in root.iterdir() if (p / "index.html").is_file()):
+            files = [f for f in d.rglob("*") if f.is_file()]
+            rows.append({"slug": d.name, "files": len(files), "bytes": sum(f.stat().st_size for f in files),
+                         "local_build": (OUTPUT_DIR / d.name / "index.html").exists(),
+                         "url": (d / "index.html").as_uri()})
+    if as_json:
+        print(json.dumps({"target": "local", "root": str(root) if root else None, "sites": rows}, indent=2))
+        return 0
+    if root is None:
+        print(f"TOS isn't configured and no local_publish_dir is set — finished sites stay in {OUTPUT_DIR}.")
+        return 0
+    print(f"TOS isn't configured — {len(rows)} site(s) in local_publish_dir {root}\n")
+    for r in rows:
+        print(f"  {r['slug']}  {r['files']} files  {human(r['bytes'])}  {r['url']}")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     args = ap.parse_args()
 
     config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+    state, missing = tos_status(config)
+    if state == "off":
+        return list_local(config, args.json)
+    if state == "partial":
+        print(f"TOS is only partly configured (missing: {', '.join(missing)}).", file=sys.stderr)
+        return 1
+    from tos_client import list_object_entries  # needs `requests`; TOS only
+
     endpoint, region = config["tos_endpoint"], config["tos_region"]
     bucket = load_bucket(config)
     template = config.get("tos_key_prefix_template", DEFAULT_PREFIX_TEMPLATE)

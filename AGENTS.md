@@ -37,8 +37,8 @@ improvise a new category from scratch, and don't build a best-effort page outsid
 
 Each category subskill is self-contained (its own intake questions, its own `index.json`, its
 own `templates/`), but all of them **defer back to this document** for the parts that don't
-change by category: Step 1 (precheck), §4 (responsive checklist), §6 (no fabricated proof
-points), and §7 (output contract). Don't duplicate those sections inside a category's own doc —
+change by category: Step 1 (precheck), §3.1 (writing copy and marking sample content), §4
+(responsive checklist), §6 (no fabricated proof points), and §7 (output contract). Don't duplicate those sections inside a category's own doc —
 reference them.
 
 The rest of this document (Steps 1–8) is the **profile/bio page** flow specifically — but Step 1
@@ -55,11 +55,19 @@ For every request, follow this sequence. Do **not** skip the intake step or the 
 
 **Once per session** (not for every single page — just the first time this skill runs in a given
 environment, or after touching `credential.json`/`config.json`), run `python scripts/precheck.py`
-before doing any real work. It confirms `model_ark_key`/`tos_access_key_id`/`tos_secret_access_key`
-actually load (from `credential.json` or the matching environment variable) and does a live
-publish→fetch→unpublish round-trip against TOS, so a broken credential or a publishing problem
-surfaces immediately instead of after you've already built the page. If it reports a failure, fix
-that first — don't start building against a setup you haven't confirmed works.
+before doing any real work. TOS publishing is **optional**, and precheck covers both setups:
+
+- **TOS configured** (access key, secret key and bucket all set, in `credential.json` or the
+  matching environment variables): precheck confirms they load, then does a live
+  publish→fetch→unpublish round-trip.
+- **TOS not configured** (none of them set): precheck passes. Finished pages are kept locally
+  (see §7). If `config.json` sets `local_publish_dir`, precheck checks that the folder is
+  writable.
+- **TOS partly configured:** precheck fails, because that's almost always a typo or a missing
+  key, not a choice.
+
+If it reports a failure, fix that first. Don't start building against a setup you haven't
+confirmed works.
 
 This skill defaults to reading prepared content rather than always starting from a live Q&A.
 Before asking the user anything (Step 2 below, or a category subskill's own intake section):
@@ -106,10 +114,12 @@ user provides directly) whatever it didn't cover. At minimum:
   if none exist, keep the template's placeholder blocks
 
 If the user gives you a raw document (resume PDF, LinkedIn export, company one-pager), extract
-these from it instead of re-asking for everything. If they'd rather have a draft written for them
-from `_input/brief.md` than write it themselves, `scripts/write_content.py` calls an LLM with
-this skill's own `prompt_templates/content_writing_*.md` to produce one (same no-fabrication
-rule enforced in its system prompt) — review the draft before using it, don't paste it in blind.
+these from it instead of re-asking for everything.
+
+**You write any copy the user doesn't, yourself.** No script or third-party model API does
+this. If the user would rather not write the copy, or says to "just fill in" what's missing, you
+draft it from what they gave you. If they give only part of the content, you write sample copy
+for the gaps. Either way, follow §3.1: never invent proof points, and mark every sample line.
 
 ### Step 4 — Read `index.json` and pick 3 candidates
 
@@ -163,19 +173,21 @@ Wait for the user to pick.
    switch templates, don't import a different visual language. (See §5.)
 5. Verify responsiveness (see §4) before calling it done.
 
-### Step 8 — Publish the final page, send the URL
+### Step 8 — Publish the final page, send its location
 
-Open the finished page in the browser to sanity-check it, then publish it with
-`scripts/publish_site.py` (see §7 below — this is the default last step, not optional) and message
-the user:
+Open the finished page in the browser to sanity-check it, then run `scripts/publish_site.py`
+(see §7 below — this is the default last step, not optional) and message the user:
 
 > "Done. Your page is live at `https://<bucket>.<tos-endpoint>/site/manual/<slug>/index.html`.
 >
 > [One line about which template you picked and why, plus any caveats.]"
 
+If TOS isn't configured, the script keeps the page locally and prints its file location
+instead. Say "Your page is ready at `<path>`" rather than "live", because it isn't public.
+
 This applies to **every artifact you produce**: open hero previews locally and send their file
 path (they're a mid-process comparison step, not the deliverable); the final page gets opened,
-published, and handed off by its public URL.
+published, and handed off by the location `publish_site.py` prints.
 
 ---
 
@@ -260,6 +272,38 @@ link). To add more, duplicate that block and edit its content — the surroundin
 container already reflows. To remove, delete the block. Don't hand-adjust column counts or
 widths; the CSS handles it.
 
+### 3.1 Writing copy yourself, and marking sample content
+
+You write all page copy yourself. No script or external model API does it for you. There are
+two cases, and only the second one gets marked:
+
+- **Drafting from the user's real material.** The user gave you facts but no finished wording
+  ("write my bio from this résumé", "make the brief sound good"). Write it in the template's
+  mood. This is the user's content in your words, so it isn't sample content. Every claim must
+  still trace back to something they gave you. In the handoff, say which parts you wrote.
+- **Sample content for gaps.** A field is blank, and the user doesn't want to fill it in. They
+  may have said so up front ("fill in whatever's missing"), or you asked once (Step 1/3) and
+  they said to go ahead. Write a generic stand-in in the right voice, and mark it.
+
+**What can be sampled:** descriptive copy only. That means a tagline, an about paragraph,
+service/feature/product/menu-item descriptions, course module summaries, section intros and CTA
+lines. Keep it generic ("Clear, calm design for growing teams"). Don't state specific facts.
+
+**What's never sampled (§6):** metrics, testimonials and reviews, client or employer names,
+awards, credentials, years of experience, prices, hours, addresses and contact details. Don't
+invent these, even with a mark on them. Keep the template's placeholder, drop the section, or
+ask for them.
+
+**How to mark it:** put `data-sample="<what it stands in for>"` on the smallest element that
+holds the sample text, e.g. `<p class="bio" data-sample="about paragraph">…</p>`. The page
+still looks finished, and the marks don't show on screen. They're what lets you, the user and
+`scripts/check_page.py` (it lists them as WARNs) find every stand-in later. Then:
+
+1. When you send the hero previews (Step 6), say if the tagline shown is a sample.
+2. In the final handoff (§7), list every sample item under its own **"Sample content to
+   replace"** line. Don't put it under general caveats.
+3. When the user sends the real text, swap it in and remove that `data-sample` attribute.
+
 ---
 
 ## 4. Responsive checklist (must pass before you're done)
@@ -318,7 +362,8 @@ same page, you succeeded. If it looks grafted on from elsewhere, redo it.
 ## 6. Common pitfalls
 
 - **Don't skip Step 1's precheck** the first time this skill runs somewhere — finding out
-  credentials or publishing are broken after building the page wastes the whole build.
+  credentials or publishing are broken after building the page wastes the whole build. (With no
+  TOS configured, it's a quick check and passes.)
 - **Don't skip intake for anything the brief leaves blank** — "person vs. company" and mood
   change the template pick entirely. But don't re-ask what `_input/brief.md` already answers
   (Step 1); ask only about missing or ambiguous fields.
@@ -330,6 +375,9 @@ same page, you succeeded. If it looks grafted on from elsewhere, redo it.
 - **Don't invent fake metrics/testimonials as if they were the user's real data.** Placeholder
   numbers in the templates are demo content; when building the real page, use only what the user
   gave you, and leave a section out (or mark it TODO) rather than fabricate proof points.
+  Sample content (§3.1) covers descriptive copy only, never proof points.
+- **Don't ship unmarked sample copy.** Any text you made up to fill a gap gets a `data-sample`
+  attribute and is listed in the handoff (§3.1). Otherwise it looks like the user wrote it.
 
 ---
 
@@ -349,24 +397,42 @@ For hero previews (Step 6), do both:
 
 **For the final page, always publish it — this is the default last step, not an optional
 extra.** Once it passes §4's responsive/interaction checklist, run
-`scripts/publish_site.py --dir _output/<slug> --slug <slug>` to push it to BytePlus TOS object
-storage, public-read (same `config.json`/`credential.json` credentials every other script here
-uses). Then report to the user:
-- **The public URL** `scripts/publish_site.py` prints — this is the headline deliverable, not the
-  local file path. Lead with it.
+`scripts/publish_site.py --dir _output/<slug> --slug <slug>`. Where the page goes depends on
+the setup (Step 1):
+
+| Setup | What `publish_site.py` does | What it prints |
+|---|---|---|
+| TOS configured | pushes the site to BytePlus TOS object storage, public-read | the public URL |
+| TOS not configured, `local_publish_dir` set in `config.json` | copies the site to `<local_publish_dir>/<slug>/` (a mounted share, a synced folder, a web server's root…), replacing any older copy | a `file://` location |
+| TOS not configured, no `local_publish_dir` | leaves the site in `_output/<slug>/` | a `file://` location |
+
+**Other file systems.** If the user names a folder to deliver into (a network drive, a synced
+cloud folder, a web root), pass `--local-dir <folder>`. That copies the site to
+`<folder>/<slug>/` and skips TOS for that run. If the environment only offers an external
+storage or hosting service through a tool (a cloud drive connector, an artifact host, …),
+*offer* it in one line, but don't upload without the user's OK. The skill's default only covers
+TOS and local folders.
+
+Then report to the user:
+- **The location** `scripts/publish_site.py` prints. That's the public URL with TOS, otherwise
+  the absolute local path (convert the `file://` URI to a plain path). Lead with it.
 - A one-line note on which template you picked and why (the tone match).
+- **Sample content to replace**, if there is any (§3.1): one short line per `data-sample` item,
+  e.g. "about paragraph, the three service descriptions". Leave this line out if there's none.
 - Any caveats (e.g. "left the testimonial section as a placeholder since you didn't give me one
   yet", "added a pricing section from scratch using the template's card style since none of the
   templates ship with one", or "couldn't visually verify responsiveness — no browser tooling in
   this environment").
 
-This does push real files to a public bucket — say so plainly when you do it — but don't gate it
-behind a question each time: publishing the finished page is standard behavior for this skill, every time, unless the user has explicitly
-said they just want the local file. Republishing under the same slug is safe: `publish_site.py`
-deletes any object under that slug that isn't in the new build, and serves HTML with
-`Cache-Control: no-cache` so the update shows immediately. Slugs must be lowercase kebab-case
-(letters, digits, hyphens); both scripts refuse anything else. Use `scripts/unpublish_site.py
---slug <slug>` only to take a site down entirely, and `scripts/list_sites.py` to see everything
-that's currently public.
+With TOS, this pushes real files to a public bucket. Say so plainly when you do it, but don't
+gate it behind a question each time. Running `publish_site.py` on the finished page is standard
+behavior for this skill, every time, unless the user has explicitly said they just want the local
+file. Republishing under the same slug is safe: `publish_site.py` replaces whatever is under that
+slug with the new build. That means stale TOS objects are deleted, or the old copy in
+`local_publish_dir` is replaced. On TOS, HTML is served with `Cache-Control: no-cache` so the
+update shows immediately. Slugs must be lowercase kebab-case (letters, digits, hyphens), and
+both scripts refuse anything else. Use `scripts/unpublish_site.py --slug <slug>` only to take a
+site down entirely. It removes the TOS copy, or the `local_publish_dir` copy, and never the
+build in `_output/`. Use `scripts/list_sites.py` to see everything that's currently published.
 
-Do not narrate every step you took. The user wants the URL + a one-line rationale.
+Do not narrate every step you took. The user wants the location + a one-line rationale.

@@ -2,8 +2,9 @@
 
 You are building a single, finished, responsive HTML page for a restaurant, cafe, bistro, or bar
 — menu, hours, location, and a reservation request form. This subskill covers everything specific
-to restaurants; for the rules that apply to every page in this library (responsive checklist, no
-fabricated proof points, output contract), see the root `../../AGENTS.md` §4, §6, §7 — don't
+to restaurants; for the rules that apply to every page in this library (writing copy and marking
+sample content, responsive checklist, no fabricated proof points, output contract), see the root
+`../../AGENTS.md` §3.1, §4, §6, §7 — don't
 duplicate them here, just follow them.
 
 ## 1. Intake — ask before building
@@ -62,5 +63,7 @@ If the user wants it to actually deliver reservations somewhere, that's a separa
 ## 5. Before finishing
 
 Run the root AGENTS.md §4 responsive checklist, then its §7 output contract (publish via
-`scripts/publish_site.py` and lead with the public URL, one line on which template you picked and
-why, plus the reservation-form caveat from §4 above).
+`scripts/publish_site.py` and lead with the location it prints (the public
+URL, or the local path when TOS isn't configured), one line on which template you picked and
+why, plus the reservation-form caveat from §4 above, and any sample menu descriptions you wrote,
+per §3.1).

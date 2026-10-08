@@ -1,12 +1,9 @@
 {
-  "maas_api_endpoint": "https://ark.ap-southeast.bytepluses.com/api/v3",
-  "chat_model_id": "deepseek-v4-flash-260425",
-  "chat_temperature": 0.7,
-  "chat_request_timeout_seconds": 120,
   "image_fit_max_dimension": 1600,
   "image_fit_quality": 85,
   "tos_endpoint": "tos-ap-southeast-1.bytepluses.com",
   "tos_region": "ap-southeast-1",
   "tos_bucket": "your-bucket-name",
-  "tos_key_prefix_template": "site/manual/{slug}"
+  "tos_key_prefix_template": "site/manual/{slug}",
+  "local_publish_dir": ""
 }

@@ -6,8 +6,10 @@
   photos/logos into `_input/images/` and any video files into `_input/videos/` — reference
   them by filename in the relevant field below so the building agent knows which is which.
 
-  Leave a field blank (or delete its line) if you don't have an answer yet — the agent will
-  ask you about anything left blank or ambiguous rather than guessing or inventing content.
+  Leave a field blank (or delete its line) if you don't have an answer yet. The agent will ask
+  you about anything blank or unclear. Rough notes are fine too, because the agent will write
+  them up. If you tell it to fill in what's missing, it writes sample copy for descriptive fields
+  only (tagline, about, descriptions), marks each one, and lists them for you to replace.
   Never write fake testimonials, reviews, or metrics here — leave them out if you don't have
   real ones; the templates ship with clearly-placeholder demo content for that reason.
 -->

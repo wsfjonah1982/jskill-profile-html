@@ -7,9 +7,11 @@ self-contained HTML file that adapts from a phone screen to a desktop without a 
 version. Beyond the 14 bio/portfolio templates below, the library also has three site-category
 subskills under `categories/`: e-commerce stores, restaurants/cafes, and courses/coaching pages.
 
-**Publishing is the default, not an optional extra.** A finished page isn't just written to
-disk — the standard last step is uploading it to object storage and handing back a live public
-URL, via `scripts/publish_site.py`. See "Scripts & credentials" below.
+**Publishing is the default, not an optional extra.** The standard last step is
+`scripts/publish_site.py`. With BytePlus TOS configured, it uploads the page and hands back a
+live public URL. TOS is optional, though. Without it, the page stays on the local file system,
+in `_output/<slug>/` or a folder you choose (`local_publish_dir`). See "Scripts & credentials"
+below.
 
 Agents using the library should read [`AGENTS.md`](./AGENTS.md). It's the operating manual: how
 to read `index.json`, match the user's brief to a template, clone it, and adapt the content.
@@ -39,37 +41,44 @@ incomplete) and the agent falls back to asking everything interactively.
 
 `scripts/` has self-contained helpers an agent calls while building and shipping a page. This
 skill **never generates images** — every photo comes from the user's own `_input/images/`;
-`fit_image.py` just crops/resizes what they gave you. Only `write_content.py` and the publishing
-scripts talk to a network API; `fit_image.py` needs neither credentials nor `config.json` values
-beyond its own defaults.
+`fit_image.py` just crops/resizes what they gave you. The skill also **never calls a third-party
+text model**. The building agent writes any copy itself, and marks sample copy it writes to fill
+gaps (see `AGENTS.md` §3.1). Only the publishing scripts talk to a network API, and only when TOS
+is configured. `fit_image.py` needs neither credentials nor `config.json` values beyond its own
+defaults.
 
 **Prerequisites:** Python 3.10+, and `pip install -r requirements.txt` (`requests` for
-`write_content.py`'s Ark calls and `tos_client.py`'s hand-signed TOS calls, `Pillow` for
+`tos_client.py`'s hand-signed TOS calls, needed only when TOS is configured; `Pillow` for
 `fit_image.py`'s crop/resize — no vendor SDK for TOS; see `tos_client.py`). The HTML templates
 themselves have no build step and no dependency on any of this — only the scripts do.
 
 | Script | Does |
 |---|---|
-| `precheck.py` | **Run this first**, once per session (or after touching credentials/config). Confirms every credential loads and does a live publish→fetch→unpublish round-trip against TOS, so a broken setup surfaces before you've built anything |
+| `precheck.py` | **Run this first**, once per session (or after touching credentials/config). With TOS configured, it confirms the credentials load and does a live publish→fetch→unpublish round-trip. Without TOS, it passes and checks that `local_publish_dir` is writable, if one is set. Partly-configured TOS fails. Either way, a broken setup surfaces before you've built anything |
 | `fit_image.py` | Crops a user's photo to a slot's aspect ratio and resizes it down for the web — local only, no network call, no credentials |
-| `write_content.py` | Drafts tagline/bio/section copy from `_input/brief.md` via a chat model, enforcing the no-fabricated-proof-points rule |
-| `publish_site.py` | **The default way a finished page ships.** Publishes `_output/<slug>/` to BytePlus TOS object storage, public-read, and prints the live URL — this is the standard last step for every build, not something only done on request |
-| `unpublish_site.py` | Takes a published site down by slug (republishing doesn't need it — `publish_site.py` already removes stale files) |
-| `list_sites.py` | Lists every site currently public in the bucket — files, size, last update, whether a local build still exists — so old test builds don't stay online unnoticed. Read-only |
-| `check_page.py` | Automated §4 checklist for any page or template: overflow, clipped text, tap targets, JS errors, mobile menu, leftover `[placeholders]`, text contrast, print mode; `--compare` pixel-diffs against another version. Needs Playwright |
+| `publish_site.py` | **The default way a finished page ships.** Publishes `_output/<slug>/` to BytePlus TOS object storage, public-read, and prints the live URL. Without TOS, it copies the site to `<local_publish_dir>/<slug>/` (or leaves it in `_output/<slug>/`) and prints its `file://` location. `--local-dir DIR` delivers to any folder instead (a network drive, synced folder, web root). This is the standard last step for every build, not something only done on request |
+| `unpublish_site.py` | Takes a published site down by slug: the TOS copy, or the `local_publish_dir` copy. Never touches the build in `_output/` (republishing doesn't need it — `publish_site.py` already removes stale files) |
+| `list_sites.py` | Lists every site currently public in the bucket — files, size, last update, whether a local build still exists — so old test builds don't stay online unnoticed. Without TOS, it lists the sites in `local_publish_dir`. Read-only |
+| `check_page.py` | Automated §4 checklist for any page or template: overflow, clipped text, tap targets, JS errors, mobile menu, leftover `[placeholders]`, agent-written `data-sample` copy (listed as warnings), text contrast, print mode; `--compare` pixel-diffs against another version. Needs Playwright |
 | `theme_fallbacks.py` | Adds plain-colour fallbacks for browsers without `color-mix()` / relative `oklch()` — re-run after changing `--accent` |
-| `site_paths.py` | Shared slug validation and bucket-prefix building for publish/unpublish/list |
+| `site_paths.py` | Shared slug validation, bucket-prefix building and local publish paths for publish/unpublish/list |
 | `tos_client.py` | Shared TOS client both scripts above import — plain `requests` calls hand-signed with TOS's own TOS4-HMAC-SHA256 scheme, not the `tos` vendor SDK (see its docstring for why literal AWS S3 signing doesn't work against TOS despite its S3-like REST surface, discovered by hitting the real API) |
-| `ark_service.py` / `credentials.py` | Shared HTTP client and credential-loading helpers `write_content.py` imports |
+| `credentials.py` | Shared credential-loading helpers the publishing scripts import, including whether TOS is configured |
 
-Copy `credential_tmp.json` to `credential.json` and fill in your own keys (`model_ark_key` for
-content writing; `tos_access_key_id` / `tos_secret_access_key` / `tos_bucket` for publishing —
-omit whichever you don't need). For each key, `credential.json` is checked first; if it's missing
-or blank there, an environment variable of the **same name** is used instead (`model_ark_key`,
-`tos_access_key_id`, `tos_secret_access_key`, `tos_bucket`) — handy for CI or a shared machine
-where you'd rather not put a real key in a file at all. `config.json` ships with
+**TOS is optional.** Skip this whole step to keep sites local. To publish publicly, copy
+`credential_tmp.json` to `credential.json` and fill in your own publishing keys
+(`tos_access_key_id` / `tos_secret_access_key` / `tos_bucket`). Set all three or none. A partial
+setup is reported as an error, not silently treated as local. For each key, `credential.json`
+is checked first; if it's missing or blank there, an environment variable of the **same name**
+is used instead (`tos_access_key_id`, `tos_secret_access_key`, `tos_bucket`) — handy for CI or a
+shared machine where you'd rather not put a real key in a file at all. `config.json` ships with
 `"tos_bucket": "your-bucket-name"` as a placeholder, so your real bucket name stays in your own
 `credential.json` (or `$tos_bucket`).
+
+Without TOS, set `"local_publish_dir"` in `config.json` to have finished sites copied to
+`<that folder>/<slug>/` (absolute, or relative to this skill folder). That could be a mounted
+network share, a synced cloud folder, or a web server's document root. Leave it empty (`""`)
+and sites simply stay in `_output/<slug>/`.
 
 ## Get started
 

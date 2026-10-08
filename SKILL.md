@@ -1,6 +1,6 @@
 ---
 name: profile-html
-description: Build and publish a single, responsive HTML page — personal/company profile, résumé/CV, startup pitch, e-commerce storefront, restaurant/cafe site, or course/coaching landing page — from a curated template library. Defaults to reading _input/brief.md before asking questions, and to publishing live via scripts/publish_site.py rather than just writing a local file.
+description: Build and publish a single, responsive HTML page — personal/company profile, résumé/CV, startup pitch, e-commerce storefront, restaurant/cafe site, or course/coaching landing page — from a curated template library. Defaults to reading _input/brief.md before asking questions, and to delivering it via scripts/publish_site.py — live on BytePlus TOS when configured (optional), otherwise kept on the local file system or a folder you choose.
 ---
 
 See [`AGENTS.md`](./AGENTS.md) — the full, harness-agnostic operating manual (works the same in

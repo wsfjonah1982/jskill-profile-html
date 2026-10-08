@@ -67,6 +67,8 @@ the user seems unsure.
 Defer to the root AGENTS.md: §4 for the responsive checklist (and additionally, click through the
 filter chips, open a quick-view, add to cart, and open the cart drawer at both desktop and mobile
 width before calling it done — this template's core value is the interaction, not just the
-layout), §6 for the no-fabricated-proof-points rule, and §7 for the output contract (publish via
-`scripts/publish_site.py` and lead with the public URL, plus a one-line rationale for the template
+layout), §3.1 for marking any sample copy you wrote (e.g. product descriptions) with
+`data-sample`, §6 for the no-fabricated-proof-points rule, and §7 for the output contract (publish via
+`scripts/publish_site.py` and lead with the location it prints (the public
+URL, or the local path when TOS isn't configured), plus a one-line rationale for the template
 pick and any caveats — including the demo-cart/demo-checkout note above).

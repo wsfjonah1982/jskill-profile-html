@@ -3,18 +3,21 @@ to publish_site.py, for when a build is superseded or was published by
 mistake. Removes every object under the site's key prefix, via
 tos_client.py's plain-HTTP TOS4-HMAC-SHA256 signing — no vendor SDK.
 
+When TOS isn't configured (or with --local-dir), it removes the local copy at
+<local_publish_dir>/<slug>/ instead. It never deletes the build in _output/.
+
 Usage:
     python scripts/unpublish_site.py --slug jane-doe-portfolio
 """
 import argparse
 import json
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from credentials import load_bucket, load_credential
-from site_paths import site_prefix, validate_slug
-from tos_client import delete_object, list_objects
+from credentials import load_bucket, load_credential, tos_status
+from site_paths import local_publish_root, site_prefix, validate_slug
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -46,6 +49,7 @@ def write_log(log_path: Path, data: dict) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--slug", required=True, help="URL slug of the published site to unpublish")
+    parser.add_argument("--local-dir", help="Remove LOCAL_DIR/<slug>/ instead of the TOS copy")
     args = parser.parse_args()
 
     try:
@@ -58,6 +62,30 @@ def main() -> int:
 
     try:
         config = load_config()
+        state, missing = tos_status(config)
+        if state == "partial" and not args.local_dir:
+            raise RuntimeError(f"TOS is only partly configured (missing: {', '.join(missing)}).")
+        if state == "off" or args.local_dir:
+            root = local_publish_root(config, args.local_dir)
+            if root is None:
+                print("TOS isn't configured and no local_publish_dir is set, so nothing was published "
+                      f"— the build in _output/{args.slug}/ is left alone.")
+                return 0
+            dest = root / args.slug
+            if dest == (BASE_DIR / "_output" / args.slug).resolve():
+                raise ValueError(f"{dest} is the build itself, not a published copy — not deleting it.")
+            removed = dest.is_dir()
+            if removed:
+                shutil.rmtree(dest)
+            write_log(log_path, {
+                "timestamp": datetime.now(timezone.utc).isoformat(), "slug": args.slug,
+                "target": "local", "path": str(dest), "removed": removed, "status": "succeeded",
+            })
+            print(f"Removed {dest}" if removed else f"Nothing at {dest} — already removed or never published.")
+            return 0
+
+        from tos_client import delete_object, list_objects  # needs `requests`; TOS only
+
         endpoint = config["tos_endpoint"]
         region = config["tos_region"]
         bucket = load_bucket(config)

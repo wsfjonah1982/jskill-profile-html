@@ -2,10 +2,19 @@
 object storage, public-read — via tos_client.py's plain-HTTP TOS4-HMAC-SHA256
 signing, no vendor SDK.
 
+TOS is optional. If none of its settings are configured, the site stays on the
+local file system instead: it's copied to <local_publish_dir>/<slug>/ when
+config.json sets `local_publish_dir` (a mounted share, synced folder, web root,
+...), and otherwise simply left in _output/<slug>/. A partly-configured TOS is
+an error, not a silent fallback. --local-dir DIR skips TOS for this run and
+copies to DIR/<slug>/.
+
 Usage:
     python scripts/publish_site.py --dir _output/jane-doe-portfolio --slug jane-doe-portfolio
+    python scripts/publish_site.py --dir _output/jane-doe-portfolio --slug jane-doe-portfolio --local-dir /mnt/share/sites
 
-Prints the public URL to stdout on success (the index file, per --index-name).
+Prints where the site now lives to stdout on success: the public URL with TOS,
+or a file:// URI to the index file when kept locally (per --index-name).
 
 After uploading, any object left under the site's prefix that isn't part of
 this build (a file the rebuild dropped or renamed) is deleted, so nothing
@@ -17,13 +26,13 @@ immediately; other assets get a short max-age.
 import argparse
 import json
 import mimetypes
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from credentials import load_bucket, load_credential
-from site_paths import site_prefix, validate_slug
-from tos_client import delete_object, list_objects, put_object
+from credentials import load_bucket, load_credential, tos_status
+from site_paths import local_publish_root, site_prefix, validate_slug
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -58,6 +67,27 @@ def load_tos_credentials() -> tuple[str, str]:
     return access_key, secret_key
 
 
+def publish_local(source_dir: Path, slug: str, root: Path | None, index_name: str) -> tuple[Path, int]:
+    """Keep the site on the local file system. With no `root` it stays where it
+    was built; otherwise <root>/<slug>/ is replaced with a fresh copy (the local
+    equivalent of the stale-object pruning the TOS path does). Returns the index
+    file's path and the number of files copied (0 when left in place)."""
+    source = source_dir.resolve()
+    if root is None:
+        return source / index_name, 0
+    dest = root / slug
+    if dest == source:
+        return source / index_name, 0
+    if dest.is_relative_to(source) or source.is_relative_to(dest):
+        raise ValueError(f"Local publish folder {dest} overlaps the build folder {source}.")
+    if not root.is_dir():
+        raise NotADirectoryError(f"Local publish folder doesn't exist: {root}")
+    if dest.exists():
+        shutil.rmtree(dest)
+    shutil.copytree(source, dest, ignore=shutil.ignore_patterns(*EXCLUDE_DIR_NAMES))
+    return dest / index_name, sum(1 for f in dest.rglob("*") if f.is_file())
+
+
 def write_log(log_path: Path, data: dict) -> None:
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with log_path.open("a", encoding="utf-8") as f:
@@ -71,6 +101,8 @@ def main() -> int:
     parser.add_argument("--index-name", default="index.html", help="Entry file to report the public URL for")
     parser.add_argument("--keep-stale", action="store_true",
                         help="Don't delete objects under the site prefix that aren't in this build")
+    parser.add_argument("--local-dir",
+                        help="Skip TOS and copy the site to LOCAL_DIR/<slug>/ (overrides config's local_publish_dir)")
     args = parser.parse_args()
 
     try:
@@ -87,6 +119,37 @@ def main() -> int:
             raise NotADirectoryError(f"Not a directory: {source_dir}")
 
         config = load_config()
+        state, missing = tos_status(config)
+        if state == "partial" and not args.local_dir:
+            raise RuntimeError(
+                f"TOS is only partly configured (missing: {', '.join(missing)}). Fill those in to "
+                f"publish to TOS, or remove the other TOS settings to keep sites local.")
+        if state == "off" or args.local_dir:
+            root = local_publish_root(config, args.local_dir)
+            if not any(p.is_file() for p in source_dir.rglob("*")):
+                raise RuntimeError(f"No files found in {source_dir} — nothing to publish.")
+            index_path, copied = publish_local(source_dir, args.slug, root, args.index_name)
+            location = index_path.as_uri()
+            write_log(log_path, {
+                "timestamp": datetime.now(timezone.utc).isoformat(), "slug": args.slug,
+                "dir": str(source_dir), "target": "local", "local_root": str(root) if root else None,
+                "file_count": copied, "status": "succeeded", "location": location,
+            })
+            why = "--local-dir given" if args.local_dir else "TOS isn't configured"
+            if root is None:
+                print(f"{why} and no local_publish_dir is set — the site stays in {index_path.parent}.",
+                      file=sys.stderr)
+            elif not copied:
+                print(f"{why} — the site is already in place at {index_path.parent}.", file=sys.stderr)
+            else:
+                print(f"{why} — {copied} file(s) copied to {index_path.parent}.", file=sys.stderr)
+            if not index_path.is_file():
+                print(f"Warning: {index_path.name} not found there.", file=sys.stderr)
+            print(location)
+            return 0
+
+        from tos_client import delete_object, list_objects, put_object  # needs `requests`; TOS only
+
         endpoint = config["tos_endpoint"]
         region = config["tos_region"]
         bucket = load_bucket(config)
@@ -128,7 +191,7 @@ def main() -> int:
 
         write_log(log_path, {
             "timestamp": datetime.now(timezone.utc).isoformat(), "slug": args.slug,
-            "dir": str(source_dir), "key_prefix": key_prefix, "file_count": len(published),
+            "dir": str(source_dir), "target": "tos", "key_prefix": key_prefix, "file_count": len(published),
             "pruned_count": len(pruned),
             "status": "succeeded", "public_url": public_url,
         })
